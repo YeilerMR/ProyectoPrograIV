@@ -1,0 +1,193 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+#dashboard header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.widgets {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    justify-content: space-around;
+}
+
+.widget {
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    width: 200px;
+    text-align: center;
+}
+
+.widget h2 {
+    font-size: 20px;
+}
+
+/**css del popup**/
+.popup, .popup2{
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Para habilitar el desplazamiento si el contenido es demasiado grande */
+    background-color: rgba(0,0,0,0.4);
+    /**
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefefe;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    z-index: 9999;*/
+}
+
+.popup-content {
+    text-align: center;
+    background-color: #fefefe;
+    margin: 15% auto; /* Centra verticalmente */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilos para la tabla */
+.table_header{
+    margin-left: 1060px;
+}
+.table_section {
+    width: 75%; /* Ancho deseado */
+    margin: 0 auto; /* Centro horizontalmente */
+    border: 2px solid #ccc; /* Borde de la tabla */
+    border-collapse: collapse; /* Colapso de bordes */
+}
+
+.table_section th,
+.table_section td {
+    text-align: center;
+    padding: 8px; /* Espaciado interno de celdas */
+    /*border: 1px solid #ddd; /* Borde de celdas */
+    width: 25%;
+}
+
+.table_section th {
+    background-color: #04D7A7; /* Color de fondo para las cabeceras */
+    color: white;
+}
+
+.table_section tr:nth-child(even) {
+    background-color: #f2f2f2; /* Color de fondo para filas pares */
+}
+
+.table_section tr:hover {
+    background-color: #ddd; /* Color de fondo cuando se pasa el mouse sobre la fila */
+}
+
+/**Botones*/
+.boton {
+    background-color: #4CAF50; /* Cambia el color de fondo a verde */
+    border: none; /* Elimina el borde por defecto */
+    color: white; /* Cambia el color del texto a blanco */
+    padding: 10px 20px; /* Ajusta el espacio interno del botón */
+    text-align: center; /* Centra el texto dentro del botón */
+    text-decoration: none; /* Elimina la subrayado del texto */
+    display: inline-block; /* Hace que el botón se comporte como un bloque */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cambia el cursor al pasar por encima del botón */
+    border-radius: 10px; /* Redondea los bordes del botón */
+}
+.boton_delete{
+    background-color: #D93926; /* Cambia el color de fondo a verde */
+    border: none; /* Elimina el borde por defecto */
+    color: white; /* Cambia el color del texto a blanco */
+    padding: 7px 16px; /* Ajusta el espacio interno del botón */
+    text-align: center; /* Centra el texto dentro del botón */
+    text-decoration: none; /* Elimina la subrayado del texto */
+    display: inline-block; /* Hace que el botón se comporte como un bloque */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cambia el cursor al pasar por encima del botón */
+    border-radius: 10px; /* Redondea los bordes del botón */
+    
+}
+/* Estilo cuando se pasa el cursor por encima */
+.boton:hover {
+    background-color: #45a049; /* Cambia el color de fondo a un tono más oscuro de verde */
+}
+.boton_delete:hover{
+    background-color: #BD2222;
+}
+
+/**Input de agregar productos*/
+input[type="submit"] {
+    background-color: #4CAF50; /* Cambia el color de fondo a verde */
+    border: none; /* Elimina el borde */
+    color: white; /* Cambia el color del texto a blanco */
+    padding: 10px 20px; /* Ajusta el espacio interno del botón */
+    text-align: center; /* Centra el texto dentro del botón */
+    text-decoration: none; /* Elimina la subrayado del texto */
+    display: inline-block; /* Hace que el botón se comporte como un bloque */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cambia el cursor al pasar por encima del botón */
+    border-radius: 5px; /* Redondea los bordes */
+}
+
+/* Estilo cuando se pasa el cursor por encima */
+input[type="submit"]:hover {
+    background-color: #45a049; /* Cambia el color de fondo a un tono más oscuro de verde */
+}
+
+/**Input de campos de texto del formulario*/
+input[type="text"] {
+    padding: 8px; /* Ajusta el espacio interno del input */
+    border: 1px solid #ccc; /* Establece un borde */
+    border-radius: 5px; /* Redondea los bordes */
+    outline: none; /* Elimina el contorno al hacer clic */
+}
+
+/* Estilo cuando el input tiene foco */
+input[type="text"]:focus {
+    border-color: #007bff; /* Cambia el color del borde al hacer foco */
+}
+input[type="button"] {
+  background-color: blue; /* Cambia el color de fondo del botón */
+  color: white; /* Cambia el color del texto del botón */
+}
+
+#botonDelete{
+    background-color: #D93926; /* Cambia el color de fondo a verde */
+    border: none; /* Elimina el borde */
+    color: white; /* Cambia el color del texto a blanco */
+    padding: 10px 20px; /* Ajusta el espacio interno del botón */
+    text-align: center; /* Centra el texto dentro del botón */
+    text-decoration: none; /* Elimina la subrayado del texto */
+    display: inline-block; /* Hace que el botón se comporte como un bloque */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cambia el cursor al pasar por encima del botón */
+    border-radius: 5px; /* Redondea los bordes */
+    
+}

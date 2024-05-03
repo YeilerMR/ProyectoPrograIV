@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmls:th="http://thymeleaf.org">
+    <head>
+
+
+        <title>Formulario de Productos</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/style_Productos.css">
+    </head>
+    <body>
+        <div class="content">
+            <div class=" table">
+                <div class="table_header">
+                    <p>Productos</p>
+                    <div>
+                        <input type="text" placeholder="Producto">
+                        <button id="openPopupBtn" class="boton">+</button><!--boton para agregar productos-->
+
+                    </div><br>
+                </div>
+                <div class="table_section">
+
+                    <table>
+                        <thead>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Categoria</th>
+                        <th>Calificacion</th>
+                        <th>Precio</th>
+                        <th>Disponibilidad</th>
+                        <th>Accion</th>
+                        </thead>
+
+                        <tbody>
+                            <tr th:each="producto: ${productos}">
+                                <td th:text="${producto.codigo}"></td>
+                                <td th:text="${producto.nombre}"></td>
+                                <td th:text="${producto.descripcion}"></td>
+                                <td th:text="${producto.categoria}"></td>
+                                <td th:text="${producto.calificacion}"></td>
+                                <td th:text="${producto.precio}"></td>
+                                <td th:text="${producto.disponible?'Disponible':'No Disponible'}"></td>
+                                <td>
+                                    <form th:action="@{/productos/eliminar/{codigo}(codigo=${producto.codigo})}" method="post" onsubmit="return confirm('¿Estas seguro de querer eliminar este producto?')">
+                                        <input id="botonDelete" type="submit" value="Eliminar"/> 
+                                        <!--input type="hidden" name="_method" value="delete" />
+                                        <button type="submit" class="boton_delete">Eliminar</button-->
+                                    </form>
+                                    <!-- popup -->
+                                    <!--button id="openPopupBtn2" class="boton">Editar</button-->
+                                    <button class="openPopupBtn boton">Editar</button>
+                                    <div class="popup">
+                                        <div class="popup-content">
+                                            <span class="close">&times;</span>
+                                            <section>
+                                                <form th:action="@{/productos/actualizar}" method="post">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <td>Nombre</td>
+                                                                <td>Descripcion</td>
+                                                                <td>Categoria</td>
+                                                                <td>Calificacion</td>
+                                                                <td>Precio</td>
+                                                                <td>Disponibilidad</td>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                        <input type="hidden" name="codigo" th:value="${producto.codigo}">
+                                                        <td><input type="text" name="nombre"></td>
+                                                        <td><input type="text" name="descripcion"></td>
+                                                        <td><input type="text" name="categoria"></td>
+                                                        <td><input type="number" name="calificacion"></td>
+                                                        <td><input type="number" name="precio"></td>
+                                                        <td>
+                                                            <select name="venta">
+                                                                <option value="true">Si</option>
+                                                                <option value="false">No</option>
+                                                            </select>
+                                                        </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <input type="submit" value="Editar" class="boton">
+                                                    <!--input type="hidden" name="_method" value="Agregar" />
+                                                                    <button type="submit" class="boton_delete">Eliminar</button-->
+                                                </form>
+                                            </section>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!--button id="openPopupBtn">Registrar Producto</button-->
+
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close" id="closePopupBtn">&times;</span>
+                <section>
+                    <form method="get" th:action="@{/productos/guardar}">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Nombre</td>
+                                    <td>Descripcion</td>
+                                    <td>Categoria</td>
+                                    <td>Calificacion</td>
+                                    <td>Precio</td>
+                                    <td>Disponibilidad</td>
+                                    <td>Codigo</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" name="nombre"><br></td>
+                                    <td><input type="text" name="descripcion"><br></td>
+                                    <td><input type="text" name="categoria"><br></td>
+                                    <td><input type="text" name="calificacion"><br></td>
+                                    <td><input type="text" name="precio"><br></td>
+                                    <td><input type="text" name="venta"><br></td>
+                                    <td><input type="text" name="codigo"><br></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <input type="submit" value="Agregar">
+                        <!--input type="hidden" name="_method" value="Agregar" />
+                                        <button type="submit" class="boton_delete">Eliminar</button-->
+                    </form>
+                </section>
+            </div>
+        </div>
+
+        <script src="scriptProductos.js"></script>
+        <!-- crear una lista con los productos de la base de datos -->
+        <script type="text/javascript" th:src="@{/scriptProductos.js}"></script>
+    </body>
+</html>
