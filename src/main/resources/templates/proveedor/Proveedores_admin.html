@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmls:th="http://thymeleaf.org">
+
+    <head>
+        <title>Administracion de proveedores</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        
+    </head>
+
+    <body>
+        <div class="title-admin-pro-container">
+            <h1>Panel de administracion de proveedores</h1>
+        </div>
+
+        <div class="create-button_container">
+            <a href="./crear">Registrar Nuevo Proveedor</a>
+        </div>
+        <br><br>
+        <div class="tb-container">
+            <table border="1">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Telefono</th>
+                    <th>Descripcion</th>
+                    <th>Correo</th>
+                    <th>Direccion</th>
+                    <th>Categoria</th>
+                    <th>Informacion Adicional</th>
+                    <th>Opciones</th>
+                </tr>
+                <tr th:each="proveedor:${proveedores}">
+                    <td th:text="${proveedor.getNombreProveedor}"></td>
+                    <td th:text="${proveedor.getTelefonoProveedor}"></td>
+                    <td th:text="${proveedor.getDescripcionProveedor}"></td>
+                    <td th:text="${proveedor.getCorreo}"></td>
+                    <td th:text="${proveedor.getDireccionProveedor}"></td>
+                    <td th:text="${proveedor.getCategoriaServicio}"></td>
+                    <td th:text="${proveedor.getInformacionAdicional}"></td>
+                    <td><a th:href="@{/proveedores/editar(proveedor=${proveedor.getIdProveedor})}">Editar</a>
+                        <button class="btn_delete">
+                            <a th:href="@{/proveedores/eliminar(proveedor=${proveedor.getIdProveedor})}">Eliminar</a>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="text/javascript" th:src="@{/alert.Script.js}"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
+            });
+        </script>
+        <br><br>
+        <div th:if="${proveedores != null}">
+            <!-- Enlaces de paginación -->
+            <a th:href="@{/proveedores/listar(page=0)}">Primera Página</a>
+            <a th:href="@{/proveedores/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
+            <span th:text="${page + 1}"></span>
+            <a th:href="@{/proveedores/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente Página</a>
+            <a th:href="@{/proveedores/listar(page=${ultimaPagina})}" th:unless="${proveedores.size() < pageSize}">Última Página</a>
+
+        </div>
+        <div th:unless="${proveedores != null}">
+            <p>No se encontraron registros para mostrar.</p>
+        </div>
+
+    </body>
+
+</html>
