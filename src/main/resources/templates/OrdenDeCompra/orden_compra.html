@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmls:th="http://thymeleaf.org">
+    <head>
+        <title>Ordenes de compra</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="title-container">
+            <h1>Administrar ordenes de compra</h1>
+        </div>
+
+        <div class="create-button-container">
+            <a href="./crear">Crear una nueva orden de compra</a>
+        </div>
+        <br><br>
+        <div class="tb-container">
+            <table border="1">
+                <tr>
+                    <th>Nombre Proveedor</th>
+                    <th>Fecha Orden</th>
+                    <th>Fecha Entrega</th>
+                    <th>Estado</th>
+                    <th>Numero Referecia</th>
+                    <th>Opciones</th>
+                </tr>
+                <tr th:each="orden:${ordenes}">
+                    <td th:text="${orden.getIdProveedor.getNombreProveedor}"></td>
+                    <td th:text="${orden.getFechaOrden}"></td>
+                    <td th:text="${orden.getFechaEntrega}"></td>
+                    <td th:text="${orden.getEstadoOrden}"></td>
+                    <td th:text="${orden.getNumeroReferencia}"></td>
+                    <td><a th:href="@{/ordenes_compra/editar(orden=${orden.getNumeroReferencia})}">Editar</a>
+                        <button class="btn_delete">
+                            <a th:href="@{/ordenes_compra/eliminar(orden=${orden.getNumeroReferencia})}">Eliminar</a>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="text/javascript" th:src="@{/alert.Script.js}"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
+            });
+        </script>
+        <br><br>
+        <div th:if="${ordenes != null}">
+            <!-- Enlaces de paginación -->
+            <a th:href="@{/ordenes_compra/listar(page=0)}">Primera Página</a>
+            <a th:href="@{/ordenes_compra/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
+            <span th:text="${page + 1}"></span>
+            <a th:href="@{/ordenes_compra/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente Página</a>
+            <a th:href="@{/ordenes_compra/listar(page=${ultimaPagina})}" th:unless="${ordenes.size() < pageSize}">Última Página</a>
+
+        </div>
+        <div th:unless="${ordenes != null}">
+            <p>No se encontraron registros para mostrar.</p>
+        </div>
+    </body>
+</html>

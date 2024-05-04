@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmls:th="http://thymeleaf.org">
+    <head>
+        <title>Editar Proveedor</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <h1>Editar Información de proveedor</h1>
+        </div>
+
+        <div class="form-container">
+            <form th:action="@{/proveedores/editar_proveedor}" method="GET">
+                <input type="hidden" th:value="${proveedor.getIdProveedor()}" name="proveedor">
+                <label for="nombre">Nombre: </label>
+                <input type="text" th:value="${proveedor.getNombreProveedor()}" name="nombre" id="nombre">
+                <br><br>
+                <label for="telefono">Telefono: </label>
+                <input type="text" th:value="${proveedor.getTelefonoProveedor()}" name="telefono" id="telefono">
+                <br><br>
+                <label for="descripcion">Descripcion: </label>
+                <textarea name="descripcion" id="descripcion" th:text="${proveedor.getDescripcionProveedor}"></textarea>
+                <br><br>
+                <label for="correo">Correo: </label>
+                <input type="text" th:value="${proveedor.getCorreo()}" name="correo" id="correo">
+                <br><br>
+                <label for="direccion">Direccion: </label>
+                <input type="text" th:value="${proveedor.getDireccionProveedor()}" name="direccion" id="direccion">
+                <br><br>
+                <label for="categoria">Categoria: </label>
+                <input type="text" th:value="${proveedor.getCategoriaServicio()}" name="categoria" id="categoria">
+                <br><br>
+                <label for="informacionadicional">Informacion adicional: </label>
+                <textarea th:text="${proveedor.getInformacionAdicional()}" name="informacionadicional" id="informacionadicional"></textarea>
+                <br><br>
+                <button type="submit">Actualizar</button>
+                <input type="button" value="Cancelar" onclick="window.location.href='./listar'">
+            </form>
+        </div>
+    </body>
+</html>
