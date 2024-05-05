@@ -42,6 +42,7 @@ public class OredenDeCompraController {
         Proveedor proveedor = new Proveedor();
         proveedor.setIdProveedor(idProveedor);
         if (new OrdenDeCompraServices().crearOrdenCompra(new OrdenDeCompra(0, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia))) {
+            actualizarListaOrdenes();
             return "excito";
         } else {
             return "error";

@@ -21,3 +21,21 @@ function editarProveedor() {
         });
     });
 }
+
+function submitForm(event) {
+    event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+    var container = document.getElementById('mensaje_container');
+    var form = document.getElementById('editForm');
+    var formData = new FormData(form);
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('GET', form.getAttribute('action') + '?' + new URLSearchParams(formData).toString(), true);
+    xmlhttp.send();
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            container.innerHTML = this.responseText;
+        }
+    };
+}

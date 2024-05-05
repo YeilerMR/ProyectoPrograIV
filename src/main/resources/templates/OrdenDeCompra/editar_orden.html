@@ -8,37 +8,57 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <title>Editar</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" th:src="@{/js/scriptOrdenDeCompra.js}"></script>
     </head>
     <body>
-        <div class="title-container">
-            <h1>Editar Orden de compra</h1>
+        <div class="container">
+            <div class="title-container">
+                <h1 class="text-primary">Editar Orden de compra</h1>
+            </div>
+
+            <div class="form-container">
+                <form th:action="@{/ordenes_compra/editar_orden}" method="GET" id="editForm" onsubmit="submitForm(event)">
+                    <div class="form-group">
+                        <label for="combobox-proveedores">Proveedor:</label>
+                        <select class="form-control" name="combobox-proveedores" id="combobox-proveedores">
+                            <option th:each="proveedor : ${proveedores}" th:value="${proveedor.getIdProveedor()}"
+                                    th:text="${proveedor.getNombreProveedor()}"
+                                    th:selected="${proveedor.getIdProveedor() == orden.getIdProveedor().getIdProveedor()}" required></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fecha-orden">Fecha de la orden:</label>
+                        <input type="date" class="form-control" id="fecha-orden" name="fecha-orden"
+                               th:value="${#dates.format(orden.getFechaOrden, 'yyyy-MM-dd')}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fecha-entrega">Fecha de entrega:</label>
+                        <input type="date" class="form-control" id="fecha-entrega" name="fecha-entrega"
+                               th:value="${#dates.format(orden.getFechaEntrega, 'yyyy-MM-dd')}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estado">Estado de la orden:</label>
+                        <input type="text" class="form-control" name="estado" id="estado" th:value="${orden.getEstadoOrden}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numero-rerencia">Numero de referencia:</label>
+                        <input type="text" class="form-control" name="numero-referencia" id="numero-referencia"
+                               th:value="${orden.getNumeroReferencia}" required>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Editar Orden</button>
+                    <input type="button" class="btn btn-danger" value="Cancelar" onclick="window.location.href = './listar'">
+                </form>
+                <br><br>
+                <div id="mensaje_container">
+                    
+                </div>
+            </div>
         </div>
 
-        <div class="form-container">
-            <form th:action="@{/ordenes_compra/editar_orden}" method="GET">
-                <label for="combobox-proveedores">Proveedor: </label>
-                <select name="combobox-proveedores" id="combobox-proveedores">
-                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.getIdProveedor()}"
-                            th:text="${proveedor.getNombreProveedor()}"
-                            th:selected="${proveedor.getIdProveedor() == orden.getIdProveedor().getIdProveedor()}"></option>
-                </select>
-
-                <br><br>
-                <label for="fecha-orden">Fecha de la orden: </label>
-                <input type="date" id="fecha-orden" name="fecha-orden" th:value="${#dates.format(orden.getFechaOrden, 'yyyy-MM-dd')}">
-                <br><br>
-                <label for="fecha-entrega">Fecha de entrega: </label>
-                <input type="date" id="fecha-entrega" name="fecha-entrega" th:value="${#dates.format(orden.getFechaEntrega, 'yyyy-MM-dd')}">
-                <br><br>
-                <label for="estado">Estado de la orden: </label>
-                <input type="text" name="estado" id="estado" th:value="${orden.getEstadoOrden}">
-                <br><br>
-                <label for="numero-rerencia">Numero de referencia: </label>
-                <input type="text" name="numero-referencia" id="numero-referencia" th:value="${orden.getNumeroReferencia}">
-                <br><br>
-                <button type="submit">Editar Orden</button>
-                <input type="button" value="Cancelar" onclick="window.location.href='./listar'">
-            </form>
-        </div>
     </body>
 </html>

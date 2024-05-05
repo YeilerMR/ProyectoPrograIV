@@ -62,7 +62,6 @@ public class ProveedorController {
     public String editarProveedor(@RequestParam("proveedor") int proveedorID, Model model) throws SQLException {
         for (Proveedor proveedor : proveedores) {
             if (proveedor.getIdProveedor() == proveedorID) {
-                System.out.println("Si esta entrando");
                 model.addAttribute("proveedor", proveedor);
                 return "proveedor/editar_proveedor";
             }
