@@ -1,6 +1,5 @@
 /* Estilos del Modal */
-.modal,
-.popup {
+.modal {
     display: none; /* Oculta el modal por defecto */
     position: fixed;
     z-index: 1;
@@ -40,7 +39,7 @@
 /* Estilos de los campos del formulario */
 .modal-content label {
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-left: 12px;
 }
 
 .modal-content input,
@@ -48,6 +47,7 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
+    margin-top: 10px; /* Agrega un margen superior */
     border: 1px solid var(--clr-main);
     border-radius: 5px; /* Redondea los bordes */
     outline: none; /* Elimina el contorno al hacer clic */

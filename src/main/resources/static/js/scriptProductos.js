@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const openPopupBtn = document.getElementById("openPopupBtn");
-    const closePopupBtn = document.getElementById("closePopupBtn");
-    const popup = document.getElementById("popup");
+    const openPopupBtn = document.getElementById("add_new");
+    const closePopupBtn = document.getElementById("closeModalNuevo");
+    const popup = document.getElementById("modal");
 
     openPopupBtn.addEventListener("click", function () {
         popup.style.display = "block";
@@ -20,13 +20,13 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    var editButtons = document.querySelectorAll('.openPopupBtn');
-    var closeButtons = document.querySelectorAll('.popup .close');
+    var editButtons = document.querySelectorAll('.producto-editar');
+    var closeButtons = document.querySelectorAll('.modal .close');
 
     // Función para abrir los popups
     editButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var popup = this.closest('tr').querySelector('.popup');
+            var popup = this.closest('tr').querySelector('.modal');
             popup.style.display = 'block';
         };
     });
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para cerrar los popups
     closeButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var popup = this.closest('.popup');
+            var popup = this.closest('.modal');
             popup.style.display = 'none';
         };
     });
