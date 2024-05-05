@@ -5,7 +5,9 @@
 package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Oferta;
+import cr.ac.una.proyecto_progra4.domain.Producto;
 import cr.ac.una.proyecto_progra4.services.OfertaServices;
+import cr.ac.una.proyecto_progra4.services.ProductoServices;
 import java.sql.Date;
 import java.util.LinkedList;
 import org.springframework.stereotype.Controller;
@@ -43,10 +45,12 @@ public class OfertaController {
     }
 
     @GetMapping("/listar")
-    public String mostrarLista(Model model) {
+    public String mostrarLista(Model model, Model model2) {
         LinkedList<Oferta> ofertas = OfertaServices.getOfertas();
+        LinkedList<Producto> productos= ProductoServices.getProductos();
         //System.out.println("estoy en mostrarlistaOfertas");
         model.addAttribute("ofertas", ofertas);
+        model2.addAttribute("productos", productos);
         return "ofertas/form_Ofertas";
     }
 
