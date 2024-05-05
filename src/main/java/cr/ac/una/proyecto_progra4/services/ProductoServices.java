@@ -34,7 +34,7 @@ public class ProductoServices {
         
         try {
             productos= DataProductos.getProductos();
-            System.out.println("Codigo P: "+productos.get(0).getCodigo());
+            //System.out.println("Codigo P: "+productos.get(0).getCodigo());
         } catch (SQLException ex) {
             productos= null;
             Logger.getLogger(ProductoServices.class.getName()).log(Level.SEVERE, null, ex);

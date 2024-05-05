@@ -56,35 +56,37 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                             <span class="close" id="closePopupBtn2">&times;</span>
                                             <section>
                                                 <form th:action="@{/ofertas/actualizar}" method="post">
-                                                    <table>
-                                                        <thead>
-                                                            <tr>
-                                                                <td>Codigo de Producto</td>
-                                                                <td>tipo de oferta</td>
-                                                                <td>Descuento en %</td>
-                                                                <td>Fecha Inicio</td>
-                                                                <td>Fecha Final</td>
-                                                                <td>Estado</td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
+                                                    <div class="form-group">
+                                                        <label>Código de Producto:</label>
                                                         <input type="hidden" name="codigoOferta" th:value="${oferta.codigoOferta}">
-                                                        <td><input type="text" name="codigoProducto" ></td>
-                                                        <td><input type="text" name="tipoOferta" ></td>
-                                                        <td><input type="number" name="descuentoOferta" ></td>
-                                                        <td><input type="date" name="fechaInicio" ></td>
-                                                        <td><input type="date" name="fechaFin" ></td>
-                                                        <td>
-                                                            <select name="estado">
-                                                                <option value="true" >Activo</option>
-                                                                <option value="false">Inactivo</option>
-                                                            </select>
-                                                        </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-
+                                                        <select name="codigoProducto">
+                                                            <option value="">Selecciona un código de producto</option>
+                                                            <option th:each=" producto : ${productos}" th:value="${producto.codigo}" th:text="${producto.codigo}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Tipo de Oferta:</label>
+                                                        <input type="text" name="tipoOferta" placeholder="Tipos de ofertas" required th:value="${oferta.tipoOferta}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Descuento en %:</label>
+                                                        <input type="number" name="descuentoOferta" placeholder="descuento %" required th:value="${oferta.descuentoOferta}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Fecha Inicio:</label>
+                                                        <input type="date" name="fechaInicio">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Fecha Final:</label>
+                                                        <input type="date" name="fechaFin">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Estado:</label>
+                                                        <select name="estado">
+                                                            <option value="true" >Activo</option>
+                                                            <option value="false">Inactivo</option>
+                                                        </select>
+                                                    </div>
                                                     <input type="submit" value="Editar" class="boton">
                                                 </form>
                                             </section>

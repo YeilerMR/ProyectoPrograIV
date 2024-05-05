@@ -1,0 +1,76 @@
+/* Estilos del Modal */
+.modal,
+.popup {
+    display: none; /* Oculta el modal por defecto */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Fondo oscuro semi-transparente */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* Centra el modal verticalmente */
+    padding: 20px;
+    border: 1px solid var(--clr-main); /* Borde del modal */
+    border-radius: 10px;
+    max-width: 600px; /* Ancho máximo del modal */
+    width: 90%; /* Ancho del modal en dispositivos más pequeños */
+}
+
+.close {
+    color: var(--clr-main);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilos de los campos del formulario */
+.modal-content label {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--clr-main);
+    border-radius: 5px; /* Redondea los bordes */
+    outline: none; /* Elimina el contorno al hacer clic */
+    box-sizing: border-box;
+}
+
+.modal-content input[type="submit"] {
+    background-color: var(--clr-main);
+    color: var(--clr-main-light);
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-content input[type="submit"]:hover {
+    background-color: #111;
+}
+
+/* Media query para hacer el modal responsive */
+@media screen and (max-width: 600px) {
+    .modal-content {
+        margin: 20px; /* Aumenta el margen en dispositivos más pequeños */
+    }
+}

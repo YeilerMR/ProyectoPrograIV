@@ -8,216 +8,191 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <title>Clientes</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
-        <link rel="stylesheet" th:href="@{/css/cliente.css}"/> 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <link rel="stylesheet" th:href="@{/main.css}" />
+        <link rel="stylesheet" th:href="@{/modal.css}" />
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
     </head>
     <body>
-        <!-- NavigationBar -->
-        <header>
-            <div class="navbar">
-                <label class="logo">Mushroom Store</label>
-                <a href="../index">Inicio</a>
-                <a href="#">Servicios</a>
-                <a href="#">Contacto</a>
-                <a href="#">Acerca de</a>
+        <div class="wrapper">
 
-                <div class="dropdown">
-                    <button class="dropbtn">Páginas
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a th:href="@{/clientes/listar}">Clientes</a>
-                        <a th:href="@{/envios/listar}">Envíos</a>
+            <aside>
+                <button class="close-menu" id="close-menu">
+                    <i class="bi bi-x"></i>
+                </button>
+                <header>
+                    <img th:src="@{/img/logo.png}" alt="Logo">
+                </header>
+                <nav>
+                    <ul class="menu">
+                        <li>
+                            <button class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>
+                                Apartados</button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>
+                                Empleados</button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>
+                                Proveedores</button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria active"><i
+                                    class="bi bi-hand-index-thumb-fill"></i>
+                                Clientes </button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/envios/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Envíos
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+                <footer>
+                    <p class="texto-footer">© Proyecto Progra 4</p>
+                </footer>
+            </aside>
+            <main>
+                <h1>Lista de Apartados</h1>
+                <!-- PARTE DE BÚSQUEDA DE ALGÚN CLIENTE MEDIANTE CÉDULA -->
+                <div class="table_header">
+                    <div class="input-container">
+                        <p>Clientes</p>
+                        <form class="form_cedula" th:action="@{/clientes/buscar}" method="get">
+                            <input name="cedula" placeholder="Cédula del cliente" required>
+                            <button class="search_cliente" type="submit">Buscar</button>
+                        </form>
+                        <button class="add_new">Crear nuevo</button>
                     </div>
                 </div>
-            </div>
-        </header>
-        <!-- Client CRUD FOR ADMIN(WORKER) PageContent -->
-        <!-- List of clients view for admin users -->
-        <div class="content">
-            <section class="clientes-data">
-                <div class="table">
-                    <div class="table_header">
-                        <div class="input-container">
-                            <p>Clientes</p>
-                            <form class="form_cedula" th:action="@{/clientes/buscar}" method="get">
-                                <input name="cedula" placeholder="Cédula del cliente" required>
-                                <button class="search_cliente" type="submit">Buscar</button>
-                            </form>
-                            <button class="add_new">Crear nuevo</button>
-                        </div>
-                    </div>
+                <!-- PARTE DE LISTA DE CLIENTES -->
+                <table class="contenedor-productos">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Cédula</th>
+                        <th>Email</th>
+                        <th>Contraseña</th>
+                        <th>Télefono</th>
+                        <th>Credencial de Usuario</th>
+                        <th>Acciones</th>
+                    </tr>
+                    <tr th:each="clienteItem : ${clientes}">
+                        <td th:text="${clienteItem.nombre}"></td>
+                        <td th:text="${clienteItem.apellidos}"></td>
+                        <td th:text="${clienteItem.cedula}"></td>
+                        <td th:text="${clienteItem.email}"></td>
 
-
-                    <div class="table_section">
-                        <table>
-                            <thead>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th>Cédula</th>
-                            <th>Email</th>
-                            <th>Contraseña</th>
-                            <th>Télefono</th>
-                            <th>Credencial de Usuario</th>
-                            <th>Acción</th>
-                            </thead>
-
-                            <tbody>
-                                <tr th:each="clienteItem : ${clientes}">
-                                    <td th:text="${clienteItem.nombre}"></td>
-                                    <td th:text="${clienteItem.apellidos}"></td>
-                                    <td th:text="${clienteItem.cedula}"></td>
-                                    <td th:text="${clienteItem.email}"></td>
-
-                                    <td>
-                                        <span class="password" th:data-password="${clienteItem.password}">******</span>
-                                        <button class="toggle-password">
-                                            <i id="eye-open" class="fa-regular fa-eye"></i>
-                                            <i id="eye-close" class="fa-solid fa-eye-slash" style="display:none;"></i>
-                                        </button>
-                                    </td>
-
-
-                                    <td th:text="${clienteItem.telefono}"></td>
-                                    <td th:text="${clienteItem.credencial == 0 ? 'Cliente' : 'Empleado'}"></td>
-                                    <td>
-                                        <button class="btn_modify">
-                                            <a th:href="@{/clientes/editar(idUsuario_Cliente=${clienteItem.id})}">Editar</a>
-                                        </button>
-                                        <button class="btn_delete">
-                                            <a th:href="@{/clientes/eliminar(idUsuario_Cliente=${clienteItem.id})}">Eliminar</a>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                        <!-- Paginación -->
-                        <div class="divPag" th:if="${clientes != null}">
-                            <!-- Enlaces de paginación -->
-                            <a th:href="@{/clientes/listar(page=0)}">Primera Página</a>
-                            <a th:href="@{/clientes/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
-                            <span th:text="${page + 1}"></span>
-                            <a th:href="@{/clientes/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente Página</a>
-                            <a th:href="@{/clientes/listar(page=${ultimaPagina})}" th:unless="${clientes.size() &lt; pageSize}">Última Página</a>
-                        </div>
-                    </div>
+                        <td>
+                            <span class="password" th:data-password="${clienteItem.password}">******</span>
+                            <button class="toggle-password">
+                                <i id="eye-open" class="fa-regular fa-eye"></i>
+                                <i id="eye-close" class="fa-solid fa-eye-slash" style="display:none;"></i>
+                            </button>
+                        </td>
+                        <td th:text="${clienteItem.telefono}"></td>
+                        <td th:text="${clienteItem.credencial == 0 ? 'Cliente' : 'Empleado'}"></td>
+                        <td>
+                            <button class="producto-eliminar" style="display: inline;">
+                                <a th:href="@{/clientes/eliminar(idUsuario_Cliente=${clienteItem.id})}">Eliminar</a>
+                            </button>
+                            ----------
+                            <button class="producto-editar" style="display: inline;">
+                                <a th:href="@{/clientes/editar(idUsuario_Cliente=${clienteItem.id})}">Editar</a>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <!-- PARTE DE PAGINACIÓN -->
+                <div class="divPag" th:if="${clientes != null}">
+                    <!-- Enlaces de paginación -->
+                    <a th:href="@{/clientes/listar(page=0)}">Primera Página</a>
+                    <a th:href="@{/clientes/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
+                    <span th:text="${page + 1}"></span>
+                    <a th:href="@{/clientes/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente
+                        Página</a>
+                    <a th:href="@{/clientes/listar(page=${ultimaPagina})}"
+                       th:unless="${clientes.size() &lt; pageSize}">Última Página</a>
                 </div>
-            </section>
-        </div>
-        <!-- Formulario PopUp Crear Cliente-->
-        <div id="myModalCrearCliente" class="modal">
+                <!-- PARTE DE FORM POPUP CREAR CLIENTE -->
+                <!-- Formulario PopUp Crear Cliente-->
+                <div type="hidden" id="myModalCrearCliente" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div class="container">
+                            <form class='crear-cliente-form' method="post" th:action="@{/clientes/guardar}">
 
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span class="close">&times;</span>
-
-                <div class="container">
-                    <form class='crear-cliente-form' method="post" th:action="@{/clientes/guardar}">
-                        <div class="row">
-                            <div class="col-25">
                                 <label for="nombre">Nombre</label>
-                            </div>
-                            <div class="col-75">
                                 <input type="text" id="nombre" name="nombre" placeholder="Nombre del cliente" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-25">
+
                                 <label for="apellidos">Apellidos</label>
-                            </div>
-                            <div class="col-75">
                                 <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos del cliente" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-25">
+
                                 <label for="email">Email</label>
-                            </div>
-                            <div class="col-75">
                                 <input type="email" id="email" name="email" placeholder="Email del cliente" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-25">
-                                <label for="nombre">Contraseña</label>
-                            </div>
-                            <div class="col-75">
-                                <input type="text" id="password" name="password" placeholder="Contraseña del cliente" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-25">
+
+                                <label for="password">Contraseña</label>
+                                <input type="password" id="password" name="password" placeholder="Contraseña del cliente" required>
+
                                 <label for="cedula">Cédula</label>
-                            </div>
-                            <div class="col-75">
                                 <input type="text" id="cedula" name="cedula" placeholder="Cédula del cliente" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-25">
+
                                 <label for="telefono">Teléfono</label>
-                            </div>
-                            <div class="col-75">
                                 <input type="tel" id="telefono" name="telefono" placeholder="Teléfono del cliente">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-25">
+
                                 <label for="credencial">Credencial</label>
-                            </div>
-                            <div class="col-75">
                                 <select id="credencial" name="credencial" required>
                                     <option value="Cliente">Cliente</option>
                                     <option value="Empleado">Empleado</option>
                                 </select>
-                            </div>
+
+                                <input type="submit" value="Crear cliente" id="submitButton">
+                            </form>
                         </div>
-                        <div class="row">
-                            <input type="submit" value="Crear cliente" id="submitButton">
-                        </div>
-                    </form>
+                    </div>
                 </div>
-
-            </div>
-        </div>
-        <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este cliente?', '/clientes/listar');
-                validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente');
-            });
-        </script>
-        <!-- MOSTRAR / OCULTAR PASSWORD -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const toggleButtons = document.querySelectorAll('.toggle-password');
-
-                toggleButtons.forEach(button => {
-                    button.addEventListener('click', function () {
-                        const passwordField = this.parentNode.querySelector('.password');
-                        const eyeOpen = this.parentNode.querySelector('#eye-open');
-                        const eyeClose = this.parentNode.querySelector('#eye-close');
-
-                        if (passwordField.classList.contains('visible')) {
-                            passwordField.textContent = '******';
-                            passwordField.classList.remove('visible');
-                            eyeOpen.style.display = 'inline';
-                            eyeClose.style.display = 'none';
-                        } else {
-                            const password = passwordField.getAttribute('data-password');
-                            passwordField.textContent = password;
-                            passwordField.classList.add('visible');
-                            eyeOpen.style.display = 'none';
-                            eyeClose.style.display = 'inline';
-                        }
+                <!-- IMPORTS Y SCRIPTS -->
+                <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este cliente?', '/clientes/listar');
+                        validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente');
                     });
-                });
-            });
-        </script>
-        <!-- MOSTRAR / OCULTAR PASSWORD -->
+                </script>
+                <!-- MOSTRAR / OCULTAR PASSWORD -->
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const toggleButtons = document.querySelectorAll('.toggle-password');
+
+                        toggleButtons.forEach(button => {
+                            button.addEventListener('click', function () {
+                                const passwordField = this.parentNode.querySelector('.password');
+                                const eyeOpen = this.parentNode.querySelector('#eye-open');
+                                const eyeClose = this.parentNode.querySelector('#eye-close');
+
+                                if (passwordField.classList.contains('visible')) {
+                                    passwordField.textContent = '******';
+                                    passwordField.classList.remove('visible');
+                                    eyeOpen.style.display = 'inline';
+                                    eyeClose.style.display = 'none';
+                                } else {
+                                    const password = passwordField.getAttribute('data-password');
+                                    passwordField.textContent = password;
+                                    passwordField.classList.add('visible');
+                                    eyeOpen.style.display = 'none';
+                                    eyeClose.style.display = 'inline';
+                                }
+                            });
+                        });
+                    });
+                </script>
+                <!-- MOSTRAR / OCULTAR PASSWORD -->
+            </main>
+        </div>
     </body>
 </html>

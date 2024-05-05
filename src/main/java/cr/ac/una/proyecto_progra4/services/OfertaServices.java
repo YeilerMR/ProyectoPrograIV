@@ -34,7 +34,7 @@ public class OfertaServices {
         LinkedList<Oferta> ofertas;
         try {
             ofertas= DataOfertas.getOfertas();
-            System.out.println("Codigo O: "+ofertas.get(0).getFechaInicio());
+            //System.out.println("Codigo O: "+ofertas.get(0).getFechaInicio());
         } catch (SQLException ex) {
             ofertas=null;
             Logger.getLogger(OfertaServices.class.getName()).log(Level.SEVERE,null,ex);
