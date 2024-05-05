@@ -1,0 +1,228 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --clr-main: #242568;
+    --clr-main-light: #fcfcfc;
+    --clr-white: #ececec;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, p, a, th, input, textarea, ul {
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    background-color: var(--clr-main);
+}
+
+aside {
+    padding: 2rem;
+    padding-right: 0;
+    color: var(--clr-white);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logo {
+    font-weight: 400;
+    font-size: 1.3rem;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.boton-menu {
+    background-color: transparent;
+    border: 0;
+    color: #dad7e3;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 600;
+    padding: 1rem;
+    font-size: .85rem;
+    width: 100%;
+}
+
+.boton-menu.active {
+    background-color: var(--clr-white);
+    color: var(--clr-main);
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    position: relative;
+}
+
+.boton-menu.active::before {
+    content: '';
+    position: absolute;
+    width: 1rem;
+    height: 2rem;
+    bottom: 100%;
+    right: 0;
+    background-color: transparent;
+    border-bottom-right-radius: .5rem;
+    box-shadow: 0 1rem 0 var(--clr-white);
+}
+
+.boton-menu.active::after {
+    content: '';
+    position: absolute;
+    width: 1rem;
+    height: 2rem;
+    top: 100%;
+    right: 0;
+    background-color: transparent;
+    border-top-right-radius: .5rem;
+    box-shadow: 0 -1rem 0 var(--clr-white);
+}
+
+.boton-menu > i.bi-hand-index-thumb-fill,
+.boton-menu > i.bi-hand-index-thumb {
+    transform: rotateZ(90deg);
+}
+
+
+
+
+
+
+
+.texto-footer {
+    color: var(--clr-main-light);
+    font-size: .85rem;
+}
+
+main {
+    background-color: var(--clr-white);
+    margin: 1rem;
+    margin-left: 0;
+    border-radius: 2rem;
+    padding: 3rem;
+}
+
+
+img{
+    margin: 1rem;
+    margin-left: 0;
+    border-radius: 2rem;
+    padding: 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.header-mobile {
+    display: none;
+}
+
+.close-menu {
+    display: none;
+}
+
+.disabled {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+.contenedor-productos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    border: 2px solid var(--clr-main); /* Agrega un borde a la tabla */
+    border-collapse: collapse; /* Colapsa los bordes de las celdas */
+    border-radius: 10px; /* Bordes redondeados para la tabla */
+    overflow: hidden; /* Oculta el contenido que se extiende más allá de las celdas */
+}
+
+.contenedor-productos th,
+.contenedor-productos td {
+    border: 1px solid var(--clr-main); /* Agrega un borde a las celdas */
+    padding: 8px; /* Ajusta el espaciado interno de las celdas */
+    text-align: center; /* Alinea el texto a la izquierda en las celdas */
+    border-radius: 10px; /* Bordes redondeados para las celdas */
+}
+
+.contenedor-productos td:last-child {
+    width: 200px; /* Ancho fijo para la última columna */
+}
+
+.producto-eliminar {
+    background-color: #E64A72; /* Color rojo para botones de eliminar */
+    color: var(--clr-white);
+    padding: .4rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+}
+
+.producto-eliminar:hover {
+    background-color: red; /* Color de resaltado para botones de eliminar */
+}
+
+.producto-editar {
+    background-color: #F99B1C; /* Color amarillo para botones de editar */
+    color: var(--clr-white);
+    padding: .4rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.producto-editar:hover {
+    background-color: #FCB762; /* Color de resaltado para botones de editar */
+}
+
+
+
+
