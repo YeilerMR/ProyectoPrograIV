@@ -33,7 +33,7 @@ public class EnvioController {
             @RequestParam("idCliente_Envio") int idCliente,
             @RequestParam("observacion_Envio") String observacion,
             @RequestParam("direccionEnvio_Envio") String direccionEnvio,
-            @RequestParam("fechaDeEnvio") LocalDateTime fechaDeEnvio,
+            @RequestParam("fechaEnvio_Envio") LocalDateTime fechaDeEnvio,
             @RequestParam("estadoEnvio_Envio") String estadoEnvio) {
 
         Envio envio = new Envio();

@@ -7,9 +7,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" th:href="@{/main.css}" />
+        <link rel="stylesheet" th:href="@{/css/modal.css}" />
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
     </head>
-    
+
     <body>
         <div class="wrapper">
 
@@ -49,6 +50,16 @@
                         <li>
                             <button class="boton-menu boton-categoria active" th:onclick="window.location.href='/envios/listar'">
                                 <i class="bi bi-hand-index-thumb-fill"></i> Envíos
+                            </button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/productos/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Productos
+                            </button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/ofertas/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Ofertas
                             </button>
                         </li>
                     </ul>
@@ -124,93 +135,50 @@
                 <!-- PARTE DE FORM POPUP CREAR CLIENTE -->
                 <!-- Formulario PopUp Crear Cliente-->
                 <div id="myModalCrearEnvio" class="modal">
-
                     <!-- Modal content -->
                     <div class="modal-content">
                         <span class="close">&times;</span>
-                        <!-- comment-->
                         <div class="container">
                             <form class="crear-envio-form" method="post" th:action="@{/envios/guardar}">
                                 <div class="row">
-                                    <div class="col-25">
-                                        <label for="codigoEnvio_Envio">Código Envio</label>
-                                    </div>
-                                    <div class="col-75">
-                                        <input type="text" id="codigoEnvio_Envio" name="codigoEnvio_Envio"
-                                               placeholder="Código Envio" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-25">
-                                        <label for="idPedido_Envio">Pedido</label>
-                                    </div>
-                                    <div class="col-75">
-                                        <input type="text" id="idPedido_Envio" name="idPedido_Envio" placeholder="Pedido"
-                                               required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-25">
-                                        <label for="idCliente_Envio">Cliente</label>
-                                    </div>
-                                    <div class="col-75">
-                                        <input type="text" id="idCliente_Envio" name="idCliente_Envio" placeholder="Cliente"
-                                               required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-25">
-                                        <label for="fechaEnvio_Envio">Fecha de Envio</label>
-                                    </div>
-                                    <div class="col-75">
-                                        <input type="datetime-local" id="fechaEnvio_Envio" name="fechaEnvio_Envio"
-                                               placeholder="Fecha de Envio" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-25">
-                                        <label for="direccionEnvio_Envio">Dirección del envio</label>
-                                    </div>
-                                    <div class="col-75">
-                                        <input type="tel" id="direccionEnvio_Envio" name="direccionEnvio_Envio"
-                                               placeholder="Dirección del envio">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-25">
-                                        <label for="observacion_Envio">Observación del envio</label>
-                                    </div>
-                                    <div class="col-75">
-                                        <input type="tel" id="observacion_Envio" name="observacion_Envio"
-                                               placeholder="Observación del envio">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-25">
-                                        <label for="estadoEnvio_Envio">Estado</label>
-                                    </div>
-                                    <div class="col-75">
-                                        <input type="tel" id="estadoEnvio_Envio" name="estadoEnvio_Envio"
-                                               placeholder="Estado del envio">
-                                    </div>
-                                </div>
-                                <div class="row">
+
+                                    <label for="codigoEnvio_Envio">Código Envio</label>
+                                    <input type="text" id="codigoEnvio_Envio" name="codigoEnvio_Envio" placeholder="Código Envio" required>
+
+                                    <label for="idPedido_Envio">Pedido</label>
+                                    <input type="text" id="idPedido_Envio" name="idPedido_Envio" placeholder="Pedido" required>
+
+                                    <label for="idCliente_Envio">Cliente</label>
+                                    <input type="text" id="idCliente_Envio" name="idCliente_Envio" placeholder="Cliente" required>
+
+                                    <label for="fechaEnvio_Envio">Fecha de Envio</label>
+                                    <input type="datetime-local" id="fechaEnvio_Envio" name="fechaEnvio_Envio" required>
+
+                                    <label for="direccionEnvio_Envio">Dirección del envio</label>
+                                    <input type="text" id="direccionEnvio_Envio" name="direccionEnvio_Envio" placeholder="Dirección del envio" required>
+
+                                    <label for="observacion_Envio">Observación del envio</label>
+
+                                    <input type="tel" id="observacion_Envio" name="observacion_Envio" placeholder="Observación del envio" required>
+
+                                    <label for="estadoEnvio_Envio">Estado</label>
+                                    <input type="tel" id="estadoEnvio_Envio" name="estadoEnvio_Envio" placeholder="Estado del envio" required>
+
                                     <input type="submit" value="Realizar envio">
+                                    </form>
                                 </div>
-                            </form>
                         </div>
                     </div>
-                </div>
 
-                <script type="text/javascript" th:src="@{/js/scriptModalEnvio.js}"></script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        validarCreacion('.crear-envio-form', '¿Estás seguro de continuar con la creación de este envío?', '/envios/listar');
-                        validarEliminacion('.btn_delete', 'Envío eliminado exitosamente');
-                    });
-                </script>
+                    <script type="text/javascript" th:src="@{/js/scriptModalEnvio.js}"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            validarCreacion('.crear-envio-form', '¿Estás seguro de continuar con la creación de este envío?', '/envios/listar');
+                            validarEliminacion('.btn_delete', 'Envío eliminado exitosamente');
+                        });
+                    </script>
             </main>
         </div>
     </body>

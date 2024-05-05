@@ -27,25 +27,38 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <nav>
                     <ul class="menu">
                         <li>
-                            <button class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>
-                                Apartados</button>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/apartados/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Apartados
+                            </button>
                         </li>
                         <li>
-                            <button class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>
-                                Empleados</button>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/empleados/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Empleados
+                            </button>
                         </li>
                         <li>
-                            <button class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>
-                                Proveedores</button>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/proveedores/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Proveedores
+                            </button>
                         </li>
                         <li>
-                            <button class="boton-menu boton-categoria active"><i
-                                    class="bi bi-hand-index-thumb-fill"></i>
-                                Clientes </button>
+                            <button class="boton-menu boton-categoria active" th:onclick="window.location.href='/clientes/listar'">
+                                <i class="bi bi-hand-index-thumb-fill"></i> Clientes 
+                            </button>
                         </li>
                         <li>
                             <button class="boton-menu boton-categoria" th:onclick="window.location.href='/envios/listar'">
                                 <i class="bi bi-hand-index-thumb"></i> Envíos
+                            </button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/productos/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Productos
+                            </button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/ofertas/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Ofertas
                             </button>
                         </li>
                     </ul>
