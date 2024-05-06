@@ -81,90 +81,95 @@
                     </div>
                 </div>
                 <!-- PARTE DE LISTA DE CLIENTES -->
-                <table class="contenedor-productos">
-                    <tr>
-                        <th>Código de envio</th>
-                        <th>Pedido</th>
-                        <th>Información del Cliente</th>
-                        <th>Dirección</th>
-                        <th>Fecha de Envío</th>
-                        <th>Observación</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                    <tr th:each="envio: ${envios}">
-                        <td th:text="${envio.codigoEnvio}"></td>
-                        <td th:text="${envio.idPedido}"></td>
-                        <td>
-                            <span th:each="cliente : ${clientes}">
-                                <th:block th:if="${cliente.idCliente == envio.idCliente}">
-                                    Nombre: <span th:text="' ' + ${cliente.nombre + ' ' + cliente.apellidos}"></span><br>
-                                    Cédula: <span th:text="' ' + ${cliente.cedula}"></span><br>
-                                    Email: <span th:text="' ' + ${cliente.email}"></span><br>
-                                    Télefono: <span th:text="' ' + ${cliente.telefono}"></span><br>
-                                    <th:block th:break="${true}"></th:block>
-                                </th:block>
-                            </span>
-                        </td>
-                        <td th:text="${envio.direccionEnvio}"></td>
-                        <td th:text="${#temporals.format(envio.fechaEnvio, 'dd/MM/yyyy HH:mm:ss')}"></td>
-                        <td th:text="${envio.observacion}"></td>
-                        <td th:text="${envio.estadoEnvio}"></td>
-                        <td>
-                            <button class="producto-eliminar" style="display: inline;">
-                                <a th:href="@{/envios/eliminar(idEnvio=${envio.idEnvio})}">Eliminar</a>
-                            </button>
-                            ----------
-                            <button class="producto-editar" style="display: inline;">
-                                Editar
-                            </button>
-                            <!-- MODAL DE EDITAR -->
-                            <div class="modal">
-                                <div class="modal-content">
-                                    <span class="close">&times;</span>
-                                    <div class="container">
-                                        <form class="editar-envio-form" method="post" th:action="@{/envios/actualizar}">
-                                            <input type="hidden" name="idEnvio" th:value="${envio.idEnvio}">
+                <div th:if="${!envios.empty}">
+                    <table class="contenedor-productos">
+                        <tr>
+                            <th>Código de envio</th>
+                            <th>Pedido</th>
+                            <th>Información del Cliente</th>
+                            <th>Dirección</th>
+                            <th>Fecha de Envío</th>
+                            <th>Observación</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr th:each="envio: ${envios}">
+                            <td th:text="${envio.codigoEnvio}"></td>
+                            <td th:text="${envio.idPedido}"></td>
+                            <td>
+                                <span th:each="cliente : ${clientes}">
+                                    <th:block th:if="${cliente.idCliente == envio.idCliente}">
+                                        Nombre: <span th:text="' ' + ${cliente.nombre + ' ' + cliente.apellidos}"></span><br>
+                                        Cédula: <span th:text="' ' + ${cliente.cedula}"></span><br>
+                                        Email: <span th:text="' ' + ${cliente.email}"></span><br>
+                                        Télefono: <span th:text="' ' + ${cliente.telefono}"></span><br>
+                                        <th:block th:break="${true}"></th:block>
+                                    </th:block>
+                                </span>
+                            </td>
+                            <td th:text="${envio.direccionEnvio}"></td>
+                            <td th:text="${#temporals.format(envio.fechaEnvio, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                            <td th:text="${envio.observacion}"></td>
+                            <td th:text="${envio.estadoEnvio}"></td>
+                            <td>
+                                <button class="producto-eliminar" style="display: inline;">
+                                    <a th:href="@{/envios/eliminar(idEnvio=${envio.idEnvio})}">Eliminar</a>
+                                </button>
+                                ----------
+                                <button class="producto-editar" style="display: inline;">
+                                    Editar
+                                </button>
+                                <!-- MODAL DE EDITAR -->
+                                <div class="modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <div class="container">
+                                            <form class="editar-envio-form" method="post" th:action="@{/envios/actualizar}">
+                                                <input type="hidden" name="idEnvio" th:value="${envio.idEnvio}">
 
-                                            <label for="codigoEnvio_Envio">Código Envio</label>
-                                            <input type="text" id="codigoEnvio" name="codigoEnvio" placeholder="Código de Envío" required th:value="${envio.codigoEnvio}">
+                                                <label for="codigoEnvio_Envio">Código Envio</label>
+                                                <input type="text" id="codigoEnvio" name="codigoEnvio" placeholder="Código de Envío" required th:value="${envio.codigoEnvio}">
 
-                                            <label for="idPedido_Envio">Pedido</label>
-                                            <input type="text" id="idPedido" name="idPedido" placeholder="ID del Pedido" required th:value="${envio.idPedido}">
+                                                <label for="idPedido_Envio">Pedido</label>
+                                                <input type="text" id="idPedido" name="idPedido" placeholder="ID del Pedido" required th:value="${envio.idPedido}">
 
-                                            <label for="idCliente_Envio">Cliente</label>
-                                            <input type="text" id="idCliente" name="idCliente" placeholder="ID del Cliente" required th:value="${envio.idCliente}">
+                                                <label for="idCliente_Envio">Cliente</label>
+                                                <input type="text" id="idCliente" name="idCliente" placeholder="ID del Cliente" required th:value="${envio.idCliente}">
 
-                                            <label for="fechaEnvio_Envio">Fecha de Envio</label>
-                                            <input type="datetime-local" id="fechaEnvio" name="fechaEnvio" placeholder="Fecha de Envio" required th:value="${envio.fechaEnvio}">
+                                                <label for="fechaEnvio_Envio">Fecha de Envio</label>
+                                                <input type="datetime-local" id="fechaEnvio" name="fechaEnvio" placeholder="Fecha de Envio" required th:value="${envio.fechaEnvio}">
 
-                                            <label for="direccionEnvio_Envio">Dirección del envio</label>
-                                            <input type="text" id="direccionEnvio" name="direccionEnvio" placeholder="Dirección de Envío" required th:value="${envio.direccionEnvio}">
+                                                <label for="direccionEnvio_Envio">Dirección del envio</label>
+                                                <input type="text" id="direccionEnvio" name="direccionEnvio" placeholder="Dirección de Envío" required th:value="${envio.direccionEnvio}">
 
-                                            <label for="observacion_Envio">Observación del envio</label>
-                                            <input type="text" id="observacion" name="observacion" placeholder="Observación" required th:value="${envio.observacion}">
+                                                <label for="observacion_Envio">Observación del envio</label>
+                                                <input type="text" id="observacion" name="observacion" placeholder="Observación" required th:value="${envio.observacion}">
 
-                                            <label for="estadoEnvio_Envio">Estado</label>
-                                            <input type="text" id="estadoEnvio" name="estadoEnvio" placeholder="Estado de Envío" required th:value="${envio.estadoEnvio}">
+                                                <label for="estadoEnvio_Envio">Estado</label>
+                                                <input type="text" id="estadoEnvio" name="estadoEnvio" placeholder="Estado de Envío" required th:value="${envio.estadoEnvio}">
 
-                                            <input type="submit" value="Realizar envio">
-                                        </form>
+                                                <input type="submit" value="Realizar envio">
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <!-- PARTE DE PAGINACIÓN -->
-                <div class="divPag" th:if="${envios != null}">
-                    <!-- Enlaces de paginación -->
-                    <a th:href="@{/envios/listar(page=0)}">Primera Página</a>
-                    <a th:href="@{/envios/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
-                    <span th:text="${page + 1}"></span>
-                    <a th:href="@{/envios/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente
-                        Página</a>
-                    <a th:href="@{/envios/listar(page=${ultimaPagina})}"
-                       th:unless="${clientes.size() &lt; pageSize}">Última Página</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- PARTE DE PAGINACIÓN -->
+                    <div class="divPag" th:if="${envios != null}">
+                        <!-- Enlaces de paginación -->
+                        <a th:href="@{/envios/listar(page=0)}">Primera Página</a>
+                        <a th:href="@{/envios/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
+                        <span th:text="${page + 1}"></span>
+                        <a th:href="@{/envios/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente
+                            Página</a>
+                        <a th:href="@{/envios/listar(page=${ultimaPagina})}"
+                           th:unless="${clientes.size() &lt; pageSize}">Última Página</a>
+                    </div>
+                </div>
+                <div th:if="${envios.empty}">
+                    <p>No se encontraron registros para mostrar.</p>
                 </div>
                 <!-- PARTE DE FORM POPUP CREAR CLIENTE -->
                 <!-- Formulario PopUp Crear Cliente-->
