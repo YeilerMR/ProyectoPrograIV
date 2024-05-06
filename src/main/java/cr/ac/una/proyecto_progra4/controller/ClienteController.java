@@ -74,15 +74,8 @@ public class ClienteController {
         return "clientes/cliente";
     }
 
-    @GetMapping("/editar")
-    public String mostrarFormularioEditar(@RequestParam("idUsuario_Cliente") int id_Usuario, Model model) {
-        Cliente cliente = ClienteServices.getClientePorID(id_Usuario);
-        model.addAttribute("cliente", cliente);
-        return "clientes/editarCliente";
-    }
-
     @PostMapping("/actualizar")
-    public ResponseEntity<?> actualizarCliente(@ModelAttribute("cliente") Cliente cliente) {
+    public ResponseEntity<?> actualizarCliente(@ModelAttribute("clienteItem") Cliente cliente) {
         return ResponseEntity.ok().body(ClienteServices.verificarPreModificar(cliente));
     }
 
