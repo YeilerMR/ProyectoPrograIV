@@ -54,7 +54,7 @@ public class OredenDeCompraController {
         LinkedList<OrdenDeCompra> ordenDeCompraPagina = new OrdenDeCompraServices().obtenerRegistrosPaginados(page, pageSize, ordenes);
         
         int ultimaPagina = (int) Math.ceil((double) ordenes.size() / pageSize) - 1;
-        
+        model.addAttribute("proveedores", proveedores);
         model.addAttribute("ultimaPagina", ultimaPagina);
         model.addAttribute("ordenes", ordenDeCompraPagina);
         model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo

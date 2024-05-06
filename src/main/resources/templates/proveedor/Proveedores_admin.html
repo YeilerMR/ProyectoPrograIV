@@ -17,6 +17,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <link rel="stylesheet" th:href="@{/main.css}"/>
         <link rel="stylesheet" th:href="@{/css/proveedorStyles.css}"/>
         <script type="text/javascript" th:src="@{/js/scriptProveedores.js}"></script>
+        <link rel="stylesheet" th:href="@{/css/modal.css}" />
+        <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
 
     </head>
 
@@ -60,22 +62,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
 
                 <div class="create-button_container">
-                    <a href="./crear">Registrar Nuevo Proveedor</a>
+                    <button class="add_new">Crear nuevo</button>
                 </div>
                 <br><br>
                 <div id="editar_proveedor_container">
 
                 </div>
-                <div class="tb-container">
+                <div th:if="${!proveedores.empty}" class="tb-container">
                     <table class="contenedor-productos table table-striped table-hover">
                         <tr>
                             <th>Nombre</th>
-                            <th>Telefono</th>
-                            <th>Descripcion</th>
+                            <th>Teléfono</th>
+                            <th>Descripción</th>
                             <th>Correo</th>
-                            <th>Direccion</th>
-                            <th>Categoria</th>
-                            <th>Informacion Adicional</th>
+                            <th>Dirección</th>
+                            <th>Categoría</th>
+                            <th>Información Adicional</th>
                             <th>Opciones</th>
                         </tr>
                         <tr th:each="proveedor:${proveedores}">
@@ -95,25 +97,59 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </td>
                         </tr>
                     </table>
-                </div>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
-                <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
-                                });
-                </script>
-                <br><br>
-                <div th:if="${proveedores != null}">
-                    <!-- Enlaces de paginación -->
-                    <a th:href="@{/proveedores/listar(page=0)}">Primera Página</a>
-                    <a th:href="@{/proveedores/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
-                    <span th:text="${page + 1}"></span>
-                    <a th:href="@{/proveedores/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente Página</a>
-                    <a th:href="@{/proveedores/listar(page=${ultimaPagina})}" th:unless="${proveedores.size() < pageSize}">Última Página</a>
+                    <div type="hidden" id="myModalCrearCliente" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <div class="container">
+                                <form class='crear-cliente-form' th:action="@{/proveedores/registrar}" method="GET">
+                                    <label for="nombre">Nombre: </label>
+                                    <input type="text" name="nombre" id="nombre" required>
+                                    <br><br>
+                                    <label for="telefono">Teléfono: </label>
+                                    <input type="text" name="telefono" id="telefono" required>
+                                    <br><br>
+                                    <label for="descripcion">Descripción: </label>
+                                    <textarea name="descripcion" id="descripcion" required=""></textarea>
+                                    <br><br>
+                                    <label for="correo">Correo: </label>
+                                    <input type="email" name="correo" id="correo" required>
+                                    <br><br>
+                                    <label for="direccion">Dirección: </label>
+                                    <input type="text" name="direccion" id="direccion" required>
+                                    <br><br>
+                                    <label for="categoria">Categoria: </label>
+                                    <input type="text" name="categoria" id="categoria" required>
+                                    <br><br>
+                                    <label for="informacionadicional">Información adicional: </label>
+                                    <textarea name="informacionadicional" id="informacionadicional"></textarea>
+                                    <br><br>
+                                    <input type="submit" id="submitButton" value="Registrar Proveedor">
+                                    <input type="button" value="Cancelar" onclick="window.location.href='./listar'">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                        validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
+                        });
+                    </script>
+                    <br><br>
+                    <div th:if="${proveedores != null}">
+                        <!-- Enlaces de paginación -->
+                        <a th:href="@{/proveedores/listar(page=0)}">Primera Página</a>
+                        <a th:href="@{/proveedores/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
+                        <span th:text="${page + 1}"></span>
+                        <a th:href="@{/proveedores/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente Página</a>
+                        <a th:href="@{/proveedores/listar(page=${ultimaPagina})}" th:unless="${proveedores.size() < pageSize}">Última Página</a>
 
+                    </div>
                 </div>
-                <div th:unless="${proveedores != null}">
+                <div th:if="${proveedores.empty}">
                     <p>No se encontraron registros para mostrar.</p>
                 </div>
             </main>

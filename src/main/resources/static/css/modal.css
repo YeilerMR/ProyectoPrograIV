@@ -43,7 +43,7 @@
 }
 
 .modal-content input,
-.modal-content select {
+.modal-content select, .modal-content textArea {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;

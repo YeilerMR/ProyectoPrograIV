@@ -15,6 +15,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" th:href="@{/main.css}"/>
         <script type="text/javascript" th:src="@{/js/scriptOrdenDeCompra.js}"></script>
+        <link rel="stylesheet" th:href="@{/css/modal.css}" />
+        <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
     </head>
     <body onload="editarOrden()">
         <div class="wrapper">
@@ -35,7 +37,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <button id="abrigos" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Empleados</button>
                         </li>
                         <li>
-                            <button id="camisetas" class="boton-menu boton-categoria" onclick="window.location.href='/proveedores/listar'"><i class="bi bi-hand-index-thumb" ></i> Proveedores</button>
+                            <button id="camisetas" class="boton-menu boton-categoria" onclick="window.location.href = '/proveedores/listar'"><i class="bi bi-hand-index-thumb" ></i> Proveedores</button>
                         </li>
                         <li>
                             <button id="camisetas" class="boton-menu boton-categoria active"><i class="bi bi-hand-index-thumb-fill"></i> Ordenes de Compra</button>
@@ -55,10 +57,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
 
                 <div class="create-button-container">
-                    <a href="./crear">Crear una nueva orden de compra</a>
+                    <div class="create-button_container">
+                        <button class="add_new">Crear nuevo</button>
+                    </div>
                 </div>
                 <div id="editar_orden_container">
-                    
+
                 </div>
                 <br><br>
                 <div th:if="${!ordenes.empty}">
@@ -87,13 +91,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </tr>
                         </table>
                     </div>
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                    <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
-                    <script>
-                                    document.addEventListener("DOMContentLoaded", function () {
-                                        validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
-                                    });
-                    </script>
+
                     <br><br>
                     <div th:if="${ordenes != null}">
                         <!-- Enlaces de paginación -->
@@ -105,6 +103,46 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                     </div>
                 </div>
+                <div type="hidden" id="myModalCrearCliente" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div class="container">
+                            <form class='crear-cliente-form' th:action="@{/ordenes_compra/registrar}" method="GET">
+                                <label for="combobox-proveedores">Proveedor: </label>
+                                <select name="combobox-proveedores" id="combobox-proveedores">
+                                    <option>--Seleccionar--</option>
+                                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.getIdProveedor()}"
+                                            th:text="${proveedor.getNombreProveedor()}"></option>
+                                </select>
+                                <br><br>
+                                <label for="fecha-orden">Fecha de la orden: </label>
+                                <input type="date" id="fecha-orden" name="fecha-orden" required>
+                                <br><br>
+                                <label for="fecha-entrega">Fecha de entrega: </label>
+                                <input type="date" id="fecha-entrega" name="fecha-entrega" required>
+                                <br><br>
+                                <label for="estado">Estado de la orden: </label>
+                                <input type="text" name="estado" id="estado" required>
+                                <br><br>
+                                <label for="numero-rerencia">Número de referencia: </label>
+                                <input type="text" name="numero-referencia" id="numero-referencia" required>
+                                <br><br>
+                                <input type="submit" value="Generar Orden">
+                                <input type="button" value="Cancelar" onclick="window.location.href = './listar'">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- IMPORTS Y SCRIPTS -->
+                <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
+                <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
+                });
+                </script>
                 <div th:if="${ordenes.empty}">
                     <p>No se encontraron registros para mostrar.</p>
                 </div>

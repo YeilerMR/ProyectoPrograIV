@@ -27,11 +27,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <input type="text" th:value="${proveedor.getNombreProveedor()}" name="nombre" id="nombre" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="telefono" class="text">Telefono: </label>
+                    <label for="telefono" class="text">Teléfono: </label>
                     <input type="text" th:value="${proveedor.getTelefonoProveedor()}" name="telefono" id="telefono" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="descripcion" class="text">Descripcion: </label>
+                    <label for="descripcion" class="text">Descripción: </label>
                     <textarea name="descripcion" id="descripcion" th:text="${proveedor.getDescripcionProveedor}" class="form-control" required></textarea>
                 </div>
                 <div class="form-group">
@@ -39,15 +39,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <input type="email" th:value="${proveedor.getCorreo()}" name="correo" id="correo" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="direccion" class="text">Direccion: </label>
+                    <label for="direccion" class="text">Dirección: </label>
                     <input type="text" th:value="${proveedor.getDireccionProveedor()}" name="direccion" id="direccion" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="categoria" class="text">Categoria: </label>
+                    <label for="categoria" class="text">Categoría: </label>
                     <input type="text" th:value="${proveedor.getCategoriaServicio()}" name="categoria" id="categoria" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="informacionadicional" class="text">Informacion adicional: </label>
+                    <label for="informacionadicional" class="text">Información adicional: </label>
                     <textarea th:text="${proveedor.getInformacionAdicional()}" name="informacionadicional" id="informacionadicional" class="form-control" required></textarea>
                 </div>
                 <br>
