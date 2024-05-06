@@ -18,24 +18,44 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const openPopupBtn = document.getElementById("add_new");
+    const closePopupBtn = document.getElementById("closeModalNuevo");
+    const popup = document.getElementById("modal");
 
-document.addEventListener("DOMContentLoaded", function() {
-    const openPopupBtn = document.getElementById("openPopupBtn2");
-    const closePopupBtn = document.getElementById("closePopupBtn2");
-    const popup = document.getElementById("popup2");
-
-    openPopupBtn.addEventListener("click", function() {
+    openPopupBtn.addEventListener("click", function () {
         popup.style.display = "block";
     });
 
-    closePopupBtn.addEventListener("click", function() {
+    closePopupBtn.addEventListener("click", function () {
         popup.style.display = "none";
     });
 
     // Cerrar el popup haciendo clic fuera del mismo
-    window.addEventListener("click", function(event) {
+    window.addEventListener("click", function (event) {
         if (event.target == popup) {
             popup.style.display = "none";
         }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    var editButtons = document.querySelectorAll('.producto-editar');
+    var closeButtons = document.querySelectorAll('.modal .close');
+
+    // Función para abrir los popups
+    editButtons.forEach(function (btn) {
+        btn.onclick = function () {
+            var popup = this.closest('tr').querySelector('.modal');
+            popup.style.display = 'block';
+        };
+    });
+
+    // Función para cerrar los popups
+    closeButtons.forEach(function (btn) {
+        btn.onclick = function () {
+            var popup = this.closest('.modal');
+            popup.style.display = 'none';
+        };
     });
 });

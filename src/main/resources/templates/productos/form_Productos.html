@@ -63,6 +63,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </li>
                     </ul>
                 </nav>
+
                 <footer>
                     <p class="texto-footer">© Proyecto Progra 4</p>
                 </footer>
@@ -106,11 +107,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                         <td>
 
-                            <form action="@{/productos/eliminar/{codigo}(codigo=${producto.codigo})}" method="post" onsubmit="return confirm('¿Estás seguro de querer eliminar este producto?')">
-                                <input type="hidden" name="_method" value="delete" />
+                            <form action="/productos/eliminarProducto" method="get" onsubmit="return confirm('¿Estás seguro de querer eliminar este producto?')">
+                                <input type="hidden" name="codigo" th:value="${producto.codigo}" />
                                 <button type="submit" class="producto-eliminar">Eliminar</button>
                             </form>
 
+
+                            <!--form action="@{/productos/eliminar/{codigo}(codigo=${producto.codigo})}" method="post" onsubmit="return confirm('¿Estás seguro de querer eliminar este producto?')">
+                                <input id="botonDelete" type="submit" value="Eliminar"/> 
+                            <!--input type="hidden" name="_method" value="delete" />
+                            <input type="hidden" name="codigo" th:value="${producto.codigo}" /> <!-- Agregar este campo oculto -->
+
+                            <!--/form--->
+                            <h5 th:text="${producto.codigo}"></h5>
                             ----------
                             <button class="producto-editar" style="display: inline;">Editar</button>
                             <div class="modal">
@@ -164,11 +173,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="modal-content">
                         <span id="closeModalNuevo" class="close">&times;</span>
                         <div class="container">
-                            <form th:action="@{/productos/guardar}" method="get" onsubmit="return confirm('¿Estas seguro de querer actualizar este producto?')">
+                            <form th:action="@{/productos/guardar}" method="get" onsubmit="return confirm('¿Estas seguro de querer guardar este producto?')">
 
                                 <label for="nombre">Código del producto</label>
                                 <input type="text" name="codigo" class="form-control" placeholder="Código del producto" required>
-                                
+
                                 <label for="nombre">Nombre del producto</label>
                                 <input type="text" name="nombre" class="form-control" placeholder="Nombre del producto" required>
 

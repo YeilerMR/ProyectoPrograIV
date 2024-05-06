@@ -9,6 +9,7 @@ import cr.ac.una.proyecto_progra4.services.ProductoServices;
 import java.util.LinkedList;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,6 +60,7 @@ public class ProductoController {
     public String eliminar(@PathVariable String codigo,RedirectAttributes redAttributes){
         //String vista = "redirect:/productos/listar";
         //System.out.println("cod= "+codigo);
+        System.out.println("\n\nEntra al metodo eliminar de la controller\n\n");
         boolean elimino= ProductoServices.eliminar(codigo);
         
         System.out.println("elimino?"+elimino);
@@ -79,5 +81,16 @@ public class ProductoController {
         System.out.println("Metodo actualizar producto");
         ProductoServices.modificar(producto);
         return "redirect:/productos/listar";
+    }
+    
+    @GetMapping("/eliminarProducto")
+    public String eliminarProducto(@RequestParam("codigo") String codigo) {
+        System.out.println("Entra a eliminarProducto");
+        boolean elimino= ProductoServices.eliminar(codigo);
+        if (elimino) {
+            return "redirect:/productos/listar";
+        } else {
+            return "clientes";
+        }
     }
 }   

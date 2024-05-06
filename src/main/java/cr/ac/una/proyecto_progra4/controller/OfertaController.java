@@ -77,6 +77,17 @@ public class OfertaController {
         OfertaServices.modificar(oferta);
         return "redirect:/ofertas/listar"; 
     }
+    
+    @GetMapping("/eliminarOferta")
+    public String eliminarOferta(@RequestParam("codigoOferta") String codigo) {
+        System.out.println("Entra a eliminarOferta");
+        boolean elimino= OfertaServices.eliminar(codigo);
+        if (elimino) {
+            return "redirect:/ofertas/listar";
+        } else {
+            return "redirect:/error";
+        }
+    }
     /*
     @GetMapping({"/guardar"})
     public String save(@RequestParam("codigoOferta") String codigoOferta, @RequestParam("codigoProducto") String codigoProducto,

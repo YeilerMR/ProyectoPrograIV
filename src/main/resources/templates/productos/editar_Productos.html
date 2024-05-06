@@ -142,3 +142,155 @@
 <script src="scriptProductos.js"></script>
 <!-- crear una lista con los productos de la base de datos -->
 <script type="text/javascript" th:src="@{/scriptProductos.js}"></script>
+
+
+
+
+<div class="content">
+            <div class="table">
+                <div class="table_header">
+                    <p>Ofertas</p>
+                    <div>
+                        <input type="text" placeholder="Oferta">
+                        <button id="openPopupBtn" class="boton">+</button>
+
+                    </div><br>
+                </div>
+                <div class="table_section">
+                    <table>
+                        <thead>
+                        <th>Codigo</th>
+                        <th>Codigo producto</th>
+                        <th>Tipo de oferta</th>
+                        <th>Descuento</th>
+                        <th>Fecha inicio</th>
+                        <th>Fecha final</th>
+                        <th>Estado</th>
+                        <th>Accion</th>
+                        </thead>
+
+                        <tbody>
+                            <tr th:each="oferta: ${ofertas}">
+                                <td th:text="${oferta.codigoOferta}"></td>
+                                <td th:text="${oferta.codigoProducto}"></td>
+                                <td th:text="${oferta.tipoOferta}"></td>
+                                <td th:text="${oferta.descuentoOferta}"></td>
+                                <td th:text="${oferta.fechaInicio}"></td>
+                                <td th:text="${oferta.fechaFin}"></td>
+                                <td th:text="${oferta.estado}"></td>
+
+                                <td>
+                                    <form th:action="@{'/ofertas/eliminar/' + ${oferta.codigoOferta}}" method="post" onsubmit="return confirm('¿Estas seguro de querer eliminar esta oferta?')">
+                                        <input id="botonDelete" type="submit" value="Eliminar"/>
+                                    </form>
+
+                                    <!-- PopUp -->
+                                    <button id="openPopupBtn2" class="boton">Editar</button>
+                                    <div id="popup2" class="popup2">
+                                        <div class="popup-content">
+                                            <span class="close" id="closePopupBtn2">&times;</span>
+                                            <section>
+                                                <form th:action="@{/ofertas/actualizar}" method="post">
+                                                    <div class="form-group">
+                                                        <label>Código de Producto:</label>
+                                                        <input type="hidden" name="codigoOferta" th:value="${oferta.codigoOferta}">
+                                                        <select name="codigoProducto">
+                                                            <option value="">Selecciona un código de producto</option>
+                                                            <option th:each=" producto : ${productos}" th:value="${producto.codigo}" th:text="${producto.codigo}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Tipo de Oferta:</label>
+                                                        <input type="text" name="tipoOferta" placeholder="Tipos de ofertas" required th:value="${oferta.tipoOferta}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Descuento en %:</label>
+                                                        <input type="number" name="descuentoOferta" placeholder="descuento %" required th:value="${oferta.descuentoOferta}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Fecha Inicio:</label>
+                                                        <input type="date" name="fechaInicio">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Fecha Final:</label>
+                                                        <input type="date" name="fechaFin">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Estado:</label>
+                                                        <select name="estado">
+                                                            <option value="true" >Activo</option>
+                                                            <option value="false">Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                    <input type="submit" value="Editar" class="boton">
+                                                </form>
+                                            </section>
+                                        </div>
+                                    </div>
+                                    <!--button class="boton">Editar</button-->
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close" id="closePopupBtn">&times;</span>
+                <section>
+                    <form method="get" th:action="@{/ofertas/guardar}">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Codigo de oferta</td>
+                                    <td>Codigo de Producto</td>
+                                    <td>tipo de oferta</td>
+                                    <td>Descuento en %</td>
+                                    <td>Fecha Inicio</td>
+                                    <td>Fecha Final</td>
+                                    <td>Estado</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" name="codigoOferta"></td>
+                                    <td><input type="text" name="codigoProducto"></td>
+                                    <td><input type="text" name="tipoOferta"></td>
+                                    <td><input type="text" name="descuentoOferta"></td>
+                                    <td><input type="date" name="fechaInicio"></td>
+                                    <td><input type="date" name="fechaFin"></td>
+                                    <td>
+                                        <select name="estado">
+                                            <option value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <input type="submit" value="Agregar">
+                    </form>
+                </section>
+            </div>
+        </div>
+
+
+        <script src="scripOfertas.js"></script>
+        <script type="text/javascript" th:src="@{/scriptOfertas.js}"></script>
