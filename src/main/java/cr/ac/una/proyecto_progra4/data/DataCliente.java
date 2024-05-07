@@ -111,6 +111,7 @@ public class DataCliente {
             cliente.setTelefono(result.getString("telefono_Usuario"));
             cliente.setCredencial(result.getInt("credencial_Usuario"));
             cliente.setIdCliente(result.getInt("id_Cliente"));
+            cliente.setId(result.getInt("idUsuario_Cliente")); // ID USUARIO
 
             // Verificar si el cliente ya está presente en la lista
             boolean clienteExistente = false;

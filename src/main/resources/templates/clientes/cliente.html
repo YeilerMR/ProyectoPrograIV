@@ -122,7 +122,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <div class="modal-content">
                                         <span class="close">&times;</span>
                                         <div class="container">
-                                            <form class='editar-cliente-form' th:action="@{/clientes/actualizar}" method="post">
+                                            <form class='editar-cliente-form' method="post" th:action="@{/clientes/actualizar}" >
 
                                                 <input type="hidden" name="id" th:value="${clienteItem.id}">
 

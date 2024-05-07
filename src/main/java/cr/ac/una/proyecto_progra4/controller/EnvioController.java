@@ -36,6 +36,8 @@ public class EnvioController {
             @RequestParam("fechaEnvio_Envio") LocalDateTime fechaDeEnvio,
             @RequestParam("estadoEnvio_Envio") String estadoEnvio) {
 
+        System.out.println("ID CLIENTE -> " + idCliente);
+        
         Envio envio = new Envio();
         envio.setCodigoEnvio(codigoEnvio);
         envio.setIdPedido(idPedido);
@@ -68,16 +70,20 @@ public class EnvioController {
     @GetMapping("/listar")
     public String mostrarFormularioEnvio(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
         LinkedList<Envio> envios = EnvioServices.getEnvios();
-        LinkedList<Cliente> clientes = ClienteServices.getClientesConEnvios();
+        LinkedList<Cliente> clientesConEnvios = ClienteServices.getClientesConEnvios();
+        LinkedList<Cliente> clientesListaTotal = ClienteServices.getClientes();
         LinkedList<Envio> enviosPagina = new EnvioServices().obtenerRegistrosPaginados(page, pageSize, envios);
-
-        int ultimaPagina = (int) Math.ceil((double) clientes.size() / pageSize) - 1;
+        //LinkedList<Pedido> pedidosListaTotal = PedidoServices.getPedidos();
+        
+        int ultimaPagina = (int) Math.ceil((double) clientesConEnvios.size() / pageSize) - 1;
 
         model.addAttribute("ultimaPagina", ultimaPagina);
         model.addAttribute("envios", enviosPagina);
         model.addAttribute("page", page);
         model.addAttribute("pageSize", pageSize);
-        model.addAttribute("clientes", clientes);
+        model.addAttribute("clientes", clientesConEnvios);
+        model.addAttribute("clientesListaTotal", clientesListaTotal);
+        //model.addAttribute("pedidosListaTotal", clientesListaTotal);
 
         return "envios/envio";
     }
