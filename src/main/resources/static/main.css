@@ -141,7 +141,7 @@ img{
 }
 
 .contenedor-productos {
-    display: grid;
+    display: block;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
     border: 2px solid var(--clr-main); /* Agrega un borde a la tabla */

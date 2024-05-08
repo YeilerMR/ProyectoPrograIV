@@ -90,7 +90,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <td th:text="${proveedor.getInformacionAdicional}"></td>
                             <td>
                                 <button type="button" class="producto-editar btn_editar" th:value="${proveedor.getIdProveedor}">Editar</button>
-                                <br>
                                 <button class="btn_delete producto-eliminar">
                                     <a class="btn_eliminar" th:href="@{/proveedores/eliminar(proveedor=${proveedor.getIdProveedor})}">Eliminar</a>
                                 </button>
