@@ -132,7 +132,7 @@ public class ClienteServices {
 
         return clientes;
     }
-    
+
     public LinkedList<Cliente> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina, LinkedList<Cliente> listaClientes) {
         LinkedList<Cliente> registrosPagina = new LinkedList<>();
 
@@ -145,6 +145,7 @@ public class ClienteServices {
 
         return registrosPagina;
     }
+
     //-------------------MÉTODOS FUNCIONALIDES PRE CRUD-------------------------
     //Verificar si alguno de los datos esta repetido antes de agregar un nuevo cliente
     public static String verificarPreAgregar(Cliente cliente) {
@@ -178,9 +179,7 @@ public class ClienteServices {
         }
 
         // Verificar si los datos modificados son iguales a los datos actuales del cliente
-        if (cliente.getCedula().equals(clienteExistente.getCedula())
-                && cliente.getEmail().equals(clienteExistente.getEmail())
-                && cliente.getTelefono().equals(clienteExistente.getTelefono())) {
+        if (cliente.equals(clienteExistente)) {
             // Si los datos son iguales, no es necesario hacer más verificaciones
             boolean actualizadoExitosamente = ClienteServices.actualizar(cliente);
             if (actualizadoExitosamente) {
@@ -190,16 +189,17 @@ public class ClienteServices {
             }
         }
 
-        // Verificar si el cliente existe con la misma cédula, email y teléfono, excluyendo el cliente actual
+        // Verificar si algún otro cliente tiene los mismos datos
         Cliente clienteExistenteCedula = getClientePorCedula(cliente.getCedula());
         Cliente clienteExistenteEmail = getClientePorEmail(cliente.getEmail());
         Cliente clienteExistenteTelefono = getClientePorTelefono(cliente.getTelefono());
 
-        if (clienteExistenteCedula != null && !clienteExistenteCedula.equals(clienteExistente)) {
+        // Verificar si algún otro cliente tiene la misma cédula, email o teléfono
+        if (clienteExistenteCedula != null && clienteExistenteCedula.getId() != cliente.getId()) {
             return "{\"success\": false, \"message\": \"La cédula ya se encuentra asociada a otro cliente\"}";
-        } else if (clienteExistenteEmail != null && !clienteExistenteEmail.equals(clienteExistente)) {
+        } else if (clienteExistenteEmail != null && clienteExistenteEmail.getId() != cliente.getId()) {
             return "{\"success\": false, \"message\": \"El email ya está asociado a otro cliente\"}";
-        } else if (clienteExistenteTelefono != null && !clienteExistenteTelefono.equals(clienteExistente)) {
+        } else if (clienteExistenteTelefono != null && clienteExistenteTelefono.getId() != cliente.getId()) {
             return "{\"success\": false, \"message\": \"El teléfono está asociado a otro cliente\"}";
         } else {
             // Si todos los datos están bien, procede con la actualización del cliente

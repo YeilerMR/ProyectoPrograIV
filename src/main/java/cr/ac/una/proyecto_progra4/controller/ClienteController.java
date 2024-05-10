@@ -76,6 +76,16 @@ public class ClienteController {
 
     @PostMapping("/actualizar")
     public ResponseEntity<?> actualizarCliente(@ModelAttribute("clienteItem") Cliente cliente) {
+        
+        System.out.println("ID -> " + cliente.getId());
+        System.out.println("NOMBRE -> " + cliente.getNombre());
+        System.out.println("APELLIDO -> " + cliente.getApellidos());
+        System.out.println("CÉDULA -> " + cliente.getCedula());
+        System.out.println("EMAIL -> " + cliente.getEmail());
+        System.out.println("CONSTRASEÑA -> " + cliente.getPassword());
+        System.out.println("TÉLEFONO -> " + cliente.getTelefono());
+        System.out.println("CREDENCIAL -> " + cliente.getCredencial());
+        
         return ResponseEntity.ok().body(ClienteServices.verificarPreModificar(cliente));
     }
 

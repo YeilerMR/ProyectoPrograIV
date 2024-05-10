@@ -1,0 +1,30 @@
+.transparent-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.transparent-button:hover {
+  cursor: pointer;
+}
+
+.transparent-button:focus {
+  outline: none;
+}
+
+.transparent-button .bi {
+  font-size: 1.2em;
+  color: #000;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+

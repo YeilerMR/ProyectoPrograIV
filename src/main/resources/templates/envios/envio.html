@@ -113,11 +113,12 @@
                             <td th:text="${envio.estadoEnvio}"></td>
                             <td>
                                 <button class="producto-eliminar" style="display: inline;">
-                                    <a th:href="@{/envios/eliminar(idEnvio=${envio.idEnvio})}">Eliminar</a>
+                                    <i class="bi bi-trash"></i>
+                                    <a th:href="@{/envios/eliminar(idEnvio=${envio.idEnvio})}" style="text-decoration: none; color: inherit;">Eliminar</a>
                                 </button>
                                 ----------
                                 <button class="producto-editar" style="display: inline;">
-                                    Editar
+                                    <i class="bi bi-pen"></i>
                                 </button>
                                 <!-- MODAL DE EDITAR -->
                                 <div class="modal">
@@ -132,7 +133,7 @@
 
                                                 <label for="idPedido_Envio">Pedido</label>
                                                 <input type="text" id="idPedido" name="idPedido" placeholder="ID del Pedido" required th:value="${envio.idPedido}">
-                                                
+
                                                 <!--
                                                 <select name="idPedido_Envio">
                                                     <option th:each="pedido : ${clientesListaTotal}" th:value="${cliente.id}" 
@@ -196,7 +197,7 @@
 
                                 <label for="idPedido_Envio">Pedido</label>
                                 <input type="text" id="idPedido_Envio" name="idPedido_Envio" placeholder="Pedido" required>
-                                
+
                                 <!--
                                 <select name="idPedido_Envio">
                                     <option th:each="pedido : ${clientesListaTotal}" th:value="${cliente.id}" 
