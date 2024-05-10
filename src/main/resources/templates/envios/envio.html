@@ -114,57 +114,12 @@
                             <td>
                                 <button class="producto-eliminar" style="display: inline;">
                                     <i class="bi bi-trash"></i>
-                                    <a th:href="@{/envios/eliminar(idEnvio=${envio.idEnvio})}" style="text-decoration: none; color: inherit;">Eliminar</a>
+                                    <a th:href="@{/envios/eliminar(idEnvio=${envio.idEnvio})}" style="text-decoration: none; color: inherit;"></a>
                                 </button>
                                 ----------
                                 <button class="producto-editar" style="display: inline;">
                                     <i class="bi bi-pen"></i>
                                 </button>
-                                <!-- MODAL DE EDITAR -->
-                                <div class="modal">
-                                    <div class="modal-content">
-                                        <span class="close">&times;</span>
-                                        <div class="container">
-                                            <form class="editar-envio-form" method="post" th:action="@{/envios/actualizar}">
-                                                <input type="hidden" name="idEnvio" th:value="${envio.idEnvio}">
-
-                                                <label for="codigoEnvio_Envio">Código Envio</label>
-                                                <input type="text" id="codigoEnvio" name="codigoEnvio" placeholder="Código de Envío" required th:value="${envio.codigoEnvio}">
-
-                                                <label for="idPedido_Envio">Pedido</label>
-                                                <input type="text" id="idPedido" name="idPedido" placeholder="ID del Pedido" required th:value="${envio.idPedido}">
-
-                                                <!--
-                                                <select name="idPedido_Envio">
-                                                    <option th:each="pedido : ${clientesListaTotal}" th:value="${cliente.id}" 
-                                                            th:text="${pedido.codigo}"></option>                                    
-                                                </select>
-                                                -->
-
-                                                <label for="idCliente_Envio">Cliente</label>
-
-                                                <select name="idCliente">
-                                                    <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.id}" 
-                                                            th:text="${cliente.cedula + ' ' + cliente.nombre + ' ' + cliente.apellidos}"></option>                                    
-                                                </select>
-
-                                                <label for="fechaEnvio_Envio">Fecha de Envio</label>
-                                                <input type="datetime-local" id="fechaEnvio" name="fechaEnvio" placeholder="Fecha de Envio" required th:value="${envio.fechaEnvio}">
-
-                                                <label for="direccionEnvio_Envio">Dirección del envio</label>
-                                                <input type="text" id="direccionEnvio" name="direccionEnvio" placeholder="Dirección de Envío" required th:value="${envio.direccionEnvio}">
-
-                                                <label for="observacion_Envio">Observación del envio</label>
-                                                <input type="text" id="observacion" name="observacion" placeholder="Observación" required th:value="${envio.observacion}">
-
-                                                <label for="estadoEnvio_Envio">Estado</label>
-                                                <input type="text" id="estadoEnvio" name="estadoEnvio" placeholder="Estado de Envío" required th:value="${envio.estadoEnvio}">
-
-                                                <input type="submit" value="Realizar envio">
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
                             </td>
                         </tr>
                     </table>
@@ -229,10 +184,58 @@
                             </form>
                         </div>
                     </div>
+                </div>
 
-                    <script type="text/javascript" th:src="@{/js/scriptEnvio.js}"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                    <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
+                <!-- MODAL DE EDITAR -->
+                <div id="modalEditarEnvio" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div class="container">
+                            <form class="editar-envio-form" method="post" th:action="@{/envios/actualizar}">
+                                <input type="hidden" name="idEnvio" id="idEnvio">
+                                <div class="form-input">
+                                    <label for="codigoEnvio_Envio">Código Envio</label>
+                                    <input type="text" id="codigoEnvio" name="codigoEnvio" placeholder="Código de Envío" required>
+
+                                    <label for="idPedido_Envio">Pedido</label>
+                                    <input type="text" id="idPedido" name="idPedido" placeholder="Pedido" required>
+
+                                    <!--
+                                    <select name="idPedido_Envio">
+                                        <option th:each="pedido : ${clientesListaTotal}" th:value="${cliente.id}" 
+                                                th:text="${pedido.codigo}"></option>                                    
+                                    </select>
+                                    -->
+
+                                    <label for="idCliente_Envio">Cliente</label>
+
+                                    <select name="idCliente">
+                                        <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.id}" 
+                                                th:text="${cliente.cedula + ' ' + cliente.nombre + ' ' + cliente.apellidos}"></option>                                    
+                                    </select>
+
+                                    <label for="fechaEnvio_Envio">Fecha de Envio</label>
+                                    <input type="datetime-local" id="fechaEnvio" name="fechaEnvio" placeholder="Fecha de Envio" required>
+
+                                    <label for="direccionEnvio_Envio">Dirección del envio</label>
+                                    <input type="text" id="direccionEnvio" name="direccionEnvio" placeholder="Dirección del envio" required>
+
+                                    <label for="observacion_Envio">Observación del envio</label>
+
+                                    <input type="text" id="observacion" name="observacion" placeholder="Observación del envio" required>
+
+                                    <label for="estadoEnvio_Envio">Estado</label>
+                                    <input type="text" id="estadoEnvio" name="estadoEnvio" placeholder="Estado del envio" required>
+                                </div>
+                                <input type="submit" value="Realizar envio">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript" th:src="@{/js/scriptEnvio.js}"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
             </main>
         </div>
     </body>
