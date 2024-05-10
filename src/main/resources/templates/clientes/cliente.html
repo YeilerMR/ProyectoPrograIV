@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Clientes</title>
@@ -139,51 +135,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <p>No se encontraron registros para mostrar.</p>
                 </div>
 
-                <!-- Modal de edición -->
-                <div id="modalEditar" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <div class="container">
-                            <form class="editar-cliente-form" method="post" th:action="@{/clientes/actualizar}">
-                                <input type="hidden" name="id" id="idCliente">
-
-                                <label for="nombre">Nombre</label>
-                                <input type="text" name="nombre" class="form-control" placeholder="Nombre del cliente" required>
-
-                                <label for="apellidos">Apellidos</label>
-                                <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos del cliente" required>
-
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" placeholder="Email del cliente" required>
-
-                                <label for="password">Contraseña</label>
-                                <div class="password-wrapper">
-                                    <input type="password" id="password" name="password" placeholder="Contraseña del cliente" required>
-                                    <button type="button" class="toggle-password transparent-button" aria-label="Toggle Password Visibility">
-                                        <i id="eye-open" class="bi bi-eye"></i>
-                                        <i id="eye-close" class="bi bi-eye-slash" style="display: none;"></i>
-                                    </button>
-                                </div>
-
-                                <label for="cedula">Cédula</label>
-                                <input type="text" id="cedula" name="cedula" placeholder="Cédula del cliente" required>
-
-                                <label for="telefono">Teléfono</label>
-                                <input type="tel" id="telefono" name="telefono" placeholder="Teléfono del cliente" required>
-
-                                <label for="credencial">Credencial</label>
-                                <select id="credencial" name="credencial" required>
-                                    <option value="0">Cliente</option>
-                                    <option value="1">Empleado</option>
-                                </select>
-
-                                <input type="submit" value="Editar cliente" class="boton">
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PARTE DE FORM POPUP CREAR CLIENTE -->
+                 <!-- PARTE DE FORM POPUP CREAR CLIENTE -->
                 <!-- Formulario PopUp Crear Cliente-->
                 <div type="hidden" id="myModalCrearCliente" class="modal">
                     <!-- Modal content -->
@@ -227,17 +179,55 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </div>
                     </div>
                 </div>
+                
+                <!-- Modal de edición -->
+                <div id="modalEditar" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div class="container">
+                            <form class="editar-cliente-form" method="post" th:action="@{/clientes/actualizar}">
+                                <input type="hidden" name="id" id="idCliente">
+                                <div class="form-input">
+                                    <label for="nombre">Nombre</label>
+                                    <input type="text" name="nombre" class="form-control" placeholder="Nombre del cliente" required>
+
+                                    <label for="apellidos">Apellidos</label>
+                                    <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos del cliente" required>
+
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email" placeholder="Email del cliente" required>
+
+                                    <label for="password">Contraseña</label>
+                                    <div class="password-wrapper">
+                                        <input type="password" id="password" name="password" placeholder="Contraseña del cliente" required>
+                                        <button type="button" class="toggle-password transparent-button" aria-label="Toggle Password Visibility">
+                                            <i id="eye-open" class="bi bi-eye"></i>
+                                            <i id="eye-close" class="bi bi-eye-slash" style="display: none;"></i>
+                                        </button>
+                                    </div>
+
+                                    <label for="cedula">Cédula</label>
+                                    <input type="text" id="cedula" name="cedula" placeholder="Cédula del cliente" required>
+
+                                    <label for="telefono">Teléfono</label>
+                                    <input type="tel" id="telefono" name="telefono" placeholder="Teléfono del cliente" required>
+
+                                    <label for="credencial">Credencial</label>
+                                    <select id="credencial" name="credencial" required>
+                                        <option value="0">Cliente</option>
+                                        <option value="1">Empleado</option>
+                                    </select>
+                                </div>
+                                <input type="submit" value="Editar cliente" class="boton">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- IMPORTS Y SCRIPTS -->
                 <script type="text/javascript" th:src="@{/js/scriptCliente.js}"></script>
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        validarEliminacion('.producto-eliminar', 'Cliente eliminado exitosamente');
-                        validarEdicion('.editar-cliente-form', '¿Estás seguro de continuar con la edición de este cliente?', '/clientes/listar');
-                        validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este cliente?', '/clientes/listar');
-                    });
-                </script>
             </main>
         </div>
     </body>
