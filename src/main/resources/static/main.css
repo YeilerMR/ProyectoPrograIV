@@ -190,3 +190,31 @@ img{
 .producto-editar:hover {
     background-color: #FCB762; /* Color de resaltado para botones de editar */
 }
+
+
+#buscar{
+   
+    width: 120px; /* Ancho del botón */
+    height: 40px; /* Altura del botón */
+    padding: .4rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#buscar:hover{
+     background-color: #379BFF ; /* Cambiar color de fondo */ 
+}
+.input-container{
+    margin-left: 700px; /* Añadir espacio a la izquierda */
+}#add_new{
+    
+    padding: .4rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#add_new:hover{
+    background-color: #45a049;
+}

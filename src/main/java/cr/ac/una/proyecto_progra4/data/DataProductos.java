@@ -71,6 +71,57 @@ public class DataProductos extends ConectarBD {
        
        return productos;
    }
+   
+   public static LinkedList<Producto> buscarProductos(String textoBusqueda) throws SQLException {
+    LinkedList<Producto> productos = new LinkedList<>();
+    String sql = "SELECT * FROM " + TB_PRODUCTO + " WHERE ";
+    sql += "nombre_Producto LIKE ? OR ";
+    sql += "descripcion_Producto LIKE ? OR ";
+    sql += "precio_Producto LIKE ? OR ";
+    sql += "categoria_Producto LIKE ? OR ";
+    sql += "calificacion_Producto LIKE ? OR ";
+    sql += "disponibilidad_Producto LIKE ? OR ";
+    sql += "codProducto LIKE ?";
+    
+    Connection conexion = conectar();
+    PreparedStatement statement = null;
+    ResultSet resultado = null;
+
+    try {
+        statement = conexion.prepareStatement(sql);
+        String parametro = "%" + textoBusqueda + "%";
+        for (int i = 1; i <= 7; i++) {
+            statement.setString(i, parametro);
+        }
+
+        resultado = statement.executeQuery();
+
+        while (resultado.next()) {
+            Producto producto = new Producto();
+            producto.setCodigo(resultado.getString("codProducto"));
+            producto.setNombre(resultado.getString("nombre_Producto"));
+            producto.setDescripcion(resultado.getString("descripcion_Producto"));
+            producto.setPrecio(resultado.getDouble("precio_Producto"));
+            producto.setCategoria(resultado.getString("categoria_Producto"));
+            producto.setCalificacion(resultado.getInt("calificacion_Producto"));
+            producto.setDisponibilidad(resultado.getBoolean("disponibilidad_Producto"));
+            productos.add(producto);
+        }
+    } finally {
+        if (resultado != null) {
+            resultado.close();
+        }
+        if (statement != null) {
+            statement.close();
+        }
+        if (conexion != null) {
+            conexion.close();
+        }
+    }
+
+    return productos;
+}
+
 
    public static boolean eliminar(String codigo) throws SQLException{
        String sql= "DELETE FROM "+TB_PRODUCTO+" WHERE "+CODIGO+" = ?";

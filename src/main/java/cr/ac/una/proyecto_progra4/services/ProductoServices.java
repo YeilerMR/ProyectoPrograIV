@@ -41,6 +41,18 @@ public class ProductoServices {
         }
         return productos;
     }
+    
+    public static LinkedList<Producto> busquedaProductos(String textoBuscar){
+        LinkedList<Producto> productos = new LinkedList<>();
+        
+        try {
+            productos= DataProductos.buscarProductos(textoBuscar);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductoServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return productos;
+    }
+    
     //falta el arreglo para obtener datos de la base de datos
     public static boolean eliminar(String codigo){
         boolean resultado= true;
