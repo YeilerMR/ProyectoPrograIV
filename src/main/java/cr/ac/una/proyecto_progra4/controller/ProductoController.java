@@ -7,6 +7,8 @@ package cr.ac.una.proyecto_progra4.controller;
 import cr.ac.una.proyecto_progra4.domain.Producto;
 import cr.ac.una.proyecto_progra4.services.ProductoServices;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,8 +54,25 @@ public class ProductoController {
         return "productos/form_Productos";
     }
 
-    public String buscar() {
-        return "";
+    @GetMapping("/buscar")
+    public String buscar(Model modelo, @RequestParam(value = "textoBuscar",required = true) String textoBuscar) {
+        
+        LinkedList<Producto> productos;
+        if (textoBuscar == null || textoBuscar.isBlank()) {
+            productos = ProductoServices.getProductos();
+        }else{
+            productos = ProductoServices.busquedaProductos(textoBuscar);
+        }
+        
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(InterruptedException.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        modelo.addAttribute("productos",productos);
+        //System.out.println("El resultado de la busqueda es: "+productos.get(0).getNombre());
+        return "productos/resultadoBusqueda";
     }
 
     @PostMapping("/eliminar/{codigo}")

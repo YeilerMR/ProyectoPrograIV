@@ -48,7 +48,7 @@ public class OredenDeCompraController {
             return "error";
         }
     }
-
+    
     @GetMapping("listar")
     public String listarOrdenes(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
         LinkedList<OrdenDeCompra> ordenDeCompraPagina = new OrdenDeCompraServices().obtenerRegistrosPaginados(page, pageSize, ordenes);
