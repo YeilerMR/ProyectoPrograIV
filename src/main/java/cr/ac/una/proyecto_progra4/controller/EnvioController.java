@@ -98,6 +98,8 @@ public class EnvioController {
     @PostMapping("/actualizar")
     public ResponseEntity<String> actualizarEnvio(@ModelAttribute("envio") Envio envio) {
         System.out.println("ID-> " + envio.getIdEnvio());
+        System.out.println("ID PEDIDO-> " + envio.getIdPedido());
+        System.out.println("ID CLIENTE-> " + envio.getIdCliente());
         return ResponseEntity.ok().body(EnvioServices.verificarPreModificar(envio));
     }
 
