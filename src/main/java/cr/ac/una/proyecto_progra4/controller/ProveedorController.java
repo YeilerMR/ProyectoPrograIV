@@ -5,9 +5,12 @@
 package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Proveedor;
+import cr.ac.una.proyecto_progra4.services.IProveedoresService;
 import cr.ac.una.proyecto_progra4.services.ProveedoresServices;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/proveedores")
 public class ProveedorController {
 
-    private static LinkedList<Proveedor> proveedores = new ProveedoresServices().listaProveedores();
+    @Autowired
+    private IProveedoresService servicePro;
+
+    private static List<Proveedor> proveedores = new ProveedoresServices().getProveedores();
 
     private void actualizarListaProveedores() {
         proveedores = new ProveedoresServices().listaProveedores();
@@ -31,12 +37,20 @@ public class ProveedorController {
     @GetMapping("/registrar")
     public String registrarProveedor(@RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {
         Proveedor proveedor = new Proveedor(0, nombre, telefono, descripcion, correo, direccion, categoria, informacion);
-        if (new ProveedoresServices().crearProveedor(proveedor)) {
+        /*if (new ProveedoresServices().crearProveedor(proveedor)) {
             actualizarListaProveedores();
             return "excito";
         } else {
             return "error";
+        }*/
+        System.out.println(proveedor.getCategoriaServicio() + " " + proveedor.getCorreo() + " " + proveedor.getDescripcionProveedor() + " " + proveedor.getDireccionProveedor() + " " + proveedor.getNombreProveedor());
+        servicePro.guardar(proveedor);
+
+        actualizarListaProveedores();
+        for (Proveedor proveedor1 : servicePro.getProveedores()) {
+            System.out.println(proveedor1.getNombreProveedor());
         }
+        return "excito";
     }
 
     @GetMapping("/crear")
@@ -49,7 +63,7 @@ public class ProveedorController {
         LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedores);
 
         int ultimaPagina = (int) Math.ceil((double) proveedores.size() / pageSize) - 1;
-        
+
         model.addAttribute("ultimaPagina", ultimaPagina);
         model.addAttribute("proveedores", proveedoresPagina);
         model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo

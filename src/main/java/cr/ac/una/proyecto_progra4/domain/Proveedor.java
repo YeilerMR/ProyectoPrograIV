@@ -4,19 +4,35 @@
  */
 package cr.ac.una.proyecto_progra4.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 /**
  *
- * @author pucho
+ * @author Adam Acuña
  */
+@Entity
+@Table(name = "proveedor")
 public class Proveedor {
 
+    @Id
+    @Column(name = "id_Proveedor")
     private int idProveedor;
+    @Column(name = "nombreProveedor_Proveedor")
     private String nombreProveedor;
+    @Column(name = "telefonoProveedor_Proveedor")
     private String telefonoProveedor;
+    @Column(name = "descripcionProveedor_Proveedor")
     private String descripcionProveedor;
+    @Column(name = "correo_Proveedor")
     private String correo;
+    @Column(name = "direccionProveedor_Proveedor")
     private String direccionProveedor;
+    @Column(name = "categoriaServicio_Proveedor")
     private String categoriaServicio;
+    @Column(name = "informacionAdicional_Proveedor")
     private String informacionAdicional;
 
     public Proveedor() {
