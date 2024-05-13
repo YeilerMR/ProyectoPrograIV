@@ -180,7 +180,21 @@ img{
     height: 30%;
     background-color: var(--clr-main);
 }
+/** gonzalo **/
+.boton-anadir {
+    background-color: #a4fdff; /* Color amarillo para botones de editar */
+    color: var(--clr-white);
+    padding: .4rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: #242568;
+}
 
+.boton-anadir:hover {
+    background-color: #00faff; /* Color de resaltado para botones de editar */
+}
 /* ESTILO BUSCADOR BY YEILER */
 /*#buscar{
    
