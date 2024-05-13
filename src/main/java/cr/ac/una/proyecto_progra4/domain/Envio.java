@@ -4,21 +4,46 @@
  */
 package cr.ac.una.proyecto_progra4.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author Aaron
  */
+@Entity
+@Table(name = "envio")
 public class Envio {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_Envio")
     private int idEnvio;
+
+    @Column(name = "codigo_envio")
     private String codigoEnvio;
+
+    @Column(name = "idPedido_Envio")
     private int idPedido;
+
+    @Column(name = "idCliente_Envio")
     private int idCliente;
+
+    @Column(name = "fechaEnvio_Envio")
     private LocalDateTime fechaEnvio;
+
+    @Column(name = "observacion_Envio")
     private String observacion;
+
+    @Column(name = "direccionEnvio_Envio")
     private String direccionEnvio;
+
+    @Column(name = "estadoEnvio_Envio")
     private String estadoEnvio;
 
     public Envio() {
@@ -99,5 +124,4 @@ public class Envio {
         this.estadoEnvio = estadoEnvio;
     }
 
-    
 }

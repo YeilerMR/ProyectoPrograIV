@@ -28,7 +28,9 @@ public class ProveedorController {
     @Autowired
     private IProveedoresService servicePro;
 
-    private static List<Proveedor> proveedores = new ProveedoresServices().getProveedores();
+    private static List<Proveedor> proveedores = new ProveedoresServices().listaProveedores();
+
+    //new ProveedoresServices().getProveedores();
 
     private void actualizarListaProveedores() {
         proveedores = new ProveedoresServices().listaProveedores();

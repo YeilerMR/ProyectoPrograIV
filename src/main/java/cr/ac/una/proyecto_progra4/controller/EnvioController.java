@@ -10,6 +10,8 @@ import cr.ac.una.proyecto_progra4.services.ClienteServices;
 import cr.ac.una.proyecto_progra4.services.EnvioServices;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/envios")
 public class EnvioController {
 
+    @Autowired
+    private EnvioServices envioServices;
+
     @PostMapping("/guardar")
     public ResponseEntity<String> save(@RequestParam("codigoEnvio_Envio") String codigoEnvio,
             @RequestParam("idPedido_Envio") int idPedido,
@@ -37,7 +42,7 @@ public class EnvioController {
             @RequestParam("estadoEnvio_Envio") String estadoEnvio) {
 
         System.out.println("ID CLIENTE -> " + idCliente);
-        
+
         Envio envio = new Envio();
         envio.setCodigoEnvio(codigoEnvio);
         envio.setIdPedido(idPedido);
@@ -46,12 +51,12 @@ public class EnvioController {
         envio.setObservacion(observacion);
         envio.setDireccionEnvio(direccionEnvio);
         envio.setEstadoEnvio(estadoEnvio);
-        return ResponseEntity.ok().body(EnvioServices.verificarPreAgregar(envio));
+        return ResponseEntity.ok().body(envioServices.verificarPreAgregar(envio));
     }
 
     @GetMapping("/buscar")
     public String buscarClientePorCedula(@RequestParam("codigoEnvio") String codigo, Model model) {
-        Envio envio = EnvioServices.getEnvioPorCodigo(codigo);
+        Envio envio = envioServices.getEnvioPorCodigo(codigo);
         LinkedList<Cliente> clientesEnvios = ClienteServices.getClientesConEnvios();
         for (Cliente clienteEnvio : clientesEnvios) {
             if (clienteEnvio.getIdCliente() == envio.getIdCliente()) {
@@ -68,13 +73,13 @@ public class EnvioController {
     }
 
     @GetMapping("/listar")
-    public String mostrarFormularioEnvio(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
-        LinkedList<Envio> envios = EnvioServices.getEnvios();
+    public String mostrarFormularioEnvio(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int pageSize) {
+//        List<Envio> envios = envioServices.getEnvios();
         LinkedList<Cliente> clientesConEnvios = ClienteServices.getClientesConEnvios();
         LinkedList<Cliente> clientesListaTotal = ClienteServices.getClientes();
-        LinkedList<Envio> enviosPagina = new EnvioServices().obtenerRegistrosPaginados(page, pageSize, envios);
+        List<Envio> enviosPagina = envioServices.obtenerRegistrosPaginados(page, pageSize);
         //LinkedList<Pedido> pedidosListaTotal = PedidoServices.getPedidos();
-        
+
         int ultimaPagina = (int) Math.ceil((double) clientesConEnvios.size() / pageSize) - 1;
 
         model.addAttribute("ultimaPagina", ultimaPagina);
@@ -90,7 +95,7 @@ public class EnvioController {
 
     @GetMapping("/editar")
     public String mostrarFormularioEditar(@RequestParam("idEnvio_Modificar") int idEnvio, Model model) {
-        Envio envio = EnvioServices.getEnvioPorID(idEnvio);
+        Envio envio = envioServices.getEnvioPorID(idEnvio);
         model.addAttribute("envio", envio);
         return "envios/editarEnvio";
     }
@@ -100,12 +105,12 @@ public class EnvioController {
         System.out.println("ID-> " + envio.getIdEnvio());
         System.out.println("ID PEDIDO-> " + envio.getIdPedido());
         System.out.println("ID CLIENTE-> " + envio.getIdCliente());
-        return ResponseEntity.ok().body(EnvioServices.verificarPreModificar(envio));
+        return ResponseEntity.ok().body(envioServices.verificarPreModificar(envio));
     }
 
     @GetMapping("/eliminar")
     public String eliminarEnvio(@RequestParam("idEnvio") int idEnvio) {
-        boolean eliminadoExitosamente = EnvioServices.eliminar(idEnvio);
+        boolean eliminadoExitosamente = envioServices.eliminar(idEnvio);
         if (eliminadoExitosamente) {
             return "redirect:/envios/listar";
         } else {

@@ -4,125 +4,101 @@
  */
 package cr.ac.una.proyecto_progra4.services;
 
-import cr.ac.una.proyecto_progra4.data.DataEnvio;
 import cr.ac.una.proyecto_progra4.domain.Envio;
-import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import cr.ac.una.proyecto_progra4.jpa.EnviosRepository;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Aaron
  */
-public class EnvioServices {
+@Service
+@Primary
+public class EnvioServices implements IEnvioServices {
 
-    public static boolean agregar(Envio envio) {
+    @Autowired
+    private EnviosRepository envioRepo;
+
+    @Override
+    public boolean agregar(Envio envio) {
         try {
-            return DataEnvio.insertar(envio);
-        } catch (SQLException e) {
-            System.out.println("Error al insertar el envío: " + e.getMessage());
+            envioRepo.save(envio);
+            return true; // Si el guardado tiene éxito, devuelve true
+        } catch (Exception e) {
+            e.toString();
             return false;
         }
     }
 
-    // Mostrar lista clientes
-    public static LinkedList<Envio> getEnvios() {
-        LinkedList<Envio> envios;
-        try {
-            envios = DataEnvio.getEnvios();
-        } catch (SQLException ex) {
-            envios = null;
-            Logger.getLogger(EnvioServices.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return envios;
+    @Override
+    public List<Envio> getEnvios() {
+        return envioRepo.findAll();
     }
 
-    // Obtener ENVIO por código
-    public static Envio getEnvioPorCodigo(String codigo) {
-        Envio envio;
-        try {
-            envio = DataEnvio.getEnvioPorCodigo(codigo);
-        } catch (SQLException ex) {
-            envio = null;
-            Logger.getLogger(EnvioServices.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return envio;
+    @Override
+    public Envio getEnvioPorCodigo(String codigo) {
+        Optional<Envio> optionalEnvio = envioRepo.findByCodigoEnvioIgnoreCase(codigo);
+        return optionalEnvio.orElse(null);
     }
 
-    // Obtener ENVIO por ID
-    public static Envio getEnvioPorID(int idEnvio) {
-        for (Envio envio : getEnvios()) {
-            if (envio.getIdEnvio() == (idEnvio)) {
-                return envio;
-            }
-        }
-        return null;
+    @Override
+    public Envio getEnvioPorID(int idEnvio) {
+        Optional<Envio> optionalEnvio = envioRepo.findById(idEnvio);
+        return optionalEnvio.orElse(null);
     }
 
-    // Actualizar envio
-    public static boolean actualizar(Envio envio) {
+    @Override
+    public boolean eliminar(int idEnvio) {
         try {
-            return DataEnvio.actualizar(envio);
-        } catch (SQLException ex) {
-            Logger.getLogger(EnvioServices.class.getName()).log(Level.SEVERE, null, ex);
+            envioRepo.deleteById(idEnvio);
+            return true; // Se eliminó correctamente
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        } catch (Exception e) {
             return false;
         }
     }
 
-    // Eliminar un envio
-    public static boolean eliminar(int idEnvio) {
-        try {
-            return DataEnvio.eliminar(idEnvio);
-        } catch (SQLException ex) {
-            Logger.getLogger(EnvioServices.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+    @Override
+    public List<Envio> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina) {
+        Page<Envio> paginaEnvios = envioRepo.findAll(PageRequest.of(numeroPagina, tamanoPagina));
+        return paginaEnvios.getContent();
     }
 
-    public LinkedList<Envio> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina, LinkedList<Envio> listaEnvios) {
-        LinkedList<Envio> registrosPagina = new LinkedList<>();
-
-        int inicio = numeroPagina * tamanoPagina;
-        int fin = Math.min(inicio + tamanoPagina, listaEnvios.size());
-
-        for (int i = inicio; i < fin; i++) {
-            registrosPagina.add(listaEnvios.get(i));
-        }
-
-        return registrosPagina;
-    }
-
-    //-------------------MÉTODOS FUNCIONALIDES PRE CRUD-------------------------
-    //Verificar si envío existe antes de agregar
-    public static String verificarPreAgregar(Envio envio) {
-
-        // Verificar si el envío ya existe
-        Envio envioExistente = getEnvioPorCodigo(envio.getCodigoEnvio());
-        if (envioExistente != null) {
-            return "{\"success\": false, \"message\": \"El envío ya existe\"}";
+    @Override
+    public String verificarPreAgregar(Envio envio) {
+        // Verificar si el código del envío ya existe
+        Optional<Envio> envioExistente = envioRepo.findByCodigoEnvioIgnoreCase(envio.getCodigoEnvio());
+        if (envioExistente.isPresent()) {
+            return "{\"success\": false, \"message\": \"El código de envío ya existe\"}";
         } else {
-            boolean agregadoExitosamente = agregar(envio);
-            if (agregadoExitosamente) {
+            try {
+                envioRepo.save(envio);
                 return "{\"success\": true, \"message\": \"Envío agregado exitosamente\"}";
-            } else {
+            } catch (Exception e) {
                 return "{\"success\": false, \"message\": \"Error al agregar el envío\"}";
             }
         }
     }
 
-    //Verificar si envío existe antes de modificar
-    public static String verificarPreModificar(Envio envio) {
-        // Verificar si el envío ya existe
-        Envio envioExistente = getEnvioPorCodigo(envio.getCodigoEnvio());
-        if (envioExistente != null && envioExistente.getCodigoEnvio().equalsIgnoreCase(envio.getCodigoEnvio()) && envioExistente.getIdEnvio() != envio.getIdEnvio()) {
-            return "{\"success\": false, \"message\": \"El envío ya existe\"}";
+    @Override
+    public String verificarPreModificar(Envio envio) {
+        // Verificar si el código del envío ya existe y no pertenece al mismo envío
+        Optional<Envio> envioExistente = envioRepo.findByCodigoEnvioIgnoreCase(envio.getCodigoEnvio());
+        if (envioExistente.isPresent() && !Integer.valueOf(envioExistente.get().getIdEnvio()).equals(envio.getIdEnvio())) {
+            return "{\"success\": false, \"message\": \"El código de envío ya existe\"}";
         } else {
-            boolean agregadoExitosamente = actualizar(envio);
-            if (agregadoExitosamente) {
+            try {
+                envioRepo.save(envio);
                 return "{\"success\": true, \"message\": \"Envío modificado exitosamente\"}";
-            } else {
+            } catch (Exception e) {
                 return "{\"success\": false, \"message\": \"Error al modificar el envío\"}";
             }
         }
