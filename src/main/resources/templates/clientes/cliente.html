@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" th:href="@{/main.css}" />
         <link rel="stylesheet" th:href="@{/css/modal.css}" />
+        <link rel="stylesheet" th:href="@{/css/buscador.css}" />
         <link rel="stylesheet" th:href="@{/css/clientes/clienteStyle.css}" />
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
     </head>
@@ -64,14 +65,13 @@
             <main>
                 <h1>Lista de Clientes</h1>
                 <!-- PARTE DE BÚSQUEDA DE ALGÚN CLIENTE MEDIANTE CÉDULA -->
-                <div class="table_header">
+                <div class="buscador">
                     <div class="input-container">
-                        <p>Clientes</p>
-                        <form class="form_cedula" th:action="@{/clientes/buscar}" method="get">
+                        <form class="formBusqueda" th:action="@{/clientes/buscar}" method="get">
                             <input name="cedula" placeholder="Cédula del cliente" required>
-                            <button class="search_cliente" type="submit">Buscar</button>
+                            <button class="searchBtn" type="submit">Buscar</button>
+                            <button class="add_new">Crear nuevo</button>
                         </form>
-                        <button class="add_new">Crear nuevo</button>
                     </div>
                 </div>
 

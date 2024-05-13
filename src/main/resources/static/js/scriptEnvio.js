@@ -1,7 +1,7 @@
 // Función PopUp Crear Nuevo Envío
 function popupCrearEnvio() {
     var modalCrear = document.getElementById("myModalCrearEnvio");
-    var btnAgregar = document.querySelector(".add_newEnvio");
+    var btnAgregar = document.querySelector(".add_new");
     var spanCrear = document.querySelector("#myModalCrearEnvio .close");
 
     btnAgregar.onclick = function () {
