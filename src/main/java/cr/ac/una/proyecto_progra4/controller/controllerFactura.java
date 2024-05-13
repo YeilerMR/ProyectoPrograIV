@@ -57,9 +57,10 @@ public class controllerFactura {
     public String eliminar_factura(@RequestParam("id") int id) {
         
         String vista = "redirect:/facturas/listar";
-        if (!ifs.Eliminar_factura(id)) {
+        if (ifs.Eliminar_factura(id)) {
             vista = "Error";
         }
+        System.out.println("\n\n"+vista+"\n\n");
         return vista;
     }
     //submit de editar
