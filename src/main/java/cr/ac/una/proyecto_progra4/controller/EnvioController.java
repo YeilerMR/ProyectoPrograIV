@@ -74,13 +74,13 @@ public class EnvioController {
 
     @GetMapping("/listar")
     public String mostrarFormularioEnvio(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int pageSize) {
-//        List<Envio> envios = envioServices.getEnvios();
+        List<Envio> envios = envioServices.getEnvios();
         LinkedList<Cliente> clientesConEnvios = ClienteServices.getClientesConEnvios();
         LinkedList<Cliente> clientesListaTotal = ClienteServices.getClientes();
         List<Envio> enviosPagina = envioServices.obtenerRegistrosPaginados(page, pageSize);
         //LinkedList<Pedido> pedidosListaTotal = PedidoServices.getPedidos();
 
-        int ultimaPagina = (int) Math.ceil((double) clientesConEnvios.size() / pageSize) - 1;
+        int ultimaPagina = (int) Math.ceil((double) envios.size() / pageSize) - 1;
 
         model.addAttribute("ultimaPagina", ultimaPagina);
         model.addAttribute("envios", enviosPagina);
