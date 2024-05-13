@@ -43,7 +43,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <button id="camisetas" class="boton-menu boton-categoria active"><i class="bi bi-hand-index-thumb-fill"></i> Ordenes de Compra</button>
                         </li>
                         <li>
-                            <button id="pantalones" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Otros</button>
+                            <button id="pantalones" class="boton-menu boton-categoria" onclick="window.location.href = '/clientes/listar'"><i class="bi bi-hand-index-thumb"></i> Clientes</button>
+                        </li>
+                        <li>
+                            <button id="pantalones" class="boton-menu boton-categoria" onclick="window.location.href = '/envios/listar'"><i class="bi bi-hand-index-thumb"></i> Envios</button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/productos/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Productos
+                            </button>
+                        </li>
+                        <li>
+                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/ofertas/listar'">
+                                <i class="bi bi-hand-index-thumb"></i> Ofertas
+                            </button>
                         </li>
                     </ul>
                 </nav>
@@ -139,9 +152,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
                 <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
-                });
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
+                                    });
                 </script>
                 <div th:if="${ordenes.empty}">
                     <p>No se encontraron registros para mostrar.</p>
