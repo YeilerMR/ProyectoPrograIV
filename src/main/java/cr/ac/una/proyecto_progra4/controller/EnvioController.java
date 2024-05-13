@@ -55,21 +55,21 @@ public class EnvioController {
     }
 
     @GetMapping("/buscar")
-    public String buscarClientePorCedula(@RequestParam("codigoEnvio") String codigo, Model model) {
+    public String buscarEnvio(@RequestParam(value = "textoBuscar", required = true) String codigo, Model model) {
         Envio envio = envioServices.getEnvioPorCodigo(codigo);
-        LinkedList<Cliente> clientesEnvios = ClienteServices.getClientesConEnvios();
-        for (Cliente clienteEnvio : clientesEnvios) {
-            if (clienteEnvio.getIdCliente() == envio.getIdCliente()) {
-                model.addAttribute("clienteEnvio", clienteEnvio);
-            }
-        }
+        LinkedList<Envio> envios = new LinkedList<>();
+        LinkedList<Cliente> clientesListaTotal = ClienteServices.getClientes();
+        LinkedList<Cliente> clientesConEnvios = ClienteServices.getClientesConEnvios();
+
         if (envio != null) {
-            model.addAttribute("envioEncontrado", envio);
-            return "envios/resultadoBusquedaEnvio";
-        } else {
-            model.addAttribute("error", "No se encontró ningún envio con ese código.");
-            return "error";
+            envios.add(envio);
         }
+
+        model.addAttribute("envios", envios);
+        model.addAttribute("clientesListaTotal", clientesListaTotal);
+        model.addAttribute("clientes", clientesConEnvios);
+
+        return "envios/resultadoBusquedaEnvio";
     }
 
     @GetMapping("/listar")
@@ -91,13 +91,6 @@ public class EnvioController {
         //model.addAttribute("pedidosListaTotal", clientesListaTotal);
 
         return "envios/envio";
-    }
-
-    @GetMapping("/editar")
-    public String mostrarFormularioEditar(@RequestParam("idEnvio_Modificar") int idEnvio, Model model) {
-        Envio envio = envioServices.getEnvioPorID(idEnvio);
-        model.addAttribute("envio", envio);
-        return "envios/editarEnvio";
     }
 
     @PostMapping("/actualizar")

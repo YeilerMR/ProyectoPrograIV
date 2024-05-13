@@ -78,15 +78,15 @@
                 <div class="buscador">
                     <div class="input-container">
                         <form class="formBusqueda" th:action="@{/clientes/buscar}" method="get">
-                            <input name="cedula" placeholder="Cédula del cliente" required>
-                            <button class="searchBtn" type="submit">Buscar</button>
+                            <input id="textoBuscar" name="textoBuscar" placeholder="Cédula del cliente">
+                            <button class="searchBtn" onclick="validarYBuscar()"  type="button">Buscar</button>
                             <button class="add_new">Crear nuevo</button>
                         </form>
                     </div>
                 </div>
 
                 <!-- PARTE DE LISTA DE CLIENTES -->
-                <div th:if="${!clientes.empty}">
+                <div id="tablaClientes" th:if="${!clientes.empty}">
                     <table class="contenedor-productos">
                         <tr>
                             <th>Nombre</th>

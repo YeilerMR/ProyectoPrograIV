@@ -10,6 +10,7 @@
         <link rel="stylesheet" th:href="@{/css/buscador.css}" />
         <link rel="stylesheet" th:href="@{/css/paginacion.css}" />
         <link rel="stylesheet" th:href="@{/css/modal.css}" />
+        <link rel="stylesheet" th:href="@{/css/clientes/clienteStyle.css}" />
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
     </head>
 
@@ -78,18 +79,18 @@
             </aside>
             <main>
                 <h1>Lista de Envíos</h1>
-                <!-- PARTE DE BÚSQUEDA DE ALGÚN CLIENTE MEDIANTE CÉDULA -->
+                <!-- PARTE DE BÚSQUEDA DE ALGÚN ENVÍO MEDIANTE CÉDULA -->
                  <div class="buscador">
                     <div class="input-container">
                         <form class="formBusqueda" th:action="@{/envios/buscar}" method="get">
-                            <input name="codigoEnvio" placeholder="Buscar por código de envío" required>
-                            <button class="searchBtn" type="submit">Buscar</button>
+                            <input id="textoBuscar" name="textoBuscar" placeholder="Buscar por código de envío">
+                            <button class="searchBtn" onclick="validarYBuscar()" type="button">Buscar</button>
                             <button class="add_new">Realizar envio</button>
                         </form>
                     </div>
                 </div>
-                <!-- PARTE DE LISTA DE CLIENTES -->
-                <div th:if="${!envios.empty}">
+                <!-- PARTE DE LISTA DE ENVIOS -->
+                <div id="tablaEnvios" th:if="${!envios.empty}">
                     <table class="contenedor-productos">
                         <tr>
                             <th>Código de envio</th>
