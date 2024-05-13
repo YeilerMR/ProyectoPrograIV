@@ -5,6 +5,7 @@ function popupCrearEnvio() {
     var spanCrear = document.querySelector("#myModalCrearEnvio .close");
 
     btnAgregar.onclick = function () {
+        event.preventDefault();
         modalCrear.style.display = "block";
     };
 
@@ -91,8 +92,35 @@ function handleEnvioEdit() {
     });
 }
 
-// Llamadas a las funciones
-document.addEventListener("DOMContentLoaded", function () {
+function buscarEnvio() {
+    var textoBuscar = document.getElementById("textoBuscar").value;
+    var divClientes = document.getElementById("tablaEnvios");
+    fetch("/envios/buscar?textoBuscar=" + textoBuscar)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Error en la solicitud: " + response.status);
+                }
+                return response.text();
+            })
+            .then(function (data) {
+                divClientes.innerHTML = data;
+                initializeEventHandlers(); // Inicializa los eventos después de actualizar la tabla
+            })
+            .catch(function (error) {
+                console.error('Error en la solicitud:', error);
+            });
+}
+
+function validarYBuscar() {
+    var textoBuscar = document.getElementById("textoBuscar").value;
+    if (textoBuscar.trim() === "") {
+        mostrarToastAdvertencia("El campo de búsqueda está vacío. Por favor, ingresa el código del envío a buscar.");
+    } else {
+        buscarEnvio();
+    }
+}
+
+function initializeEventHandlers() {
     validarEliminacion('.producto-eliminar', 'Envío eliminado exitosamente');
     validarEdicion('.editar-envio-form', '¿Estás seguro de continuar con la edición de este envío?', '/envios/listar');
     validarCreacion('.crear-envio-form', '¿Estás seguro de continuar con la creación de este envío?', '/envios/listar');
@@ -100,4 +128,9 @@ document.addEventListener("DOMContentLoaded", function () {
     popupActualizarEnvio();
     handleEnvioEdit();
     closeModal();
+}
+
+// Llamadas a las funciones
+document.addEventListener("DOMContentLoaded", function () {
+    initializeEventHandlers();
 });

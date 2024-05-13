@@ -5,6 +5,7 @@ function popupCrearCliente() {
     var spanCrear = document.querySelector("#myModalCrearCliente .close");
 
     btnAgregar.onclick = function () {
+        event.preventDefault();
         modalCrear.style.display = "block";
     };
 
@@ -136,8 +137,35 @@ function closeModal() {
     });
 }
 
-// Llamadas a las funciones
-document.addEventListener("DOMContentLoaded", function () {
+function buscarCliente() {
+    var textoBuscar = document.getElementById("textoBuscar").value;
+    var divClientes = document.getElementById("tablaClientes");
+    fetch("/clientes/buscar?textoBuscar=" + textoBuscar)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Error en la solicitud: " + response.status);
+                }
+                return response.text();
+            })
+            .then(function (data) {
+                divClientes.innerHTML = data;
+                initializeEventHandlers(); // Inicializa los eventos después de actualizar la tabla
+            })
+            .catch(function (error) {
+                console.error('Error en la solicitud:', error);
+            });
+}
+
+function validarYBuscar() {
+    var textoBuscar = document.getElementById("textoBuscar").value;
+    if (textoBuscar.trim() === "") {
+        mostrarToastAdvertencia("El campo de búsqueda está vacío. Por favor, ingresa un la cédula del cliente a buscar.");
+    } else {
+        buscarCliente();
+    }
+}
+
+function initializeEventHandlers() {
     validarEliminacion('.producto-eliminar', 'Cliente eliminado exitosamente');
     validarEdicion('.editar-cliente-form', '¿Estás seguro de continuar con la edición de este cliente?', '/clientes/listar');
     validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este cliente?', '/clientes/listar');
@@ -147,4 +175,9 @@ document.addEventListener("DOMContentLoaded", function () {
     togglePasswordInPopup();
     handleClientEdit();
     closeModal();
+}
+
+// Llamadas a las funciones
+document.addEventListener("DOMContentLoaded", function () {
+    initializeEventHandlers();
 });

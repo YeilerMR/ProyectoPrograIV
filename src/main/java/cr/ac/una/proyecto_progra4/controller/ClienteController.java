@@ -27,9 +27,9 @@ public class ClienteController {
     @PostMapping("/guardar")
     public ResponseEntity<?> save(@RequestParam("nombre") String nombre,
             @RequestParam("apellidos") String apellidos, @RequestParam("email") String email,
-            @RequestParam("password") String password, @RequestParam("telefono") String telefono, 
+            @RequestParam("password") String password, @RequestParam("telefono") String telefono,
             @RequestParam("credencial") String credencial, @RequestParam("cedula") String cedula) {
-        
+
         Cliente cliente = new Cliente();
         cliente.setNombre(nombre);
         cliente.setApellidos(apellidos);
@@ -40,7 +40,7 @@ public class ClienteController {
         // Cliente = 0
         // Empleado = 1
         int credencialInt = 1;
-        if(credencial.equalsIgnoreCase("Cliente")){
+        if (credencial.equalsIgnoreCase("Cliente")) {
             credencialInt = 0;
         }
         cliente.setCredencial(credencialInt);
@@ -48,15 +48,16 @@ public class ClienteController {
     }
 
     @GetMapping("/buscar")
-    public String buscarCliente(@RequestParam("cedula") String cedula, Model model) {
+    public String buscarCliente(@RequestParam(value = "textoBuscar", required = true) String cedula, Model model) {
         Cliente cliente = ClienteServices.getClientePorCedula(cedula);
+        LinkedList<Cliente> clientes = new LinkedList<>();
+
         if (cliente != null) {
-            model.addAttribute("clienteEncontrado", cliente);
-            return "clientes/resultadoBusquedaCliente";
-        } else {
-            model.addAttribute("error", "No se encontró ningún cliente con esa cédula.");
-            return "error";
+            clientes.add(cliente);
         }
+
+        model.addAttribute("clientes", clientes);
+        return "clientes/resultadoBusquedaCliente";
     }
 
     @GetMapping("/listar")
