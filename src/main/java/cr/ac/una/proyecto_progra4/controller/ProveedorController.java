@@ -28,16 +28,12 @@ public class ProveedorController {
     @Autowired
     private IProveedoresService servicePro;
 
-    private static List<Proveedor> proveedores = new ProveedoresServices().listaProveedores();
-
-    //new ProveedoresServices().getProveedores();
-
-    private void actualizarListaProveedores() {
-        proveedores = new ProveedoresServices().listaProveedores();
+    private List<Proveedor> proveedores() {
+        return servicePro.getProveedores();
     }
 
     @GetMapping("/registrar")
-    public String registrarProveedor(@RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {
+    public String registrarProveedor(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {
         Proveedor proveedor = new Proveedor(0, nombre, telefono, descripcion, correo, direccion, categoria, informacion);
         /*if (new ProveedoresServices().crearProveedor(proveedor)) {
             actualizarListaProveedores();
@@ -45,14 +41,16 @@ public class ProveedorController {
         } else {
             return "error";
         }*/
-        System.out.println(proveedor.getCategoriaServicio() + " " + proveedor.getCorreo() + " " + proveedor.getDescripcionProveedor() + " " + proveedor.getDireccionProveedor() + " " + proveedor.getNombreProveedor());
         servicePro.guardar(proveedor);
+        LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedores());
 
-        actualizarListaProveedores();
-        for (Proveedor proveedor1 : servicePro.getProveedores()) {
-            System.out.println(proveedor1.getNombreProveedor());
-        }
-        return "excito";
+        int ultimaPagina = (int) Math.ceil((double) proveedores().size() / pageSize) - 1;
+
+        model.addAttribute("ultimaPagina", ultimaPagina);
+        model.addAttribute("proveedores", proveedoresPagina);
+        model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
+        model.addAttribute("pageSize", pageSize); // Asegúrate de pasar el tamaño de página al modelo        
+        return "proveedor/Proveedores_admin";
     }
 
     @GetMapping("/crear")
@@ -62,9 +60,9 @@ public class ProveedorController {
 
     @GetMapping("/listar")
     public String listaProveedores(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
-        LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedores);
+        LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedores());
 
-        int ultimaPagina = (int) Math.ceil((double) proveedores.size() / pageSize) - 1;
+        int ultimaPagina = (int) Math.ceil((double) proveedores().size() / pageSize) - 1;
 
         model.addAttribute("ultimaPagina", ultimaPagina);
         model.addAttribute("proveedores", proveedoresPagina);
@@ -76,7 +74,7 @@ public class ProveedorController {
 
     @GetMapping("/editar")
     public String editarProveedor(@RequestParam("proveedor") int proveedorID, Model model) throws SQLException {
-        for (Proveedor proveedor : proveedores) {
+        for (Proveedor proveedor : proveedores()) {
             if (proveedor.getIdProveedor() == proveedorID) {
                 model.addAttribute("proveedor", proveedor);
                 return "proveedor/editar_proveedor";
@@ -89,7 +87,7 @@ public class ProveedorController {
     public String editarInfoProveedor(@RequestParam("proveedor") int proveedorID, @RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {
         Proveedor proveedor = new Proveedor(proveedorID, nombre, telefono, descripcion, correo, direccion, categoria, informacion);
         if (new ProveedoresServices().editarProveedor(proveedor)) {
-            actualizarListaProveedores();
+            proveedores();
             return "excito";
         } else {
             return "error";
@@ -97,12 +95,16 @@ public class ProveedorController {
     }
 
     @GetMapping("/eliminar")
-    public String eliminarProveedor(@RequestParam("proveedor") int proveedorID) {
-        if (new ProveedoresServices().eliminarProveedor(proveedorID)) {
-            actualizarListaProveedores();
-            return "excito";
-        } else {
-            return "error";
-        }
+    public String eliminarProveedor(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("proveedor") int proveedorID) {
+        servicePro.eliminar(proveedorID);
+        LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedores());
+
+        int ultimaPagina = (int) Math.ceil((double) proveedores().size() / pageSize) - 1;
+
+        model.addAttribute("ultimaPagina", ultimaPagina);
+        model.addAttribute("proveedores", proveedoresPagina);
+        model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
+        model.addAttribute("pageSize", pageSize); // Asegúrate de pasar el tamaño de página al modelo        
+        return "proveedor/Proveedores_admin";
     }
 }
