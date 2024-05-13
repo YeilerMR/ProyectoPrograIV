@@ -5,17 +5,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 -->
 <html xmls:th="http://thymeleaf.org">
     <head>
-        <title>Formulario de Productos</title>
+        <title>Productos</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <script type="text/javascript" th:src="@{/js/scriptProductos.js}"></script>
+        <!--script type="text/javascript" th:src="@{/js/scriptProductos.js}"></script-->
 
         <!-- NUEVO AGREGADO PARA EL DISENO -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" th:href="@{/main.css}" />
         <link rel="stylesheet" th:href="@{/css/modal.css}" />
+        <link rel="stylesheet" th:href="@{/css/buscador.css}" />
+        <link rel="stylesheet" th:href="@{/css/paginacion.css}" />
+
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
     </head>
     <body>
@@ -66,29 +69,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </ul>
                 </nav>
 
-                <footer>
-                    <p class="texto-footer">© Proyecto Progra 4</p>
-                </footer>
+
             </aside>
             <main>
                 <h1>Lista de Productos</h1>
                 <!-- PARTE DE BÚSQUEDA DE ALGÚN CLIENTE MEDIANTE CÉDULA -->
-                <div class="table_header">
-                    
+                <!--div class="table_header"-->
+                <div class="buscador">
                     <div class="input-container">
-                        <p>Productos</p>
-                        <form class="form_producto" method="get">
+                        <!--p>Productos</p-->
+                        <!--form class="form_producto" method="get"-->
+                        <form class="formBusqueda" method="get">
                             <input id="textoBuscar" type="text" placeholder="Buscar Productos" required>
-                            
-                            <button id="buscar" type="button" class="search_producto" onclick="validarYBuscar()">Buscar</button>
+                            <!--id="buscar"-->
+                            <button type="button" class="searchBtn" onclick="validarYBuscar()">Buscar</button>
+
+                            <button class="add_new">Crear nuevo</button>
                         </form>
-                        
+                        <button id="mostrarTodo" type="button" th:onclick="window.location.href='/productos/listar'">Mostrar Todos</button>
                     </div>
                 </div>
-                <button id="add_new" class="add_new">Crear nuevo</button>
+
                 <!-- LISTA DE PRODUCTOS   [name="producto"]-->
                 <div id="tablaProductos" th:if="${!productos.empty}">
-                   
+
                     <table class="contenedor-productos">
                         <tr>
 
@@ -99,6 +103,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <th>Calificacion</th>
                             <th>Precio</th>
                             <th>Disponibilidad</th>
+                            <th>Stock</th>
                             <th>Accion</th>
 
                         </tr>
@@ -110,31 +115,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <td th:text="${producto.calificacion}"></td>
                             <td th:text="${producto.precio}"></td>
                             <td th:text="${producto.disponible?'Disponible':'No Disponible'}"></td>
-
+                            <td th:text="${producto.stock}"></td>
 
                             <td>
 
                                 <form action="/productos/eliminarProducto" method="get" onsubmit="return confirm('¿Estás seguro de querer eliminar este producto?')">
                                     <input type="hidden" name="codigo" th:value="${producto.codigo}" />
-                                    <button type="submit" class="producto-eliminar">Eliminar</button>
+                                    <button type="submit" class="producto-eliminar" style="display: inline;">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </form>
 
-
-                                <!--form action="@{/productos/eliminar/{codigo}(codigo=${producto.codigo})}" method="post" onsubmit="return confirm('¿Estás seguro de querer eliminar este producto?')">
-                                    <input id="botonDelete" type="submit" value="Eliminar"/> 
-                                <!--input type="hidden" name="_method" value="delete" />
-                                <input type="hidden" name="codigo" th:value="${producto.codigo}" /> <!-- Agregar este campo oculto -->
-
-                                <!--/form--->
-                                <!--h5 th:text="${producto.codigo}"></h5--->
-                                
-                                <button class="producto-editar" style="display: inline;">Editar</button>
+                                <button class="producto-editar" style="display: inline;">
+                                    <i class="bi bi-pen"></i>
+                                </button>
                                 <div class="modal">
                                     <div class="modal-content">
                                         <span class="close">&times;</span>
                                         <div class="container">
                                             <form th:action="@{/productos/actualizar}" method="post" onsubmit="return confirm('¿Estas seguro de querer actualizar este producto?')">
-
                                                 <input type="hidden" name="codigo" th:value="${producto.codigo}">
 
                                                 <label for="nombre">Nombre</label>
@@ -158,12 +157,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                 <label>Precio:</label>
                                                 <input type="number" name="precio" class="form-control" step="0.01" placeholder="Precio en ₡" required th:value="${producto.precio}">
 
+                                                <label>Cantidad de Stock</label>
+                                                <input type="number" name="stock" class="form-control" placeholder="stock" required th:value="${producto.stock}">
 
                                                 <label>Disponibilidad:</label>
-                                                <select name="venta" class="form-control">
-                                                    <option value="true">Si</option>
-                                                    <option value="false">No</option>
+                                                <select name="disponible" class="form-control" required th:value="${producto.disponible}">
+                                                    <option value="true"  th:selected="${producto.disponible} ? 'selected' : ''">Si</option>
+                                                    <option value="false" th:selected="${!producto.disponible} ? 'selected' : ''">No</option>
                                                 </select>
+                                                <!--label>Disponibilidad:</label>
+                                                <select name="venta" class="form-control" required th:value="${producto.disponible}">
+                                                    <option value="true"  th:selected="${producto.disponible}">Si</option>
+                                                    <option value="false" th:selected="${!producto.disponible}">No</option>
+                                                </select--->
 
                                                 <input type="submit" value="Editar" class="boton">
                                                 <!--input type="hidden" name="_method" value="Agregar" /-->
@@ -174,58 +180,68 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 </div>
                             </td>
                         </tr>
-                    </table>                
+                    </table>       
 
-                    <div id="modal" class="modal">
-                        <div class="modal-content">
-                            <span id="closeModalNuevo" class="close">&times;</span>
-                            <div class="container">
-                                <form th:action="@{/productos/guardar}" method="get" onsubmit="return confirm('¿Estas seguro de querer guardar este producto?')">
-
-                                    <label for="nombre">Código del producto</label>
-                                    <input type="text" name="codigo" class="form-control" placeholder="Código del producto" required>
-
-                                    <label for="nombre">Nombre del producto</label>
-                                    <input type="text" name="nombre" class="form-control" placeholder="Nombre del producto" required>
-
-                                    <label>Descripción del producto</label>
-                                    <input type="text" name="descripcion" class="form-control" placeholder="Descripción del producto" required>
-
-                                    <label>Categoría del producto</label>
-                                    <input type="text" name="categoria" class="form-control" placeholder="Categoria" required>
-
-                                    <label>Calificación del producto</label>
-                                    <select name="calificacion" class="form-control" required>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-
-                                    <label>Precio del producto</label>
-                                    <input type="number" name="precio" class="form-control" step="0.01" placeholder="Precio en ₡" required>
-
-
-                                    <label>Disponibilidad:</label>
-                                    <select name="venta" class="form-control">
-                                        <option value="true">Si</option>
-                                        <option value="false">No</option>
-                                    </select>
-
-                                    <input type="submit" value="Crear">
-                                    <!--input type="hidden" name="_method" value="Agregar" /-->
-                                    <!--button type="submit" class="boton_delete">Eliminar</button-->
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- !!!!PAGINACION!!!! -->
                 </div>
                 <div th:if="${productos.empty}">
                     <p>No se encontraron registros para mostrar.</p>
                 </div>
+
+                <div type="hidden" id="modalCrearProducto" class="modal">
+                    <div class="modal-content">
+                        <span id="closeModalNuevo" class="close">&times;</span>
+                        <div class="container">
+                            <form th:action="@{/productos/guardar}" method="get" onsubmit="return confirm('¿Estas seguro de querer guardar este producto?')">
+
+                                <label for="nombre">Código del producto</label>
+                                <input type="text" name="codigo" class="form-control" placeholder="Código del producto" required>
+
+                                <label for="nombre">Nombre del producto</label>
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombre del producto" required>
+
+                                <label>Descripción del producto</label>
+                                <input type="text" name="descripcion" class="form-control" placeholder="Descripción del producto" required>
+
+                                <label>Categoría del producto</label>
+                                <input type="text" name="categoria" class="form-control" placeholder="Categoria" required>
+
+                                <label>Calificación del producto</label>
+                                <select name="calificacion" class="form-control" required>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+
+                                <label>Precio del producto</label>
+                                <input type="number" name="precio" class="form-control" step="0.01" placeholder="Precio en ₡" required>
+
+                                <label>Cantidad de Stock</label>
+                                <input type="number" name="stock" class="form-control" placeholder="stock" required >
+
+                                <label>Disponibilidad:</label>
+                                <select name="venta" class="form-control">
+                                    <option value="true">Si</option>
+                                    <option value="false">No</option>
+                                </select>
+
+                                <input type="submit" value="Crear">
+                                <!--input type="hidden" name="_method" value="Agregar" /-->
+                                <!--button type="submit" class="boton_delete">Eliminar</button-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript" th:src="@{/js/scriptProductos.js}"></script>
+
             </main>
         </div>
+        <footer>
+            <p class="texto-footer">© Proyecto Progra 4</p>
+        </footer>
     </body>
 </html>
 

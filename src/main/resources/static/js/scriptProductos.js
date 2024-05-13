@@ -1,3 +1,23 @@
+function popupCrearProducto(){
+    console.log("La función popupCrearProducto() se está ejecutando.");
+    var modalCrear = document.getElementById("modalCrearProducto");
+    var btnAgregar = document.querySelector(".add_new"); 
+    var spanCrear = document.querySelector("#modalCrearProducto .close");
+
+    btnAgregar.onclick = function (){
+        modalCrear.style.display = "block";
+    };
+    spanCrear.onclick = function (){
+        modalCrear.style.display= "none";
+    };
+    window.onclick = function (event){
+        if (event.target === modalCrear) {
+            modalCrear.style.display= "none";
+        }
+    };
+}
+
+/*
 document.addEventListener("DOMContentLoaded", function () {
     const openPopupBtn = document.getElementById("add_new");
     const closePopupBtn = document.getElementById("closeModalNuevo");
@@ -17,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             popup.style.display = "none";
         }
     });
-});
+});*/
 
 document.addEventListener("DOMContentLoaded", function () {
     var editButtons = document.querySelectorAll('.producto-editar');
@@ -109,4 +129,20 @@ function validarYBuscar() {
     }
 }
 
+function closeModal() {
+    const spanCerrar = document.querySelectorAll('.close');
+    spanCerrar.forEach(span => {
+        span.addEventListener('click', () => {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function (){
+    popupCrearProducto();
+    //validarYBuscar();
+    closeModal();
+});
 

@@ -2,6 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
+/**
 package cr.ac.una.proyecto_progra4.data;
 
 import cr.ac.una.proyecto_progra4.domain.Producto;
@@ -10,12 +12,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
-/**
+
+
  *
  * @author yeile
  */
+
+/**
 public class DataProductos extends ConectarBD {
 
     private static final String TB_PRODUCTO = "producto";
@@ -158,3 +162,4 @@ public class DataProductos extends ConectarBD {
     }
    
 }
+*/
