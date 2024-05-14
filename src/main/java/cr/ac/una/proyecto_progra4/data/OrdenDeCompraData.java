@@ -47,7 +47,7 @@ public class OrdenDeCompraData {
     public LinkedList<OrdenDeCompra> listaOrdenesDB() {
         LinkedList<OrdenDeCompra> listaOrdenes = new LinkedList();
         try {
-            String sql = "SELECT " + TBORDENESDECOMPRA + ".*, proveedor.nombreProveedor_Proveedor AS nombreProveedor FROM " + TBORDENESDECOMPRA + " INNER JOIN proveedor ON " + TBORDENESDECOMPRA + ".idProveedor_OrdenDeCompra = proveedor.id_Proveedor";
+            String sql = "SELECT " + TBORDENESDECOMPRA + ".*, proveedor.nombreProveedor_Proveedor AS nombreProveedor, pedido.codigo_Pedido AS 'Codigo_Pedido' FROM " + TBORDENESDECOMPRA + " INNER JOIN proveedor ON " + TBORDENESDECOMPRA + ".idProveedor_OrdenDeCompra = proveedor.id_Proveedor INNER JOIN pedido ON " + TBORDENESDECOMPRA + ".idPedido_OrdenDeCompra";
             Connection cn = conectar();
             PreparedStatement statement = cn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
@@ -56,6 +56,7 @@ public class OrdenDeCompraData {
                 orden = new OrdenDeCompra();
 
                 orden.setIdPedido(rs.getInt("idPedido_OrdenDeCompra"));
+                
                 orden.getIdProveedor().setIdProveedor(rs.getInt("idProveedor_OrdenDeCompra"));
                 orden.getIdProveedor().setNombreProveedor(rs.getString("nombreProveedor"));
                 orden.setFechaOrden(rs.getDate("fechaOrden_OrdenDeCompra"));

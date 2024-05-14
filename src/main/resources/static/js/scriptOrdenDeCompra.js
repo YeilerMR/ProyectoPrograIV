@@ -39,3 +39,27 @@ function submitForm(event) {
         }
     };
 }
+
+function validarFormularioCrear() {
+    var form = document.getElementById('form-crear');
+    var inputs = form.getElementsByTagName('input');
+    var mensajeContainer = document.getElementById('texto_error');
+
+    for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        if (input.value.trim() === '') {
+            var mensaje = "Por favor, completa todos los campos.";
+            mostrarMensaje(mensaje, mensajeContainer);
+            return false; // Detener la validación y no enviar el formulario
+        }
+    }
+    
+    // Si todos los campos están llenos, enviar el formulario
+    form.submit(); // Envía el formulario de manera programática
+    return true; // Devuelve true para indicar que el formulario se envió
+}
+
+
+function mostrarMensaje(mensaje, container) {
+    container.innerHTML = mensaje;
+}

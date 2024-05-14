@@ -124,7 +124,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="modal-content">
                             <span class="close">&times;</span>
                             <div class="container">
-                                <form class='crear-cliente-form' id="form-crear" th:action="@{/proveedores/registrar}" method="GET">
+                                <form class='crear-cliente-form' id="form-crear" th:action="@{/proveedores/registrar}" method="GET" onsubmit="validarFormularioCrear()">
                                     <label for="nombre">Nombre: </label>
                                     <input type="text" name="nombre" id="nombre" required>
                                     <br><br>
@@ -145,7 +145,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <br><br>
                                     <label for="informacionadicional">Información adicional: </label>
                                     <textarea name="informacionadicional" id="informacionadicional"></textarea>
-                                    <br><br>
+                                    <br>
+                                    <div id="mensaje_container">
+                                        <p id="texto_error"></p>
+                                    </div>
+                                    <br>
                                     <input type="submit" id="submitButton" value="Registrar Proveedor">
                                     <input type="button" value="Cancelar" onclick="cancelarCreacionButton()">
                                 </form>
