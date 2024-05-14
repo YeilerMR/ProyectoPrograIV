@@ -66,7 +66,7 @@ public class OredenDeCompraController {
     @GetMapping("editar")
     public String editar(Model model, @RequestParam("orden") String numeroReferencia) {
         for (OrdenDeCompra orden : ordenes) {
-            System.out.println(orden.getNumeroReferencia());
+            //System.out.println(orden.getNumeroReferencia());
             if (orden.getNumeroReferencia().equals(numeroReferencia)) {
                 model.addAttribute("orden", orden);
             }

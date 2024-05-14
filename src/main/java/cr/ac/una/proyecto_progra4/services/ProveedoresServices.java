@@ -67,4 +67,10 @@ public class ProveedoresServices implements IProveedoresService {
     public void eliminar(int id) {
         proveedorRep.deleteById(id);
     }
+
+    public void actualizarProveedor(Proveedor proveedorActualizado) {
+        Proveedor proveedorExistente = proveedorRep.findById(proveedorActualizado.getIdProveedor()).orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+
+        proveedorRep.save(proveedorExistente);
+    }
 }

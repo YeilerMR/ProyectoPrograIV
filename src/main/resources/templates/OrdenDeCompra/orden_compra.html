@@ -17,6 +17,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <script type="text/javascript" th:src="@{/js/scriptOrdenDeCompra.js}"></script>
         <link rel="stylesheet" th:href="@{/css/modal.css}" />
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
+        <link rel="stylesheet" th:href="@{/css/paginacion.css}" />
+        <link rel="stylesheet" th:href="@{/css/buscador.css}" />
     </head>
     <body onload="editarOrden()">
         <div class="wrapper">
@@ -102,9 +104,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <td th:text="${orden.getEstadoOrden}"></td>
                                 <td th:text="${orden.getNumeroReferencia}"></td>
                                 <td><!--<a th:href="@{/ordenes_compra/editar(orden=${orden.getNumeroReferencia})}">Editar</a>-->
-                                    <button type="button" class="producto-editar btn_editar" th:value="${orden.getNumeroReferencia}">Editar</button>
+                                    <button type="button" class="producto-editar btn_editar" th:value="${orden.getNumeroReferencia}"><i class="bi bi-pen"></i></button>
                                     <button class="btn_delete producto-eliminar">
-                                        <a style="text-decoration: none; color: white" th:href="@{/ordenes_compra/eliminar(orden=${orden.getNumeroReferencia})}">Eliminar</a>
+                                        <a style="text-decoration: none; color: white" th:href="@{/ordenes_compra/eliminar(orden=${orden.getNumeroReferencia})}"><i class="bi bi-trash"></i></a>
                                     </button>
                                 </td>
                             </tr>
@@ -112,7 +114,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
 
                     <br><br>
-                    <div th:if="${ordenes != null}">
+                    <div class="divPag" th:if="${ordenes != null}">
                         <!-- Enlaces de paginación -->
                         <a th:href="@{/ordenes_compra/listar(page=0)}">Primera Página</a>
                         <a th:href="@{/ordenes_compra/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
@@ -127,12 +129,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class='crear-cliente-form' th:action="@{/ordenes_compra/registrar}" method="GET">
+                            <form class='crear-cliente-form' id="form-crear" th:action="@{/ordenes_compra/registrar}" method="GET">
                                 <label for="combobox-proveedores">Proveedor: </label>
                                 <select name="combobox-proveedores" id="combobox-proveedores">
                                     <option>--Seleccionar--</option>
-                                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.getIdProveedor()}"
-                                            th:text="${proveedor.getNombreProveedor()}"></option>
+                                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.getIdProveedor()}" th:text="${proveedor.getNombreProveedor()}"></option>
                                 </select>
                                 <br><br>
                                 <label for="fecha-orden">Fecha de la orden: </label>
@@ -148,7 +149,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <input type="text" name="numero-referencia" id="numero-referencia" required>
                                 <br><br>
                                 <input type="submit" value="Generar Orden">
-                                <input type="button" value="Cancelar" onclick="window.location.href = './listar'">
+                                <input type="button" value="Cancelar" onclick="cancelarCreacionButton()">
                             </form>
                         </div>
                     </div>

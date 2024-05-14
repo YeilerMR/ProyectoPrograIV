@@ -17,3 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 });
+
+function cancelarCreacionButton(){
+    document.getElementById("form-crear").reset();
+    document.getElementById("myModalCrearCliente").style.display = "none";
+}
