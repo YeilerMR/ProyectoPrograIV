@@ -43,7 +43,7 @@ public class Producto {
     @Column(name = "stock_Producto")
     private int stock;
 
-    @Column(name = "cod_producto")
+    @Column(name = "codProducto")
     private String codigo;
 
     public Producto() {

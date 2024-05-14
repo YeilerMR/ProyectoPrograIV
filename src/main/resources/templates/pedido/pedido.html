@@ -26,11 +26,17 @@
 
                 <nav>
                     <ul class="menu">
-                        <li>
-                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/pedidos/listar'">
-                                <i class="bi bi-hand-index-thumb"></i> Pedidos
-                            </button>
-                        </li>
+                        <li><button id="todos" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Inicio</button></li>
+                        <li><button id="apartados" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Apartados</button></li>
+                        <li><button id="empleados" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Empleados</button></li>
+                        <li><button id="proveedores" class="boton-menu boton-categoria" onclick="window.location.href = '/proveedores/listar'"><i class="bi bi-hand-index-thumb"></i> Proveedores</button></li>
+                        <li><button id="ordenes_compra" class="boton-menu boton-categoria" onclick="window.location.href = '/ordenes_compra/listar'"><i class="bi bi-hand-index-thumb"></i> Ordenes de Compra</button></li>
+                        <li><button id="clientes" class="boton-menu boton-categoria" onclick="window.location.href = '/clientes/listar'"><i class="bi bi-hand-index-thumb"></i> Clientes</button></li>
+                        <li><button id="envios" class="boton-menu boton-categoria" onclick="window.location.href = '/envios/listar'"><i class="bi bi-hand-index-thumb"></i> Envios</button></li>
+                        <li><button id="productos" class="boton-menu boton-categoria" onclick="window.location.href = '/productos/listar'"><i class="bi bi-hand-index-thumb"></i> Productos</button></li>
+                        <li><button id="ofertas" class="boton-menu boton-categoria" onclick="window.location.href = '/ofertas/listar'"><i class="bi bi-hand-index-thumb"></i> Ofertas</button></li>
+                        <li><button id="facturas" class="boton-menu boton-categoria" onclick="window.location.href = '/facturas/listar'"><i class="bi bi-hand-index-thumb"></i> Facturas</button></li>
+                        <li><button id="facturas" class="boton-menu boton-categoria active" onclick="window.location.href = '/pedidos/listar'"><i class="bi bi-hand-index-thumb-fill"></i> Pedidos</button></li>
                     </ul>
                 </nav>
                 <footer>
@@ -75,7 +81,7 @@
                                     <div class="modal-content">
                                         <span class="close" >&times;</span>
                                         <!--FORM DE EDITAR -->
-                                        <form class="editar-cliente-form" method="get" th:action="@{./actualizar}">
+                                        <form class="editar-cliente-form" method="post" th:action="@{./actualizar}">
                                             <input type="hidden" th:name="id" th:value="${temp.id_pedido}" />
 
                                             <label>Código:</label>

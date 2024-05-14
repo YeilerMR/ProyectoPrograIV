@@ -5,6 +5,7 @@ function popupCrearProducto(){
     var spanCrear = document.querySelector("#modalCrearProducto .close");
 
     btnAgregar.onclick = function (){
+        event.preventDefault(); 
         modalCrear.style.display = "block";
     };
     spanCrear.onclick = function (){
