@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * @author GONZALO DORMOS RODRIGUEZ g.d.r
+ * @author GONZALO DORMOS RODRIGUEZ g.d.r Verificanco cambios
  */
 @Controller
 @RequestMapping("/pedidos")
