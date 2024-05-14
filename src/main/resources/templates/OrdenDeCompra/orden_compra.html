@@ -67,6 +67,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <li>
                             <button id="pantalones" class="boton-menu boton-categoria" onclick="window.location.href = '/facturas/listar'"><i class="bi bi-hand-index-thumb"></i> Facturas</button>
                         </li>
+                        <li>
+                            <button id="facturas" class="boton-menu boton-categoria" onclick="window.location.href = '/pedidos/listar'"><i class="bi bi-hand-index-thumb"></i> Pedidos</button>
+                        </li>
                     </ul>
                 </nav>
                 <footer>
@@ -91,6 +94,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="tb-container">
                         <table class="contenedor-productos table table-striped table-hover">
                             <tr>
+                                <th>Código de pedido</th>
                                 <th>Nombre Proveedor</th>
                                 <th>Fecha Orden</th>
                                 <th>Fecha Entrega</th>
@@ -99,6 +103,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <th>Opciones</th>
                             </tr>
                             <tr th:each="orden:${ordenes}">
+                                <td th:text="${orden.getIdPedido.getCodigo}"></td>
                                 <td th:text="${orden.getIdProveedor.getNombreProveedor}"></td>
                                 <td th:text="${orden.getFechaOrden}"></td>
                                 <td th:text="${orden.getFechaEntrega}"></td>
@@ -131,6 +136,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <span class="close">&times;</span>
                         <div class="container">
                             <form class='crear-cliente-form' id="form-crear" th:action="@{/ordenes_compra/registrar}" method="GET" onsubmit="validarFormularioCrear()">
+                                <label for="combobox-pedido">Pedido: </label>
+                                <select name="combobox-pedido" id="combobox-pedido">
+                                    <option>--Seleccionar--</option>
+                                    <option th:each="pedido : ${pedidos}" th:value="${pedido.getIdPedido()}" th:text="${pedido.getCodigo()}"></option>
+                                </select>
+                                <br><br>
                                 <label for="combobox-proveedores">Proveedor: </label>
                                 <select name="combobox-proveedores" id="combobox-proveedores">
                                     <option>--Seleccionar--</option>

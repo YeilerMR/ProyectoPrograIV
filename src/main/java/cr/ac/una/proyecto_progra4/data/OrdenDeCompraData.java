@@ -27,7 +27,7 @@ public class OrdenDeCompraData {
             PreparedStatement statement = cn.prepareStatement(sql);
 
             statement.setInt(1, 0);
-            statement.setInt(2, 0);
+            statement.setInt(2, ordenCompra.getIdPedido().getId_pedido());
             statement.setInt(3, ordenCompra.getIdProveedor().getIdProveedor());
             statement.setDate(4, ordenCompra.getFechaOrden());
             statement.setDate(5, ordenCompra.getFechaEntrega());
@@ -55,8 +55,8 @@ public class OrdenDeCompraData {
             while (rs.next()) {
                 orden = new OrdenDeCompra();
 
-                orden.setIdPedido(rs.getInt("idPedido_OrdenDeCompra"));
-                
+                orden.getIdPedido().setId_pedido(rs.getInt("idPedido_OrdenDeCompra"));
+                orden.getIdPedido().setCodigo(rs.getString("Codigo_Pedido"));
                 orden.getIdProveedor().setIdProveedor(rs.getInt("idProveedor_OrdenDeCompra"));
                 orden.getIdProveedor().setNombreProveedor(rs.getString("nombreProveedor"));
                 orden.setFechaOrden(rs.getDate("fechaOrden_OrdenDeCompra"));
@@ -83,7 +83,7 @@ public class OrdenDeCompraData {
             Connection cn = conectar();
             PreparedStatement statement = cn.prepareStatement(sql);
 
-            statement.setInt(1, orden.getIdPedido());
+            statement.setInt(1, orden.getIdPedido().getId_pedido());
             statement.setInt(2, orden.getIdProveedor().getIdProveedor());
             statement.setDate(3, orden.getFechaOrden());
             statement.setDate(4, orden.getFechaEntrega());
