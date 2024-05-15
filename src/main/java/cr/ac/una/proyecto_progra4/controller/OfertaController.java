@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,31 +34,39 @@ public class OfertaController {
 
     @Autowired
     private ProductoServices productoServices;
-    
+
     @GetMapping("/agregar")
     public String crearOferta() {
         return "ofertas/form_Ofertas";
     }
 
-    @GetMapping({"/guardar"})
-    public String save(@RequestParam("codigoOferta") String codigoOferta, @RequestParam("codigoProducto") String codigoProducto,
+    @PostMapping({"/guardar"})
+    public ResponseEntity<?> save(@RequestParam("codigoOferta") String codigoOferta, @RequestParam("codigoProducto") String codigoProducto,
             @RequestParam("tipoOferta") String tipoOferta, @RequestParam("descuentoOferta") int descuentoOferta,
             @RequestParam("fechaInicio") Date fechaInicio, @RequestParam("fechaFin") Date fechaFin,
             @RequestParam("estado") boolean estado) {
         System.out.println("Fecha inicio" + fechaInicio);
         Oferta oferta = new Oferta(codigoOferta, codigoProducto, tipoOferta, descuentoOferta, fechaInicio, fechaFin, estado);
         OfertaServices.agregarOferta(oferta);
-        return "redirect:/ofertas/listar";
+        return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Oferta agregada exitosamente\"}");
     }
 
     @GetMapping("/listar")
-    public String mostrarLista(Model model, Model model2) {
+    public String mostrarLista(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
         LinkedList<Oferta> ofertas = OfertaServices.getOfertas();
+        LinkedList<Oferta> OfertasPagina = new OfertaServices().obtenerRegistrosPaginados(page, pageSize, ofertas);
         //LinkedList<Producto> productos= ProductoServices.getProductos();
-         List<Producto> productos = productoServices.getProductos();
+        List<Producto> productos = productoServices.getProductos();
+
+        int ultimaPagina = (int) Math.ceil((double) ofertas.size() / pageSize) - 1;
+
         //System.out.println("estoy en mostrarlistaOfertas");
-        model.addAttribute("ofertas", ofertas);
-        model2.addAttribute("productos", productos);
+        model.addAttribute("ultimaPagina", ultimaPagina);
+        model.addAttribute("ofertas", OfertasPagina);
+        model.addAttribute("productos", productos);
+        model.addAttribute("page", page);
+        model.addAttribute("pageSize", pageSize);
+
         return "ofertas/form_Ofertas";
     }
 
@@ -74,21 +83,21 @@ public class OfertaController {
         }
         return "redirect:/ofertas/listar";
     }
-    
+
     @PostMapping("/actualizar")
-    public String actualizar(@ModelAttribute Oferta oferta) {
-        System.out.println("Metodo Actualizar\nCodigoOferta: "+oferta.getCodigoOferta()+"\nCodigoProducto: "+oferta.getCodigoProducto());
-        
+    public ResponseEntity<?> actualizar(@ModelAttribute Oferta oferta) {
+        System.out.println("Metodo Actualizar\nCodigoOferta: " + oferta.getCodigoOferta() + "\nCodigoProducto: " + oferta.getCodigoProducto());
+
         //Oferta oferta= new Oferta(codigoOferta, codigoProducto, tipoOferta, descuentoOferta, fechaInicio, fechaFin, estado);
         //oferta.setCodigoOferta(codigoOferta);
         OfertaServices.modificar(oferta);
-        return "redirect:/ofertas/listar"; 
+        return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Oferta modificada exitosamente\"}");
     }
-    
-    @GetMapping("/eliminarOferta")
-    public String eliminarOferta(@RequestParam("codigoOferta") String codigo) {
+
+    @GetMapping("/eliminar")
+    public String eliminarCliente(@RequestParam("codigoOferta") String codigo) {
         System.out.println("Entra a eliminarOferta");
-        boolean elimino= OfertaServices.eliminar(codigo);
+        boolean elimino = OfertaServices.eliminar(codigo);
         if (elimino) {
             return "redirect:/ofertas/listar";
         } else {
