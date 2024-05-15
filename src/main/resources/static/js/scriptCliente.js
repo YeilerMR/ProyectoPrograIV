@@ -41,6 +41,53 @@ function validarEdicionCliente(selector, mensajeConfirmacion, urlRedireccion) {
         });
     });
 }
+// Función para validar la eliminación de un objeto cliente
+function validarEliminacionCliente(selector, mensajeExito, mensajeError) {
+    var deleteButtons = document.querySelectorAll(selector);
+    deleteButtons.forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            var url = this.querySelector('a').getAttribute('href');
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¡No podrás revertir esto!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar la solicitud de eliminación
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Mostrar el mensaje de éxito después de la redirección
+                                    mostrarToastConfirmacion(mensajeExito);
+                                    setTimeout(function () {
+                                        window.location.href = '/clientes/listar';
+                                    }, 1000); // 1000 milisegundos de retraso
+                                } else {
+                                    // Mostrar el mensaje de error
+                                    mostrarToastError(data.message || mensajeError);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                mostrarToastError('Ocurrió un error inesperado');
+                            });
+                }
+            });
+        });
+    });
+}
 // Función PopUp Crear Nuevo Cliente
 function popupCrearCliente() {
     var modalCrear = document.getElementById("myModalCrearCliente");
@@ -209,7 +256,7 @@ function validarYBuscar() {
 }
 
 function initializeEventHandlers() {
-    validarEliminacion('.producto-eliminar', 'Cliente eliminado exitosamente');
+    validarEliminacionCliente('.producto-eliminar', 'Cliente eliminado exitosamente', 'No se pudo eliminar porque está asociado a un envío');
     validarEdicionCliente('.editar-cliente-form', '¿Estás seguro de continuar con la edición de este cliente?', '/clientes/listar');
     validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este cliente?', '/clientes/listar');
     popupCrearCliente();

@@ -6,7 +6,9 @@ package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Cliente;
 import cr.ac.una.proyecto_progra4.services.ClienteServices;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -79,15 +82,17 @@ public class ClienteController {
     public ResponseEntity<?> actualizarCliente(@ModelAttribute("clienteItem") Cliente cliente) {
         return ResponseEntity.ok().body(ClienteServices.verificarPreModificar(cliente));
     }
-
+    
     @GetMapping("/eliminar")
-    public String eliminarCliente(@RequestParam("idUsuario_Cliente") int idUsuario_Cliente) {
+    @ResponseBody
+    public Map<String, Object> eliminarCliente(@RequestParam("idUsuario_Cliente") int idUsuario_Cliente) {
         boolean eliminadoExitosamente = ClienteServices.eliminar(idUsuario_Cliente);
-        if (eliminadoExitosamente) {
-            return "redirect:/clientes/listar";
-        } else {
-            return "clientes";
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", eliminadoExitosamente);
+        if (!eliminadoExitosamente) {
+            response.put("message", "No se pudo eliminar porque está asociado a un envío");
         }
+        return response;
     }
 
 }

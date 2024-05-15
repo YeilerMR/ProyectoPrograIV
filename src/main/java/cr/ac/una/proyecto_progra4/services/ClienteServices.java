@@ -7,6 +7,7 @@ package cr.ac.una.proyecto_progra4.services;
 import cr.ac.una.proyecto_progra4.data.DataCliente;
 import cr.ac.una.proyecto_progra4.domain.Cliente;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,6 +72,9 @@ public class ClienteServices {
     public static boolean eliminar(int idUsuario_Cliente) {
         try {
             return DataCliente.eliminar(idUsuario_Cliente);
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            Logger.getLogger(ClienteServices.class.getName()).log(Level.WARNING, "Atención, el cliente está presente en un envío por lo cual no se puede eliminar!");
+            return false;
         } catch (SQLException ex) {
             Logger.getLogger(ClienteServices.class.getName()).log(Level.SEVERE, null, ex);
             return false;
