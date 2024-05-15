@@ -62,7 +62,12 @@ public class Pedido{
 //    @OneToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name ="id_Facturacion")
     private int factura;
-
+    
+    private Producto producto;
+    private Empleado empleado;
+    private Factura facturaObjt;
+    
+    
     public Pedido() {
     }
 
@@ -78,6 +83,30 @@ public class Pedido{
         this.id_producto = id_producto;
         this.cantidad = cantidad;
         this.factura = factura;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public Factura getFacturaObjt() {
+        return facturaObjt;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+    public void setFacturaObjt(Factura facturaObjt) {
+        this.facturaObjt = facturaObjt;
     }
 
     public void setId_pedido(int id_pedido) {

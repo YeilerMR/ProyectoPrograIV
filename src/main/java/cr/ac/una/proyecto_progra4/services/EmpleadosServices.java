@@ -81,6 +81,7 @@ public class EmpleadosServices {
     public static Empleado getEmpleadoPorID(int idUsuario_Empleado) {
         for (Empleado empleado : getEmpleados()) {
             if (empleado.getId() == (idUsuario_Empleado)) {
+                System.out.println("Obtuvo emepleado");
                 return empleado;
             }
         }
