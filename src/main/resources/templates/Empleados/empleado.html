@@ -112,7 +112,7 @@
 
                 <!-- PARTE DE FORM POPUP CREAR EMPLEADO -->
                 <!-- Formulario PopUp Crear EMPLEADO-->
-                <div type="hidden" id="myModalCrearCliente" class="modal">
+                <div type="hidden" id="myModalCrearEmpleado" class="modal">
                     <!-- Modal content -->
                     <div class="modal-content">
                         <span class="close">&times;</span>
@@ -156,11 +156,11 @@
                 </div>
 
                 <!-- Modal de edición -->
-                <div id="modalEditar" class="modal">
+                <div id="modalEditarEmpleado" class="modal">
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class="editar-Cliente-form" method="post" th:action="@{/empleados/actualizar}">
+                            <form class="editar-empleado-form" method="post" th:action="@{/empleados/actualizar}">
                                 <input type="hidden" name="id" id="idEmpleado">
                                 <div class="form-input">
                                     <label for="nombre">Nombre</label>
@@ -200,7 +200,7 @@
                 </div>
 
                 <!-- IMPORTS Y SCRIPTS -->
-                <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
+                <script type="text/javascript" th:src="@{/js/scriptEmpleado.js}"></script>
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
             </main>

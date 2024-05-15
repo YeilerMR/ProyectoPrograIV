@@ -81,7 +81,6 @@ public class EmpleadosServices {
     public static Empleado getEmpleadoPorID(int idUsuario_Empleado) {
         for (Empleado empleado : getEmpleados()) {
             if (empleado.getId() == (idUsuario_Empleado)) {
-                System.out.println("Obtuvo emepleado");
                 return empleado;
             }
         }
@@ -148,7 +147,7 @@ public class EmpleadosServices {
         } else {
             boolean agregadoExitosamente = EmpleadosServices.agregar(empleado);
             if (agregadoExitosamente) {
-                return "empleados/listar";
+                return "{\"success\": true, \"message\": \"Empleado agregado exitosamente\"}";
             } else {
                 return "{\"success\": false, \"message\": \"Error al agregar el empleado\"}";
             }

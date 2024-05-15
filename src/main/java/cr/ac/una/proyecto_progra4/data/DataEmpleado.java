@@ -118,7 +118,7 @@ public class DataEmpleado {
 
             String sqlUsuario = "DELETE FROM " + TBUSUARIOS + " WHERE id_Usuario = ?";
             PreparedStatement statementUsuario = conexion.prepareStatement(sqlUsuario);
-            statementEmpleado.setInt(1, idUsuario_Empleado);
+            statementUsuario.setInt(1, idUsuario_Empleado);
             eliminado = eliminado && (statementUsuario.executeUpdate() > 0);
             statementUsuario.close();
         } finally {
@@ -128,4 +128,3 @@ public class DataEmpleado {
     }
 
 }    
-

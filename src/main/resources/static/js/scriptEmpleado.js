@@ -1,3 +1,46 @@
+// Función para validar la modificación de un objeto
+function validarEdicionEmpleado(selector, mensajeConfirmacion, urlRedireccion) {
+    var editForm = document.querySelector(selector);
+    editForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: mensajeConfirmacion,
+            text: '¡No podrás revertir esto!',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Realizar una petición AJAX o enviar el formulario de forma asíncrona
+                fetch(editForm.action, {
+                    method: 'POST',
+                    body: new FormData(editForm)
+                })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Si el proceso de moficar el cliente fue exitoso, mostrar mensaje de éxito
+                                mostrarToastConfirmacion(data.message);
+                                // Redirigir después de un pequeño retraso
+                                setTimeout(function () {
+                                    window.location.href = urlRedireccion;
+                                }, 1000); // 1000 milisegundos de retraso
+                            } else {
+                                // Si el proceso de modificar el cliente falló, mostrar mensaje de error
+                                mostrarToastError(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+            }
+        });
+    });
+}
 // Función PopUp Crear Nuevo Empleado
 function popupCrearEmpleado() {
     var modalCrear = document.getElementById("myModalCrearEmpleado");
@@ -22,22 +65,22 @@ function popupCrearEmpleado() {
 
 // Función PopUp Actualizar Empleado
 function popupActualizarEmpleado() {
-    var editButtons = document.querySelectorAll('.producto-editar');
-    var closeButtons = document.querySelectorAll('.modal .close');
+    var editButtons = document.querySelectorAll('.producto-editar'); // Selecciona los elementos que abrirán el modal
+    var closeButtons = document.querySelectorAll('#modalEditarEmpleado .close'); // Selecciona los botones de cierre del modal
 
-    // Función para abrir los popups
+    // Función para abrir los modals
     editButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var popup = this.closest('tr').querySelector('.modal');
-            popup.style.display = 'block';
+            var modal = document.getElementById('modalEditarEmpleado');
+            modal.style.display = 'block';
         };
     });
 
-    // Función para cerrar los popups
+    // Función para cerrar los modals
     closeButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var popup = this.closest('.modal');
-            popup.style.display = 'none';
+            var modal = document.getElementById('modalEditarEmpleado');
+            modal.style.display = 'none';
         };
     });
 }
@@ -110,17 +153,17 @@ function handleEmpleadoEdit() {
             const credencial = boton.closest('tr').querySelector('td:nth-child(7)').textContent === 'Empleado' ? 0 : 1;
 
             // Rellenar los campos del formulario con los datos del empleado
-            document.querySelector('#modalEditar #idEmpleado').value = idEmpleado;
-            document.querySelector('#modalEditar input[name="nombre"]').value = nombre;
-            document.querySelector('#modalEditar input[name="apellidos"]').value = apellidos;
-            document.querySelector('#modalEditar input[name="cedula"]').value = cedula;
-            document.querySelector('#modalEditar input[name="email"]').value = email;
-            document.querySelector('#modalEditar input[name="password"]').value = password;
-            document.querySelector('#modalEditar input[name="telefono"]').value = telefono;
-            document.querySelector('#modalEditar select[name="credencial"]').value = credencial;
+            document.querySelector('#modalEditarEmpleado #idEmpleado').value = idEmpleado;
+            document.querySelector('#modalEditarEmpleado input[name="nombre"]').value = nombre;
+            document.querySelector('#modalEditarEmpleado input[name="apellidos"]').value = apellidos;
+            document.querySelector('#modalEditarEmpleado input[name="cedula"]').value = cedula;
+            document.querySelector('#modalEditarEmpleado input[name="email"]').value = email;
+            document.querySelector('#modalEditarEmpleado input[name="password"]').value = password;
+            document.querySelector('#modalEditarEmpleado input[name="telefono"]').value = telefono;
+            document.querySelector('#modalEditarEmpleado select[name="credencial"]').value = credencial;
 
             // Mostrar el modal de edición
-            document.querySelector('#modalEditar').style.display = 'block';
+            document.querySelector('#modalEditarEmpleado').style.display = 'block';
         });
     });
 }
@@ -166,9 +209,10 @@ function validarYBuscar() {
 }
 
 function initializeEventHandlers() {
+    
     validarEliminacion('.producto-eliminar', 'Empleado eliminado exitosamente');
-    validarEdicion('.editar-cliente-form', '¿Estás seguro de continuar con la edición de este empleado?', '/empleados/listar');
-    validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este empleado?', '/empleados/listar');
+    validarEdicionEmpleado('.editar-empleado-form', '¿Estás seguro de continuar con la edición de este empleado?', '/empleados/listar');
+    validarCreacion('.crear-empleado-form', '¿Estás seguro de continuar con la creación de este empleado?', '/empleados/listar');
     popupCrearEmpleado();
     popupActualizarEmpleado();
     togglePasswordInTable();
@@ -181,4 +225,3 @@ function initializeEventHandlers() {
 document.addEventListener("DOMContentLoaded", function () {
     initializeEventHandlers();
 });
-
