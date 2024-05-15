@@ -57,7 +57,7 @@
                     <table class="contenedor-productos">
                         <tr>
                             <th>Código de envio</th>
-                            <th>Pedido</th>
+                            <th>Información del Pedido</th>
                             <th>Información del Cliente</th>
                             <th>Dirección</th>
                             <th>Fecha de Envío</th>
@@ -67,7 +67,18 @@
                         </tr>
                         <tr th:each="envio: ${envios}">
                             <td th:text="${envio.codigoEnvio}"></td>
-                            <td th:text="${envio.idPedido}"></td>
+
+                            <td>
+                                <span th:each="pedido : ${pedidosListaTotal}">
+                                    <th:block th:if="${pedido.id_pedido == envio.idPedido}">
+                                        Código: <span th:text="' ' + ${pedido.codigo}"></span><br>
+                                        Fecha: <span th:text="' ' + ${pedido.fecha}"></span><br>
+                                        Dirección: <span th:text="' ' + ${pedido.direccion_pedido}"></span><br>
+                                        <th:block th:break="${true}"></th:block>
+                                    </th:block>
+                                </span>
+                            </td>
+
                             <td>
                                 <span th:each="cliente : ${clientes}">
                                     <th:block th:if="${cliente.idCliente == envio.idCliente}">
