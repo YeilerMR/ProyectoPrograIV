@@ -140,7 +140,7 @@
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class='crear-cliente-form' onsubmit="validarFormulario(event)" method="get" th:action="@{./guardar}">
+                            <form class='crear-cliente-form' onsubmit="validarFormulario(event)" method="post" th:action="@{./guardar}">
                                 <label>Código:</label>
                                 <input type="text" id ="codigo" name="codigo" placeholder= "Ingrese el código"><br>
 
