@@ -26,7 +26,7 @@
                 </header>
                 <nav>
                     <ul class="menu">
-                        <li><button id="todos" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Inicio</button></li>
+                        <li><button id="todos" class="boton-menu boton-categoria" onclick="window.location.href = '/index'"><i class="bi bi-hand-index-thumb"></i> Inicio</button></li>
                         <li><button id="apartados" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Apartados</button></li>
                         <li><button id="empleados" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Empleados</button></li>
                         <li><button id="proveedores" class="boton-menu boton-categoria" onclick="window.location.href = '/proveedores/listar'"><i class="bi bi-hand-index-thumb"></i> Proveedores</button></li>
@@ -37,16 +37,13 @@
                         <li><button id="ofertas" class="boton-menu boton-categoria" onclick="window.location.href = '/ofertas/listar'"><i class="bi bi-hand-index-thumb"></i> Ofertas</button></li>
                         <li><button id="facturas" class="boton-menu boton-categoria " onclick="window.location.href = '/facturas/listar'"><i class="bi bi-hand-index-thumb"></i> Facturas</button></li>
                         <li><button id="pedidos" class="boton-menu boton-categoria" onclick="window.location.href = '/pedidos/listar'"><i class="bi bi-hand-index-thumb"></i> Pedidos</button></li>
-                        <li>
-                            <button id="facturas" class="boton-menu boton-categoria" onclick="window.location.href = '/pedidos/listar'"><i class="bi bi-hand-index-thumb"></i> Pedidos</button>
-                        </li>
                     </ul>
                 </nav>
             </aside>
             <main>
                 <h1>Lista de Envíos</h1>
                 <!-- PARTE DE BÚSQUEDA DE ALGÚN ENVÍO MEDIANTE CÉDULA -->
-                 <div class="buscador">
+                <div class="buscador">
                     <div class="input-container">
                         <form class="formBusqueda" th:action="@{/envios/buscar}" method="get">
                             <input id="textoBuscar" name="textoBuscar" placeholder="Buscar por código de envío">
@@ -128,14 +125,11 @@
                                 <input type="text" id="codigoEnvio_Envio" name="codigoEnvio_Envio" placeholder="Código Envio" required>
 
                                 <label for="idPedido_Envio">Pedido</label>
-                                <input type="text" id="idPedido_Envio" name="idPedido_Envio" placeholder="Pedido" required>
 
-                                <!--
                                 <select name="idPedido_Envio">
-                                    <option th:each="pedido : ${clientesListaTotal}" th:value="${cliente.id}" 
+                                    <option th:each="pedido : ${pedidosListaTotal}" th:value="${pedido.id_pedido}" 
                                             th:text="${pedido.codigo}"></option>                                    
                                 </select>
-                                -->
 
                                 <label for="idCliente_Envio">Cliente</label>
 
@@ -175,14 +169,10 @@
                                     <input type="text" id="codigoEnvio" name="codigoEnvio" placeholder="Código de Envío" required>
 
                                     <label for="idPedido_Envio">Pedido</label>
-                                    <input type="text" id="idPedido" name="idPedido" placeholder="Pedido" required>
-
-                                    <!--
                                     <select name="idPedido_Envio">
-                                        <option th:each="pedido : ${clientesListaTotal}" th:value="${cliente.id}" 
+                                        <option th:each="pedido : ${pedidosListaTotal}" th:value="${pedido.id_pedido}" 
                                                 th:text="${pedido.codigo}"></option>                                    
                                     </select>
-                                    -->
 
                                     <label for="idCliente_Envio">Cliente</label>
 

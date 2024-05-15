@@ -6,8 +6,10 @@ package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Cliente;
 import cr.ac.una.proyecto_progra4.domain.Envio;
+import cr.ac.una.proyecto_progra4.domain.Pedido;
 import cr.ac.una.proyecto_progra4.services.ClienteServices;
 import cr.ac.una.proyecto_progra4.services.EnvioServices;
+import cr.ac.una.proyecto_progra4.services.PedidoServices;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,7 +80,7 @@ public class EnvioController {
         LinkedList<Cliente> clientesConEnvios = ClienteServices.getClientesConEnvios();
         LinkedList<Cliente> clientesListaTotal = ClienteServices.getClientes();
         List<Envio> enviosPagina = envioServices.obtenerRegistrosPaginados(page, pageSize);
-        //LinkedList<Pedido> pedidosListaTotal = PedidoServices.getPedidos();
+        LinkedList<Pedido> pedidosListaTotal = new PedidoServices().lista_Pedido();
 
         int ultimaPagina = (int) Math.ceil((double) envios.size() / pageSize) - 1;
 
@@ -88,7 +90,7 @@ public class EnvioController {
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("clientes", clientesConEnvios);
         model.addAttribute("clientesListaTotal", clientesListaTotal);
-        //model.addAttribute("pedidosListaTotal", clientesListaTotal);
+        model.addAttribute("pedidosListaTotal", pedidosListaTotal);
 
         return "envios/envio";
     }
