@@ -40,7 +40,7 @@ function submitForm(event) {
     };
 }
 
-function validarFormularioCrear() {
+function validarFormularioCrearOrden() {
     var form = document.getElementById('form-crear');
     var inputs = form.getElementsByTagName('input');
     var mensajeContainer = document.getElementById('texto_error');
@@ -55,7 +55,9 @@ function validarFormularioCrear() {
     }
     
     // Si todos los campos están llenos, enviar el formulario
-    form.submit(); // Envía el formulario de manera programática
+    setTimeout(function() {
+        form.submit(); // Envía el formulario de manera programática
+    }, 1000);
     return true; // Devuelve true para indicar que el formulario se envió
 }
 

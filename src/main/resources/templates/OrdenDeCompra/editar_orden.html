@@ -22,6 +22,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <div class="form-container">
                 <form th:action="@{/ordenes_compra/editar_orden}" method="GET" id="editForm" onsubmit="submitForm(event)">
                     <div class="form-group">
+                        <label for="combobox-pedidos">Pedido</label>
+                        <select class="form-control" name="combobox-pedidos" id="combobox-pedidos">
+                            <option th:each="pedido : ${pedidos}" th:value="${pedido.getId_pedido()}"
+                                    th:text="${pedido.getCodigo()}"
+                                    th:selected="${pedido.getId_pedido() == orden.getIdPedido().getId_pedido()}" required></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="combobox-proveedores">Proveedor:</label>
                         <select class="form-control" name="combobox-proveedores" id="combobox-proveedores">
                             <option th:each="proveedor : ${proveedores}" th:value="${proveedor.getIdProveedor()}"

@@ -111,6 +111,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <td th:text="${orden.getNumeroReferencia}"></td>
                                 <td><!--<a th:href="@{/ordenes_compra/editar(orden=${orden.getNumeroReferencia})}">Editar</a>-->
                                     <button type="button" class="producto-editar btn_editar" th:value="${orden.getNumeroReferencia}"><i class="bi bi-pen"></i></button>
+                                    <br>
+                                    -----
+                                    <br>
                                     <button class="btn_delete producto-eliminar">
                                         <a style="text-decoration: none; color: white" th:href="@{/ordenes_compra/eliminar(orden=${orden.getNumeroReferencia})}"><i class="bi bi-trash"></i></a>
                                     </button>
@@ -135,11 +138,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class='crear-cliente-form' id="form-crear" th:action="@{/ordenes_compra/registrar}" method="GET" onsubmit="validarFormularioCrear()">
+                            <form class='crear-cliente-form' id="form-crear" th:action="@{/ordenes_compra/registrar}" method="GET" onsubmit="validarFormularioCrearOrden()">
                                 <label for="combobox-pedido">Pedido: </label>
                                 <select name="combobox-pedido" id="combobox-pedido">
                                     <option>--Seleccionar--</option>
-                                    <option th:each="pedido : ${pedidos}" th:value="${pedido.getIdPedido()}" th:text="${pedido.getCodigo()}"></option>
+                                    <option th:each="pedido : ${pedidos}" th:value="${pedido.getId_pedido()}" th:text="${pedido.getCodigo()}"></option>
                                 </select>
                                 <br><br>
                                 <label for="combobox-proveedores">Proveedor: </label>
