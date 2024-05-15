@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
         <script text="text/javascript" th:src="@{/js/validaciones.js}"></script>
-        <link rel="stylesheet" th:href="@{/main.css}">
+        <link rel="stylesheet" th:href="@{/css/main.css}">
         <link rel="stylesheet" th:href="@{/css/modal.css}">
 
     </head>
@@ -86,19 +86,19 @@
                                             <input type="hidden" th:name="id" th:value="${temp.id_factura}" />
 
                                             <label>Código:</label>
-                                            <input type="text" id ="codigo" name="codigo" th:value ="${temp.codigo_factura}" placeholder= "Ingrese el código"><br>
+                                            <input required type="text" id ="codigo" name="codigo" th:value ="${temp.codigo_factura}" placeholder= "Ingrese el código"><br>
 
                                             <label>Fecha:</label>
-                                            <input type="date" id="fecha" name="fecha" th:value="${#dates.format(temp.fecha, 'yyyy-MM-dd')}" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
+                                            <input required type="date" id="fecha" name="fecha" th:value="${#dates.format(temp.fecha, 'yyyy-MM-dd')}" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
 
                                             <label>Precio total:</label>
-                                            <input type="number" id="precio" name="precio" min="0" th:value ="${temp.precio_total}"  placeholder="Ingrese el precio total"><br>
+                                            <input required="" type="number" id="precio" name="precio" min="0" th:value ="${temp.precio_total}"  placeholder="Ingrese el precio total"><br>
 
                                             <label>Descuento:</label>
-                                            <input type="number" id="descuento" name="descuento" min="0" th:value ="${temp.descuento}" placeholder="Ingrese el descuento"><br>
+                                            <input required type="number" id="descuento" name="descuento" min="0" th:value ="${temp.descuento}" placeholder="Ingrese el descuento"><br>
 
                                             <label>Impuesto:</label>
-                                            <input type="number" id="impuesto" name="impuesto" min="0" th:value ="${temp.Impuesto}" placeholder="Ingrese el impuesto"><br>
+                                            <input required type="number" id="impuesto" name="impuesto" min="0" th:value ="${temp.Impuesto}" placeholder="Ingrese el impuesto"><br>
 
                                             <label>Método de pago:</label>
                                             <select name="metodo" placeholder ="Seleccione el metodo de pago">
@@ -107,7 +107,7 @@
                                                 <option th:value="'transaccion'" th:selected="${temp.metodo_pago eq 'transaccion'}">Transacción</option>
                                             </select><br>
                                             <label>Observaciones:</label>
-                                            <input type="text" id="observacion" name="observacion" th:value ="${temp.observacion}" placeholder="Ingrese la descripción"><br>
+                                            <input required type="text" id="observacion" name="observacion" th:value ="${temp.observacion}" placeholder="Ingrese la descripción"><br>
                                             <input type="submit" value="Enviar">
                                         </form>
                                     </div>
@@ -142,19 +142,19 @@
                         <div class="container">
                             <form class='crear-cliente-form' onsubmit="validarFormulario(event)" method="post" th:action="@{./guardar}">
                                 <label>Código:</label>
-                                <input type="text" id ="codigo" name="codigo" placeholder= "Ingrese el código"><br>
+                                <input required type="text" id ="codigo" name="codigo" placeholder= "Ingrese el código"><br>
 
                                 <label>Fecha:</label>
-                                <input type="date" id="fecha" name="fecha" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
+                                <input required type="date" id="fecha" name="fecha" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
 
                                 <label>Precio total:</label>
-                                <input type="number" id="precio" name="precio" min="0" placeholder="Ingrese el precio total"><br>
+                                <input required type="number" id="precio" name="precio" min="0" placeholder="Ingrese el precio total"><br>
 
                                 <label>Descuento:</label>
-                                <input type="number" id="descuento" name="descuento" min="0" placeholder="Ingrese el descuento"><br>
+                                <input required type="number" id="descuento" name="descuento" min="0" placeholder="Ingrese el descuento"><br>
 
                                 <label>Impuesto:</label>
-                                <input type="number" id="impuesto" name="impuesto" min="0" placeholder="Ingrese el impuesto"><br>
+                                <input required type="number" id="impuesto" name="impuesto" min="0" placeholder="Ingrese el impuesto"><br>
 
                                 <label>Método de pago:</label>
                                 <select name="metodo" placeholder ="Seleccione el metodo de pago">
@@ -163,7 +163,7 @@
                                     <option th:value="'transaccion'">Transacción</option>
                                 </select><br>
                                 <label>Observaciones:</label>
-                                <input type="text" id="observacion" name="observacion" placeholder="Ingrese la descripción"><br>
+                                <input required type="text" id="observacion" name="observacion" placeholder="Ingrese la descripción"><br>
                                 <input type="submit" value="Añadir">
                             </form>
                         </div>
@@ -181,55 +181,6 @@
                         validarEdicion('.editar-cliente-form', '¿Estás seguro de continuar con la edición de esta factura?', './listar');
                         validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de esta factura?', './listar');
                     });
-
-                    /*/ Obtener referencias a los botones y los modales utilizando los IDs
-                     var modalBtn1 = document.getElementById("abrir_edicion");
-                     var modalBtn2 = document.getElementById("añadir_factura");
-                     var modal1 = document.getElementById("editar");
-                     var modal2 = document.getElementById("crear");
-                     
-                     // Agregar event listeners para cada botón
-                     modalBtn1.addEventListener("click", function () {
-                     modal1.style.display = "block"; // Mostrar el modal 1
-                     });
-                     
-                     modalBtn2.addEventListener("click", function () {
-                     modal2.style.display = "block"; // Mostrar el modal 2
-                     });
-                     
-                     // Agregar event listener para cerrar los modales
-                     var closeButtons = document.querySelectorAll(".close");
-                     closeButtons.forEach(function (button) {
-                     button.addEventListener("click", function () {
-                     // Ocultar el modal al hacer clic en el botón de cierre
-                     var modal = button.parentElement.parentElement; // Obtener el modal contenedor
-                     modal.style.display = "none";
-                     });
-                     });*/
-
-                    /**function mostrarModal(id_editar) {
-                     document.getElementById(id_editar).style.display = "block";
-                     }
-                     function ocultarModal(id_editar) {
-                     document.getElementById(id_editar).style.display = "none";
-                     }
-                     document.getElementById("abrir_edicion").addEventListener("click", () => {
-                     mostrarModal("editar");
-                     });
-                     let cerrar = document.querySelector(".close");
-                     cerrar.addEventListener("click", () => {
-                     ocultarModal("editar");
-                     });
-                     //+++++++++++++++++++
-                     document.getElementById("añadir_factura").addEventListener("click", () => {
-                     mostrarModal("crear");
-                     });
-                     let cerrar2 = document.querySelector(".close");
-                     cerrar2.addEventListener("click", () => {
-                     ocultarModal("crear");
-                     });
-                     **/
-
                 </script>
 
 

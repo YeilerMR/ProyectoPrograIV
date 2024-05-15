@@ -5,9 +5,8 @@ import cr.ac.una.proyecto_progra4.data.DataPedido;
 import cr.ac.una.proyecto_progra4.domain.Pedido;
 import java.util.LinkedList;
 
-
 /**
- * @author GONZALO DORMOS RODRIGUEZ g.d.r
+ * @author GONZALO DORMOS RODRIGUEZ
  */
 public class PedidoServices {
 
@@ -21,12 +20,50 @@ public class PedidoServices {
         return new DataPedido().Eliminar(p);
     }
 
-    public boolean insertar_Pedido(Pedido pedido) {
-        return new DataPedido().Insertar(pedido);
+    public String insertar_Pedido(Pedido pedido) {
+        LinkedList<Pedido> lista = lista_Pedido();
+
+        if (lista != null) {
+            for (Pedido p : lista) {
+                if (p.getCodigo().equals(pedido.getCodigo())) {
+                    return "{\"success\": false, \"message\": \"¡El codigo de pedido ya existe!\"}";
+                }
+            }
+            if (new DataPedido().Insertar(pedido)) {
+                return "{\"success\": true, \"message\": \"¡Pedido guardado exitosamente!\"}";
+            }
+            return "{\"success\": false, \"message\": \"¡No se guardo el pedido!\"}";
+        } else {
+            if (new DataPedido().Insertar(pedido)) {
+                return "{\"success\": true, \"message\": \"¡Pedido guardado exitosamente!\"}";
+            }
+            return "{\"success\": false, \"message\": \"¡No se guardo el pedido!\"}";
+
+        }
     }
 
-    public boolean modificar_Pedido(Pedido pedido) {
-        return new DataPedido().Actualizar(pedido);
+    public String modificar_Pedido(Pedido pedido) {
+        
+        LinkedList<Pedido> lista = lista_Pedido();
+
+        if (lista != null) {
+            for (Pedido p : lista) {
+                if (p.getCodigo().equals(pedido.getCodigo()) && p.getId_pedido() != pedido.getId_pedido()) {
+                    return "{\"success\": false, \"message\": \"¡El codigo de pedido ya existe!\"}";
+                }
+            }
+            if (new DataPedido().Actualizar(pedido)) {
+                return "{\"success\": true, \"message\": \"¡Pedido actualizado exitosamente!\"}";
+            }
+            return "{\"success\": false, \"message\": \"¡No se actualizo el pedido!\"}";
+        } else {
+            if (new DataPedido().Actualizar(pedido)) {
+                return "{\"success\": true, \"message\": \"¡Pedido actualizado exitosamente!\"}";
+            }
+            return "{\"success\": false, \"message\": \"¡No se actualizo el pedido!\"}";
+
+        }
+        //return new DataPedido().Actualizar(pedido);
     }
 
     public LinkedList<Pedido> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina, LinkedList<Pedido> pedidos) {
@@ -38,7 +75,7 @@ public class PedidoServices {
                 registrosPagina.add(pedidos.get(i));
             }
         }
-        return (registrosPagina.isEmpty())?null:registrosPagina;
+        return (registrosPagina.isEmpty()) ? null : registrosPagina;
     }
 
 }

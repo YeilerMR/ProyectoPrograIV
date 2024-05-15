@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * @author GONZALO DORMOS RODRIGUEZ g.d.r Verificanco cambios
+ * @author GONZALO DORMOS RODRIGUEZ
  */
 @Controller
 @RequestMapping("/pedidos")
@@ -105,13 +105,7 @@ public class controllerPedidos {
         p.setId_producto(id_producto);
         p.setCantidad(cantidad);
         p.setFactura(id_factura);
-
-        String texto="{\"success\": true, \"message\": \"¡Pedido actualizado exitosamente!\"}";
-        if(!new PedidoServices().modificar_Pedido(p)){
-            texto="{\"success\": false, \"message\": \"¡No se actualizo el pedido!\"}";
-        }
-        
-        return ResponseEntity.ok().body(texto);
+        return ResponseEntity.ok().body(new PedidoServices().modificar_Pedido(p));
     }
 
     @GetMapping("eliminar")
@@ -152,11 +146,8 @@ public class controllerPedidos {
         p.setCantidad(cantidad);
         p.setId_producto(id_producto);
         p.setFactura(id_factura);
-        String texto="{\"success\": true, \"message\": \"¡Pedido agregado exitosamente!\"}";
-        if(!new PedidoServices().insertar_Pedido(p)){
-            texto= "{\"success\": false, \"message\": \"¡Pedido no agregado!\"}";
-        }
-        return ResponseEntity.ok().body(texto);
+
+        return ResponseEntity.ok().body(new PedidoServices().insertar_Pedido(p));
     }
 
 }

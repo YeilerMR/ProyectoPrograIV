@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">        
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
         <script text="text/javascript" th:src="@{/js/validaciones.js}"></script>
-        <link rel="stylesheet" th:href="@{/main.css}">
+        <link rel="stylesheet" th:href="@{/css/main.css}">
         <link rel="stylesheet" th:href="@{/css/modal.css}">
     </head>
     <body>
@@ -50,6 +50,7 @@
                 <div th:if="${listaP != null}">
                     <table class="contenedor-productos">
                         <tr>
+                            <th>Código pedido</th>
                             <th>Empleado</th>
                             <th>Estado pedido</th>
                             <th>Fecha</th>
@@ -60,6 +61,7 @@
                             <th>Acciones.</th>
                         </tr>
                         <tr th:each="temp:${listaP}">
+                            <td th:text="${temp.codigo}"></td>
                             <td th:text="${temp.id_empleado}"><a th:href = "">Ver más.</a></td>
                             <td th:text="${temp.estado_pedido}"></td>
                             <td th:text="${temp.fecha}"></td>
@@ -85,42 +87,42 @@
                                             <input type="hidden" th:name="id" th:value="${temp.id_pedido}" />
 
                                             <label>Código:</label>
-                                            <input type="text" id ="codigo" name="codigo" th:value ="${temp.codigo}" placeholder= "Ingrese el código"><br>
+                                            <input required type="text" id ="codigo" name="codigo" th:value ="${temp.codigo}" placeholder= "Ingrese el código"><br>
 
                                             <label>Empledo:</label>
-                                            <input name ="id_empleado" type="number" th:value="${temp.id_empleado}">
+                                            <input required name ="id_empleado" type="number" th:value="${temp.id_empleado}">
                                             <!--select name="id_empleado" placeholder ="Seleccione el empleado">
                                                 <option th:each="listaE:${clientes}" th:value="${listaE.idCliente}" th:text="${listaE.nombre}"></option>
                                                 <!--option th:value="'efectivo'" th:selected="${temp.metodo_pago eq 'efectivo'}">Efectivo</option-->
                                             <!--/select-->
 
                                             <label>Estado:</label>
-                                            <input type="text" name="estado" th:value="${temp.estado_pedido}"><br>
+                                            <input required type="text" name="estado" th:value="${temp.estado_pedido}"><br>
 
                                             <label>Fecha:</label>
-                                            <input type="date" id="fecha" name="fecha" th:value="${#dates.format(temp.fecha, 'yyyy-MM-dd')}" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
+                                            <input required type="date" id="fecha" name="fecha" th:value="${#dates.format(temp.fecha, 'yyyy-MM-dd')}" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
 
                                             <label>Provincia:</label>
-                                            <input type="text" name="provincia" th:value="${temp.provincia}" placeholder="Ingrese la provincia"><br>
+                                            <input required type="text" name="provincia" th:value="${temp.provincia}" placeholder="Ingrese la provincia"><br>
 
                                             <label>Canton:</label>
-                                            <input type="text" name="canton" th:value="${temp.canton}" placeholder="Ingrese el canton"><br>
+                                            <input required type="text" name="canton" th:value="${temp.canton}" placeholder="Ingrese el canton"><br>
 
                                             <label>Direccion:</label>
-                                            <input type="text" name="direccion" th:value="${temp.direccion_pedido}" placeholder="Ingrese la direccion"><br>
+                                            <input required type="text" name="direccion" th:value="${temp.direccion_pedido}" placeholder="Ingrese la direccion"><br>
 
                                             <label>Producto:</label>
-                                            <select name="id_p" placeholder ="Seleccione el producto">
+                                            <select required name="id_p" placeholder ="Seleccione el producto">
                                                 <option th:each="listaPr:${productos}" th:value="${listaPr.id}" th:text="${listaPr.nombre}"></option>
                                                 <!--option th:value="'efectivo'" th:selected="${temp.metodo_pago eq 'efectivo'}">Efectivo</option-->
                                             </select>
 
                                             <label>Cantidad:</label>
-                                            <input type="number" id="cantidad" name="cantidad" min="0" th:value ="${temp.cantidad}"  placeholder="Ingrese la cantidad"><br>
+                                            <input required type="number" id="cantidad" name="cantidad" min="0" th:value ="${temp.cantidad}"  placeholder="Ingrese la cantidad"><br>
 
 
                                             <label>Factura:</label>
-                                            <select name="id_f" placeholder ="Seleccione la factura">
+                                            <select required name="id_f" placeholder ="Seleccione la factura">
                                                 <option th:each="listaF:${facturas}" th:value="${listaF.id_factura}" th:text="${listaF.codigo_factura}"></option>   
                                             </select>
                                             <input type="submit" value="Enviar">
@@ -164,39 +166,39 @@
                                 <input type="text" id ="codigo" name="codigo" placeholder= "Ingrese el código"><br>
 
                                 <label>Empledo:</label>
-                                <input name ="id_empleado" type="number">
+                                <input required name ="id_empleado" type="number">
                                 <!--select name="id_empleado" placeholder ="Seleccione el empleado">
                                     <option th:each="listaE:${clientes}" th:value="${listaE.idCliente}" th:text="${listaE.nombre}"></option>
                           
                                 </select -->
 
                                 <label>Estado:</label>
-                                <input type="text" name="estado"><br>
+                                <input required type="text" name="estado"><br>
 
                                 <label>Fecha:</label>
-                                <input type="date" id="fecha" name="fecha" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
+                                <input required type="date" id="fecha" name="fecha" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
 
                                 <label>Provincia:</label>
-                                <input type="text" name="provincia" placeholder="Ingrese la provincia"><br>
+                                <input required type="text" name="provincia" placeholder="Ingrese la provincia"><br>
 
                                 <label>Canton:</label>
-                                <input type="text" name="canton" placeholder="Ingrese el canton"><br>
+                                <input required type="text" name="canton" placeholder="Ingrese el canton"><br>
 
                                 <label>Direccion:</label>
-                                <input type="text" name="direccion" placeholder="Ingrese la direccion"><br>
+                                <input required type="text" name="direccion" placeholder="Ingrese la direccion"><br>
 
                                 <label>Producto:</label>
-                                <select name="id_p" placeholder ="Seleccione el producto">
+                                <select required name="id_p" placeholder ="Seleccione el producto">
                                     <option th:each="listaPr:${productos}" th:value="${listaPr.id}" th:text="${listaPr.nombre}"></option>
                                     <!--option th:value="'efectivo'" th:selected="${temp.metodo_pago eq 'efectivo'}">Efectivo</option-->
                                 </select>
 
                                 <label>Cantidad:</label>
-                                <input type="number" id="cantidad" name="cantidad" min="0" placeholder="Ingrese la cantidad"><br>
+                                <input required type="number" id="cantidad" name="cantidad" min="0" placeholder="Ingrese la cantidad"><br>
 
 
                                 <label>Factura:</label>
-                                <select name="id_f" placeholder ="Seleccione la factura">
+                                <select required name="id_f" placeholder ="Seleccione la factura">
                                     <option th:each="listaF:${facturas}" th:value="${listaF.id_factura}" th:text="${listaF.codigo_factura}"></option>
                                     <!--option th:value="'efectivo'" th:selected="${temp.metodo_pago eq 'efectivo'}">Efectivo</option-->
                                 </select>
