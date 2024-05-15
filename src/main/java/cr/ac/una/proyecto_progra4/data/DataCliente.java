@@ -68,7 +68,7 @@ public class DataCliente {
     // Tabla Cliente. Para esto se utiliza un INNER JOIN 
     public static LinkedList<Cliente> getClientes() throws SQLException {
         LinkedList<Cliente> clientes = new LinkedList<>();
-        String sql = "SELECT u.*, c.idUsuario_Cliente FROM " + TBUSUARIOS + " u "
+        String sql = "SELECT u.*, c.id_Cliente, c.idUsuario_Cliente FROM " + TBUSUARIOS + " u "
                 + "INNER JOIN " + TBCLIENTES + " c ON u.id_usuario = c.idUsuario_Cliente";
         Connection conexion = conectar();
         PreparedStatement statement = conexion.prepareStatement(sql);
@@ -77,6 +77,7 @@ public class DataCliente {
         while (result.next()) {
             cliente = new Cliente();
             cliente.setId(result.getInt("idUsuario_Cliente"));
+            cliente.setIdCliente(result.getInt("id_Cliente"));
             cliente.setNombre(result.getString("nombre_Usuario"));
             cliente.setApellidos(result.getString("apellidos_Usuario"));
             cliente.setEmail(result.getString("email_Usuario"));

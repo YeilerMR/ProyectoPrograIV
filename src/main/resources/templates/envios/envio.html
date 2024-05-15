@@ -144,8 +144,8 @@
 
                                 <label for="idCliente_Envio">Cliente</label>
 
-                                <select name="idCliente_Envio">
-                                    <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.id}" 
+                                <select name="idCliente">
+                                    <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.idCliente}" 
                                             th:text="${cliente.cedula + ' ' + cliente.nombre + ' ' + cliente.apellidos}"></option>                                    
                                 </select>
 
@@ -188,7 +188,7 @@
                                     <label for="idCliente_Envio">Cliente</label>
 
                                     <select name="idCliente">
-                                        <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.id}" 
+                                        <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.idCliente}" 
                                                 th:text="${cliente.cedula + ' ' + cliente.nombre + ' ' + cliente.apellidos}"></option>                                    
                                     </select>
 
