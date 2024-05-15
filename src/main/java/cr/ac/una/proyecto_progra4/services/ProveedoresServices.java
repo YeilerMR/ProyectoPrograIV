@@ -54,8 +54,9 @@ public class ProveedoresServices implements IProveedoresService {
     private ProveedorRepository proveedorRep;
 
     @Override
-    public void guardar(Proveedor proveedor) {
+    public String guardar(Proveedor proveedor) {
         proveedorRep.save(proveedor);
+        return "{\"success\": true, \"message\": \"¡Proveedor agregado exitosamente!\"}";
     }
 
     @Override

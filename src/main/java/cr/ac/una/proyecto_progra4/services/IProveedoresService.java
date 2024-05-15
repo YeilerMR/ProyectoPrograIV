@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IProveedoresService {
 
-    public void guardar(Proveedor proveedor);
+    public String guardar(Proveedor proveedor);
 
     public List<Proveedor> getProveedores();
 

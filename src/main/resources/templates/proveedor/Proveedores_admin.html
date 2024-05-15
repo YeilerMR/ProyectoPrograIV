@@ -147,7 +147,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class="crear-cliente-form" id="form-crear" th:action="@{/proveedores/registrar}" method="GET" onsubmit="return validarFormularioCrear(event)">
+                            <form class="crear-cliente-form" id="form-crear" th:action="@{/proveedores/registrar}" method="POST">
                                 <label for="nombre">Nombre: </label>
                                 <input type="text" name="nombre" id="nombre" required>
                                 <br><br>
@@ -180,6 +180,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
                 </div>
                 <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
+                <script>
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        validarCreacionProveedor('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este proveedor?', './listar')
+                    });
+                </script>
                 <div th:if="${proveedores.empty}">
                     <p>No se encontraron registros para mostrar.</p>
                 </div>
