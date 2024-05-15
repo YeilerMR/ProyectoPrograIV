@@ -63,13 +63,13 @@
                         </tr>
                         <tr th:each="temp:${listaP}">
                             <td th:text="${temp.codigo}"></td>
-                            <td th:text="${temp.id_empleado}"></td>
+                            <td th:text="${temp.empleado.nombre}"></td>
                             <td th:text="${temp.estado_pedido}"></td>
                             <td th:text="${temp.fecha}"></td>
                             <td th:text="${temp.direccion_pedido}+','+${temp.canton}+','+${temp.provincia}"></td>
-                            <td th:text="${temp.id_producto}"></td>
+                            <td th:text="${temp.producto.nombre}"></td>
                             <td th:text="${temp.cantidad}"></td>
-                            <td th:text="${temp.factura}"></td>
+                            <td th:text="${temp.facturaObjt.codigo_factura}"></td>
                             <td>   
                                 <button class="producto-eliminar" style="display: inline;">
                                     <a th:href="@{./eliminar(id = ${temp.id_pedido})}" style="text-decoration: none;">Eliminar</a>

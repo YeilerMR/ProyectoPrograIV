@@ -58,7 +58,7 @@ public class DataEmpleado {
     
     public static LinkedList<Empleado> getEmpleados() throws SQLException {
         LinkedList<Empleado> empleados = new LinkedList<>();
-        String sql = "SELECT u.*, c.idUsuario_Empleado FROM " + TBUSUARIOS + " u "
+        String sql = "SELECT u.*,c.*, c.idUsuario_Empleado FROM " + TBUSUARIOS + " u "
                 + "INNER JOIN " + TBEMPLEADOS + " c ON u.id_usuario = c.idUsuario_Empleado";
         Connection conexion = conectar();
         PreparedStatement statement = conexion.prepareStatement(sql);
@@ -66,6 +66,7 @@ public class DataEmpleado {
         Empleado empleado;
         while (result.next()) {
             empleado = new Empleado();
+            empleado.setIdEmpleado(result.getInt("id_Empleado"));
             empleado.setId(result.getInt("idUsuario_Empleado"));
             empleado.setNombre(result.getString("nombre_Usuario"));
             empleado.setApellidos(result.getString("apellidos_Usuario"));

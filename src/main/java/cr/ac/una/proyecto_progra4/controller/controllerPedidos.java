@@ -1,17 +1,17 @@
 package cr.ac.una.proyecto_progra4.controller;
 
-import cr.ac.una.proyecto_progra4.domain.Cliente;
+
+
 import cr.ac.una.proyecto_progra4.domain.Empleado;
 import cr.ac.una.proyecto_progra4.domain.Factura;
 import cr.ac.una.proyecto_progra4.domain.Pedido;
 import cr.ac.una.proyecto_progra4.domain.Producto;
-import static cr.ac.una.proyecto_progra4.services.ClienteServices.getClientes;
-import static cr.ac.una.proyecto_progra4.services.EmpleadosServices.getEmpleadoPorID;
 import static cr.ac.una.proyecto_progra4.services.EmpleadosServices.getEmpleados;
 import cr.ac.una.proyecto_progra4.services.IFacturaServices;
 import cr.ac.una.proyecto_progra4.services.IProductoServices;
 import cr.ac.una.proyecto_progra4.services.PedidoServices;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -45,7 +45,7 @@ public class controllerPedidos {
     //@Autowired
     // private IPedidoServices iPedido;
     @GetMapping("listar")
-    public String listaProveedores(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
+    public String listaProveedores(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) throws SQLException {
         LinkedList<Pedido> auxiliar = new PedidoServices().lista_Pedido();
 
         //Listas necesarias para los forms
@@ -56,30 +56,36 @@ public class controllerPedidos {
         LinkedList<Pedido> pedidos = new PedidoServices().obtenerRegistrosPaginados(page, pageSize, auxiliar);
         int ultimaPagina = (auxiliar != null) ? ((int) Math.ceil((double) auxiliar.size() / pageSize) - 1) : 0;
         
-//        // LinkedList<Cliente> clientes = new LinkedList<>();
-//        if (pedidos != null) {
-//            for (int i = 0; i < pedidos.size(); i++) {
-//                
-//                print("Empleado "+getEmpleadoPorID(pedidos.get(i).getId_empleado()).getNombre());
-//                print("Factura  "+ifs.getFacturaById(pedidos.get(i).getFactura()).getCodigo_factura());
-//                
-//                //pedidos.get(i).setEmpleado(getEmpleadoPorID(pedidos.get(i).getId_empleado()));
-//                if (productos != null) {
-//                    for (Producto p1 : productos) {
-//                        if (p1.getId() == pedidos.get(i).getId_producto()) {
-//                            print("producto agregado");
-//                            pedidos.get(i).setProducto(p1);
-//                            break;
-//                        }
-//                    }
-//                }
-//                //pedidos.get(i).setFacturaObjt(ifs.getFacturaById(pedidos.get(i).getFactura()));
-//                
-//                Pedido p1 = pedidos.get(i);
-//                //print("Pedido "+p1.getEmpleado().getNombre()+" "+p1.getFacturaObjt().getCodigo_factura()+" "+p1.getProducto().getNombre());
-//                
-//            }
-//        }
+        // LinkedList<Cliente> clientes = new LinkedList<>();
+        if (pedidos != null) {
+            for (int i = 0; i < pedidos.size(); i++) {
+                if(empleados!=null){
+                        for(Empleado e: empleados){
+                            if(e.getIdEmpleado() == pedidos.get(i).getId_empleado()){
+                                print("Empleado allado");
+                                 pedidos.get(i).setEmpleado(e);
+                                 break;
+                            }
+                        }
+                }else{
+                    print("empleados es nulo");
+                }
+                if (productos != null) {
+                    for (Producto p1 : productos) {
+                        if (p1.getId() == pedidos.get(i).getId_producto()) {
+                            print("producto agregado");
+                            pedidos.get(i).setProducto(p1);
+                            break;
+                        }
+                    }
+                }
+                pedidos.get(i).setFacturaObjt(ifs.getFacturaById(pedidos.get(i).getFactura()));
+                
+                Pedido p1 = pedidos.get(i);
+                //print("Pedido "+p1.getEmpleado().getNombre()+" "+p1.getFacturaObjt().getCodigo_factura()+" "+p1.getProducto().getNombre());
+                
+            }
+        }
         
 //        for(Pedido p1: pedidos){
 //            print("Pedido "+p1.getEmpleado().getNombre()+" "+p1.getFacturaObjt().getCodigo_factura()+" "+p1.getProducto().getNombre());
