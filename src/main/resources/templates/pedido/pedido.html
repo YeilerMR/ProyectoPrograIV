@@ -90,14 +90,14 @@
                                             <input required type="text" id ="codigo" name="codigo" th:value ="${temp.codigo}" placeholder= "Ingrese el código"><br>
 
                                             <label>Empledo:</label>
-                                            <input required name ="id_empleado" type="number" th:value="${temp.id_empleado}">
+                                            <input required name ="id_empleado" type="number" th:value="${temp.id_empleado}" placeholder="Ingrese la foreign key del empleado">
                                             <!--select name="id_empleado" placeholder ="Seleccione el empleado">
                                                 <option th:each="listaE:${clientes}" th:value="${listaE.idCliente}" th:text="${listaE.nombre}"></option>
                                                 <!--option th:value="'efectivo'" th:selected="${temp.metodo_pago eq 'efectivo'}">Efectivo</option-->
                                             <!--/select-->
 
                                             <label>Estado:</label>
-                                            <input required type="text" name="estado" th:value="${temp.estado_pedido}"><br>
+                                            <input required type="text" name="estado" th:value="${temp.estado_pedido}" placeholder="Ingrese el estado"><br>
 
                                             <label>Fecha:</label>
                                             <input required type="date" id="fecha" name="fecha" th:value="${#dates.format(temp.fecha, 'yyyy-MM-dd')}" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
@@ -166,14 +166,14 @@
                                 <input type="text" id ="codigo" name="codigo" placeholder= "Ingrese el código"><br>
 
                                 <label>Empledo:</label>
-                                <input required name ="id_empleado" type="number">
+                                <input required name ="id_empleado" type="number" placeholder="Ingrese la foreign key del empleado">
                                 <!--select name="id_empleado" placeholder ="Seleccione el empleado">
                                     <option th:each="listaE:${clientes}" th:value="${listaE.idCliente}" th:text="${listaE.nombre}"></option>
                           
                                 </select -->
 
                                 <label>Estado:</label>
-                                <input required type="text" name="estado"><br>
+                                <input required type="text" name="estado" placeholder="Ingrese el estado"><br>
 
                                 <label>Fecha:</label>
                                 <input required type="date" id="fecha" name="fecha" placeholder="Ingrese la fecha" th:max="${#dates.format(fechaActual,'yyyy-MM-dd')}" /><br>
