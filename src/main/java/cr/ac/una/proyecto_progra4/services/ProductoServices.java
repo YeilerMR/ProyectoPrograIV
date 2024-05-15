@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 /**
  *
@@ -107,6 +109,12 @@ public class ProductoServices implements IProductoServices{
             resultado= false;
         }
        return resultado;
+    }
+
+    @Override
+    public List<Producto> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina) {
+        Page<Producto> paginaProductos = productoRep.findAll(PageRequest.of(numeroPagina, tamanoPagina));
+        return paginaProductos.getContent();
     }
     //Este metodo es para verificar si el producto
     //esta correcto para agregar a BD

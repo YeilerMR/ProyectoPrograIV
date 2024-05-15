@@ -69,11 +69,20 @@ public class ProductoController {
     }
      */
     @GetMapping("/listar")
-    public String mostrarLista(Model model) {
+    public String mostrarLista(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int pageSize) {
         //LinkedList<Producto> productos = ProductoServices.getProductos();
         List<Producto> productos = productoServices.getProductos();
-        //System.out.println("estoy en mostrar lista" + productos.get(0).getNombre());
-        model.addAttribute("productos", productos);
+        List<Producto> productosPagina = productoServices.obtenerRegistrosPaginados(page, pageSize);
+        
+        int ultimaPagina= (int)Math.ceil((double) productos.size() / pageSize) - 1; 
+        
+        model.addAttribute("ultimaPagina",ultimaPagina);
+        model.addAttribute("productos", productosPagina);
+        model.addAttribute("page", page);
+        model.addAttribute("pageSize",pageSize);
+        
+        //model.addAttribute("productos", productos);
+        
         return "productos/form_Productos";
     }
 
