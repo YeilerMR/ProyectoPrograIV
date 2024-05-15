@@ -40,7 +40,9 @@ function submitForm(event) {
     };
 }
 
-function validarFormularioCrearOrden() {
+function validarFormularioCrear(event) {
+    event.preventDefault(); // Evitar que el evento por defecto se ejecute
+
     var form = document.getElementById('form-crear');
     var inputs = form.getElementsByTagName('input');
     var mensajeContainer = document.getElementById('texto_error');
@@ -53,12 +55,13 @@ function validarFormularioCrearOrden() {
             return false; // Detener la validación y no enviar el formulario
         }
     }
-    
-    // Si todos los campos están llenos, enviar el formulario
+
+    // Si todos los campos están llenos, enviar el formulario después de 3 segundos
     setTimeout(function() {
         form.submit(); // Envía el formulario de manera programática
-    }, 1000);
-    return true; // Devuelve true para indicar que el formulario se envió
+    }, 2000); // 3000 milisegundos = 3 segundos
+
+    return true; // Devuelve true para indicar que el formulario se enviará después del retraso
 }
 
 
