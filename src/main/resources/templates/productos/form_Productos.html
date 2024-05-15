@@ -21,6 +21,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
     </head>
+
     <body>
         <div class="wrapper">
             <aside>
@@ -86,13 +87,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <!--p>Productos</p-->
                         <!--form class="form_producto" method="get"-->
                         <form class="formBusqueda" method="get">
-                            <input id="textoBuscar" type="text" placeholder="Buscar Productos" required>
-                            <!--id="buscar"-->
-                            <button type="button" class="searchBtn" onclick="validarYBuscar()">Buscar</button>
 
+                            <input id="textoBuscar" type="text" placeholder="Buscar Productos" required>                           
+                            <button type="button" class="searchBtn" onclick="validarYBuscar()">Buscar</button>
                             <button class="add_new">Crear nuevo</button>
+
                         </form>
-                        <button id="mostrarTodo" type="button" th:onclick="window.location.href='/productos/listar'">Mostrar Todos</button>
+                        <!--button id="mostrarTodo" type="button" th:onclick="window.location.href='/productos/listar'">Mostrar Todos</button-->
                     </div>
                 </div>
 
@@ -131,10 +132,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
-
+                                <br>
+                                ----------
+                                <br>
                                 <button class="producto-editar" style="display: inline;">
                                     <i class="bi bi-pen"></i>
                                 </button>
+
+                                <!-- MODAL DE EDITAR -->
                                 <div class="modal">
                                     <div class="modal-content">
                                         <span class="close">&times;</span>
@@ -171,29 +176,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <option value="true"  th:selected="${producto.disponible} ? 'selected' : ''">Si</option>
                                                     <option value="false" th:selected="${!producto.disponible} ? 'selected' : ''">No</option>
                                                 </select>
-                                                <!--label>Disponibilidad:</label>
-                                                <select name="venta" class="form-control" required th:value="${producto.disponible}">
-                                                    <option value="true"  th:selected="${producto.disponible}">Si</option>
-                                                    <option value="false" th:selected="${!producto.disponible}">No</option>
-                                                </select--->
 
                                                 <input type="submit" value="Editar" class="boton">
-                                                <!--input type="hidden" name="_method" value="Agregar" /-->
-                                                <!--button type="submit" class="boton_delete">Eliminar</button-->
+
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                    </table>       
+                    </table>  
 
                     <!-- !!!!PAGINACION!!!! -->
+                    <div class="divPag" th:if="${productos != null}">
+                        <!-- Enlaces de paginación -->
+                        <a th:href="@{/productos/listar(page=0)}">Primera Página</a>
+                        <a th:href="@{/productos/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
+                        <span th:text="${page + 1}"></span>
+                        <a th:href="@{/productos/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente Página</a>
+                        <a th:href="@{/productos/listar(page=${ultimaPagina})}" th:unless="${productos.size() < pageSize}">Última Página</a>
+                    </div>
                 </div>
                 <div th:if="${productos.empty}">
                     <p>No se encontraron registros para mostrar.</p>
                 </div>
-
+                <!-- Formulario PopUp Crear Producto-->
                 <div type="hidden" id="modalCrearProducto" class="modal">
                     <div class="modal-content">
                         <span id="closeModalNuevo" class="close">&times;</span>
@@ -228,7 +235,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <input type="number" name="stock" class="form-control" placeholder="stock" required >
 
                                 <label>Disponibilidad:</label>
-                                <select name="venta" class="form-control">
+                                <select name="disponible" class="form-control">
                                     <option value="true">Si</option>
                                     <option value="false">No</option>
                                 </select>
@@ -240,9 +247,54 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </div>
                     </div>
                 </div>
+                <!-- MODAL DE EDITAR >
+                <div class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div class="container">
+                            <form th:action="@{/productos/actualizar}" method="post" onsubmit="return confirm('¿Estas seguro de querer actualizar este producto?')">
+                                <input type="hidden" name="codigo" th:value="${producto.codigo}">
+
+                                <label for="nombre">Nombre</label>
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombre del producto" required th:value="${producto.nombre}">
+
+                                <label>Descripción:</label>
+                                <input type="text" name="descripcion" class="form-control" placeholder="Descripción del producto" required th:value="${producto.descripcion}">
+
+                                <label>Categoría:</label>
+                                <input type="text" name="categoria" class="form-control" placeholder="Categoria" required th:value="${producto.categoria}">
+
+                                <label>Calificación:</label>
+                                <select name="calificacion" class="form-control" required th:value="${producto.calificacion}">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+
+                                <label>Precio:</label>
+                                <input type="number" name="precio" class="form-control" step="0.01" placeholder="Precio en ₡" required th:value="${producto.precio}">
+
+                                <label>Cantidad de Stock</label>
+                                <input type="number" name="stock" class="form-control" placeholder="stock" required th:value="${producto.stock}">
+
+                                <label>Disponibilidad:</label>
+                                <select name="disponible" class="form-control" required th:value="${producto.disponible}">
+                                    <option value="true"  th:selected="${producto.disponible} ? 'selected' : ''">Si</option>
+                                    <option value="false" th:selected="${!producto.disponible} ? 'selected' : ''">No</option>
+                                </select>
+                               
+                                <input type="submit" value="Editar" class="boton">
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div-->
 
                 <script type="text/javascript" th:src="@{/js/scriptProductos.js}"></script>
-
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
             </main>
         </div>
         <footer>

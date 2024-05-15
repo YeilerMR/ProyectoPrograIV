@@ -124,9 +124,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <div class="modal-content">
                                     <span class="close">&times;</span>
                                     <div class="container">
-                                        <form th:action="@{/productos/actualizar}" method="post" onsubmit="return confirm('¿Estas seguro de querer actualizar este producto?')">
+                                        <form th:action="@{/ofertas/actualizar}" method="post" onsubmit="return confirm('¿Estas seguro de querer actualizar este producto?')">
 
-                                            <input type="hidden" name="codigo" th:value="${oferta.codigoOferta}">
+                                            <input type="hidden" name="codigoOferta" th:value="${oferta.codigoOferta}">
 
                                             <label for="nombre">Codigo del producto</label>
                                             <select name="codigoProducto">

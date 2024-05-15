@@ -26,4 +26,6 @@ public interface IProductoServices {
     public boolean modificar(Producto producto);
     //Elimina un producto por medio del cod
     public boolean eliminar(String codigo);
+    //Metodo de paginacion de productos
+    public List<Producto> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina);
 }
