@@ -87,6 +87,7 @@ public class ServicesFactura implements IFacturaServices {
     public Factura getFacturaById(int id) {
         Optional<Factura> factura =factRp.findById(id);
         if(factura.isPresent()){
+            System.out.println("Obtuvo factura");
             return factura.get();
         }else{
             return null;

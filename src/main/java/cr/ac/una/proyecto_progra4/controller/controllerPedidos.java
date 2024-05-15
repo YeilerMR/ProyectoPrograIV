@@ -1,10 +1,13 @@
 package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Cliente;
+import cr.ac.una.proyecto_progra4.domain.Empleado;
 import cr.ac.una.proyecto_progra4.domain.Factura;
 import cr.ac.una.proyecto_progra4.domain.Pedido;
 import cr.ac.una.proyecto_progra4.domain.Producto;
 import static cr.ac.una.proyecto_progra4.services.ClienteServices.getClientes;
+import static cr.ac.una.proyecto_progra4.services.EmpleadosServices.getEmpleadoPorID;
+import static cr.ac.una.proyecto_progra4.services.EmpleadosServices.getEmpleados;
 import cr.ac.una.proyecto_progra4.services.IFacturaServices;
 import cr.ac.una.proyecto_progra4.services.IProductoServices;
 import cr.ac.una.proyecto_progra4.services.PedidoServices;
@@ -48,25 +51,46 @@ public class controllerPedidos {
         //Listas necesarias para los forms
         List<Producto> productos = ips.getProductos();
         List<Factura> facturas = ifs.getFacturas();
-        List<Cliente> cliente_aux = getClientes();
+        List<Empleado> empleados = getEmpleados();
 
         LinkedList<Pedido> pedidos = new PedidoServices().obtenerRegistrosPaginados(page, pageSize, auxiliar);
         int ultimaPagina = (auxiliar != null) ? ((int) Math.ceil((double) auxiliar.size() / pageSize) - 1) : 0;
-
-        for(Factura f : facturas){
-            print("Facturas : " +f.getCodigo_factura());
-        }
         
-
-        LinkedList<Cliente> clientes = new LinkedList<>();
-
-        for (Cliente c : cliente_aux) {
-            print("Cliente id : "+c.getIdCliente());
-        }
-
+//        // LinkedList<Cliente> clientes = new LinkedList<>();
+//        if (pedidos != null) {
+//            for (int i = 0; i < pedidos.size(); i++) {
+//                
+//                print("Empleado "+getEmpleadoPorID(pedidos.get(i).getId_empleado()).getNombre());
+//                print("Factura  "+ifs.getFacturaById(pedidos.get(i).getFactura()).getCodigo_factura());
+//                
+//                //pedidos.get(i).setEmpleado(getEmpleadoPorID(pedidos.get(i).getId_empleado()));
+//                if (productos != null) {
+//                    for (Producto p1 : productos) {
+//                        if (p1.getId() == pedidos.get(i).getId_producto()) {
+//                            print("producto agregado");
+//                            pedidos.get(i).setProducto(p1);
+//                            break;
+//                        }
+//                    }
+//                }
+//                //pedidos.get(i).setFacturaObjt(ifs.getFacturaById(pedidos.get(i).getFactura()));
+//                
+//                Pedido p1 = pedidos.get(i);
+//                //print("Pedido "+p1.getEmpleado().getNombre()+" "+p1.getFacturaObjt().getCodigo_factura()+" "+p1.getProducto().getNombre());
+//                
+//            }
+//        }
+        
+//        for(Pedido p1: pedidos){
+//            print("Pedido "+p1.getEmpleado().getNombre()+" "+p1.getFacturaObjt().getCodigo_factura()+" "+p1.getProducto().getNombre());
+//        }
+//        
+        
+        
+ 
         model.addAttribute("productos", productos);
         model.addAttribute("facturas", facturas);
-        model.addAttribute("clientes", cliente_aux);
+        model.addAttribute("empleados", empleados);
 
         LocalDate localDate = LocalDate.now();
         Date fechaActual = Date.valueOf(localDate.toString());
