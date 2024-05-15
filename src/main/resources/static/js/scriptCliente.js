@@ -1,3 +1,46 @@
+// Función para validar la modificación de un objeto
+function validarEdicionCliente(selector, mensajeConfirmacion, urlRedireccion) {
+    var editForm = document.querySelector(selector);
+    editForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: mensajeConfirmacion,
+            text: '¡No podrás revertir esto!',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Realizar una petición AJAX o enviar el formulario de forma asíncrona
+                fetch(editForm.action, {
+                    method: 'POST',
+                    body: new FormData(editForm)
+                })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Si el proceso de moficar el cliente fue exitoso, mostrar mensaje de éxito
+                                mostrarToastConfirmacion(data.message);
+                                // Redirigir después de un pequeño retraso
+                                setTimeout(function () {
+                                    window.location.href = urlRedireccion;
+                                }, 1000); // 1000 milisegundos de retraso
+                            } else {
+                                // Si el proceso de modificar el cliente falló, mostrar mensaje de error
+                                mostrarToastError(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+            }
+        });
+    });
+}
 // Función PopUp Crear Nuevo Cliente
 function popupCrearCliente() {
     var modalCrear = document.getElementById("myModalCrearCliente");
@@ -167,7 +210,7 @@ function validarYBuscar() {
 
 function initializeEventHandlers() {
     validarEliminacion('.producto-eliminar', 'Cliente eliminado exitosamente');
-    validarEdicion('.editar-cliente-form', '¿Estás seguro de continuar con la edición de este cliente?', '/clientes/listar');
+    validarEdicionCliente('.editar-cliente-form', '¿Estás seguro de continuar con la edición de este cliente?', '/clientes/listar');
     validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este cliente?', '/clientes/listar');
     popupCrearCliente();
     popupActualizarCliente();
