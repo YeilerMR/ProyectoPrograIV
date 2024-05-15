@@ -136,7 +136,7 @@
                         </tr>
                     </table>
 
-                    <div th:if="${listaP != null}">
+                    <div class="divPag" th:if="${listaP != null}">
                         <a th:href="@{./listar(page=0)}">Primera Página</a>
                         <a th:href="@{./listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
 
