@@ -1,3 +1,46 @@
+// Función para validar la modificación de un objeto
+function validarEdicionEnvio(selector, mensajeConfirmacion, urlRedireccion) {
+    var editForm = document.querySelector(selector);
+    editForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: mensajeConfirmacion,
+            text: '¡No podrás revertir esto!',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Realizar una petición AJAX o enviar el formulario de forma asíncrona
+                fetch(editForm.action, {
+                    method: 'POST',
+                    body: new FormData(editForm)
+                })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Si el proceso de moficar el cliente fue exitoso, mostrar mensaje de éxito
+                                mostrarToastConfirmacion(data.message);
+                                // Redirigir después de un pequeño retraso
+                                setTimeout(function () {
+                                    window.location.href = urlRedireccion;
+                                }, 1000); // 1000 milisegundos de retraso
+                            } else {
+                                // Si el proceso de modificar el cliente falló, mostrar mensaje de error
+                                mostrarToastError(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+            }
+        });
+    });
+}
 // Función PopUp Crear Nuevo Envío
 function popupCrearEnvio() {
     var modalCrear = document.getElementById("myModalCrearEnvio");
@@ -22,22 +65,22 @@ function popupCrearEnvio() {
 
 // Función PopUp Actualizar Envío
 function popupActualizarEnvio() {
-    var editButtons = document.querySelectorAll('.producto-editar');
-    var closeButtons = document.querySelectorAll('.modal .close');
+    var editButtons = document.querySelectorAll('.producto-editar'); // Selecciona los elementos que abrirán el modal
+    var closeButtons = document.querySelectorAll('#modalEditarEnvio .close'); // Selecciona los botones de cierre del modal
 
-    // Función para abrir los popups
+    // Función para abrir los modals
     editButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var popup = this.closest('tr').querySelector('.modal');
-            popup.style.display = 'block';
+            var modal = document.getElementById('modalEditarEnvio');
+            modal.style.display = 'block';
         };
     });
 
-    // Función para cerrar los popups
+    // Función para cerrar los modals
     closeButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var popup = this.closest('.modal');
-            popup.style.display = 'none';
+            var modal = document.getElementById('modalEditarEnvio');
+            modal.style.display = 'none';
         };
     });
 }
@@ -76,7 +119,7 @@ function handleEnvioEdit() {
             // Rellenar los campos del formulario con los datos del envío
             document.querySelector('#modalEditarEnvio #idEnvio').value = idEnvio;
             document.querySelector('#modalEditarEnvio input[name="codigoEnvio"]').value = codigoEnvio;
-            document.querySelector('#modalEditarEnvio input[name="idPedido"]').value = idPedido;
+            /*document.querySelector('#modalEditarEnvio input[name="idPedido"]').value = idPedido;/
             /*document.querySelector('#modalEditarEnvio select[name="idCliente"]').value = idCliente;*/
             document.querySelector('#modalEditarEnvio input[name="direccionEnvio"]').value = direccionEnvio;
             // Convertir el texto de fecha al formato requerido ('yyyy-MM-ddThh:mm')
@@ -122,7 +165,7 @@ function validarYBuscar() {
 
 function initializeEventHandlers() {
     validarEliminacion('.producto-eliminar', 'Envío eliminado exitosamente');
-    validarEdicion('.editar-envio-form', '¿Estás seguro de continuar con la edición de este envío?', '/envios/listar');
+    validarEdicionEnvio('.editar-envio-form', '¿Estás seguro de continuar con la edición de este envío?', '/envios/listar');
     validarCreacion('.crear-envio-form', '¿Estás seguro de continuar con la creación de este envío?', '/envios/listar');
     popupCrearEnvio();
     popupActualizarEnvio();

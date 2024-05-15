@@ -28,7 +28,7 @@
                     <ul class="menu">
                         <li><button id="todos" class="boton-menu boton-categoria" onclick="window.location.href = '/index'"><i class="bi bi-hand-index-thumb"></i> Inicio</button></li>
                         <li><button id="apartados" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Apartados</button></li>
-                        <li><button id="empleados" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Empleados</button></li>
+                        <li><button id="empleados" class="boton-menu boton-categoria" onclick="window.location.href = '/empleados/listar'"><i class="bi bi-hand-index-thumb"></i> Empleados</button></li>
                         <li><button id="proveedores" class="boton-menu boton-categoria" onclick="window.location.href = '/proveedores/listar'"><i class="bi bi-hand-index-thumb"></i> Proveedores</button></li>
                         <li><button id="ordenes_compra" class="boton-menu boton-categoria" onclick="window.location.href = '/ordenes_compra/listar'"><i class="bi bi-hand-index-thumb"></i> Ordenes de Compra</button></li>
                         <li><button id="clientes" class="boton-menu boton-categoria" onclick="window.location.href = '/clientes/listar'"><i class="bi bi-hand-index-thumb"></i> Clientes</button></li>
@@ -57,7 +57,7 @@
                     <table class="contenedor-productos">
                         <tr>
                             <th>Código de envio</th>
-                            <th>Pedido</th>
+                            <th>Información del Pedido</th>
                             <th>Información del Cliente</th>
                             <th>Dirección</th>
                             <th>Fecha de Envío</th>
@@ -67,7 +67,18 @@
                         </tr>
                         <tr th:each="envio: ${envios}">
                             <td th:text="${envio.codigoEnvio}"></td>
-                            <td th:text="${envio.idPedido}"></td>
+
+                            <td>
+                                <span th:each="pedido : ${pedidosListaTotal}">
+                                    <th:block th:if="${pedido.id_pedido == envio.idPedido}">
+                                        Código: <span th:text="' ' + ${pedido.codigo}"></span><br>
+                                        Fecha: <span th:text="' ' + ${pedido.fecha}"></span><br>
+                                        Dirección: <span th:text="' ' + ${pedido.direccion_pedido}"></span><br>
+                                        <th:block th:break="${true}"></th:block>
+                                    </th:block>
+                                </span>
+                            </td>
+
                             <td>
                                 <span th:each="cliente : ${clientes}">
                                     <th:block th:if="${cliente.idCliente == envio.idCliente}">

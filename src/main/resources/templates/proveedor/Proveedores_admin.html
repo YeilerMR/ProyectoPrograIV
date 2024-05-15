@@ -84,8 +84,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <h1>Panel de administración de proveedores</h1>
                 </div>
 
-                <div class="create-button_container">
-                    <button class="add_new">Crear nuevo</button>
+                <div class="create-button-container">
+                    <div class="create-button_container">
+                        <button class="add_new">Crear nuevo</button>
+                    </div>
                 </div>
                 <br><br>
                 <div id="editar_proveedor_container">
@@ -122,50 +124,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </td>
                         </tr>
                     </table>
-                    <div type="hidden" id="myModalCrearCliente" class="modal">
-                        <!-- Modal content -->
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <div class="container">
-                                <form class='crear-cliente-form' id="form-crear" th:action="@{/proveedores/registrar}" method="GET" onsubmit="validarFormularioCrear()">
-                                    <label for="nombre">Nombre: </label>
-                                    <input type="text" name="nombre" id="nombre" required>
-                                    <br><br>
-                                    <label for="telefono">Teléfono: </label>
-                                    <input type="text" name="telefono" id="telefono" required>
-                                    <br><br>
-                                    <label for="descripcion">Descripción: </label>
-                                    <textarea name="descripcion" id="descripcion" required=""></textarea>
-                                    <br><br>
-                                    <label for="correo">Correo: </label>
-                                    <input type="email" name="correo" id="correo" required>
-                                    <br><br>
-                                    <label for="direccion">Dirección: </label>
-                                    <input type="text" name="direccion" id="direccion" required>
-                                    <br><br>
-                                    <label for="categoria">Categoria: </label>
-                                    <input type="text" name="categoria" id="categoria" required>
-                                    <br><br>
-                                    <label for="informacionadicional">Información adicional: </label>
-                                    <textarea name="informacionadicional" id="informacionadicional"></textarea>
-                                    <br>
-                                    <div id="mensaje_container">
-                                        <p id="texto_error"></p>
-                                    </div>
-                                    <br>
-                                    <input type="submit" id="submitButton" value="Registrar Proveedor">
-                                    <input type="button" value="Cancelar" onclick="cancelarCreacionButton()">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                     <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
                     <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                        validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
-                        });
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
+                                });
                     </script>
                     <br><br>
                     <div class="divPag" th:if="${proveedores != null}">
@@ -178,6 +142,44 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                     </div>
                 </div>
+                <div type="hidden" id="myModalCrearCliente" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div class="container">
+                            <form class="crear-cliente-form" id="form-crear" th:action="@{/proveedores/registrar}" method="GET" onsubmit="return validarFormularioCrear(event)">
+                                <label for="nombre">Nombre: </label>
+                                <input type="text" name="nombre" id="nombre" required>
+                                <br><br>
+                                <label for="telefono">Teléfono: </label>
+                                <input type="text" name="telefono" id="telefono" required>
+                                <br><br>
+                                <label for="descripcion">Descripción: </label>
+                                <textarea name="descripcion" id="descripcion" required=""></textarea>
+                                <br><br>
+                                <label for="correo">Correo: </label>
+                                <input type="email" name="correo" id="correo" required>
+                                <br><br>
+                                <label for="direccion">Dirección: </label>
+                                <input type="text" name="direccion" id="direccion" required>
+                                <br><br>
+                                <label for="categoria">Categoria: </label>
+                                <input type="text" name="categoria" id="categoria" required>
+                                <br><br>
+                                <label for="informacionadicional">Información adicional: </label>
+                                <textarea name="informacionadicional" id="informacionadicional"></textarea>
+                                <br>
+                                <div id="mensaje_container">
+                                    <p id="texto_error"></p>
+                                </div>
+                                <br>
+                                <input type="submit" id="submitButton" value="Registrar Proveedor">
+                                <input type="button" value="Cancelar" onclick="cancelarCreacionButton()">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
                 <div th:if="${proveedores.empty}">
                     <p>No se encontraron registros para mostrar.</p>
                 </div>

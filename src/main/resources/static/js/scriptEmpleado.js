@@ -1,5 +1,5 @@
 // Función para validar la modificación de un objeto
-function validarEdicionCliente(selector, mensajeConfirmacion, urlRedireccion) {
+function validarEdicionEmpleado(selector, mensajeConfirmacion, urlRedireccion) {
     var editForm = document.querySelector(selector);
     editForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -41,11 +41,11 @@ function validarEdicionCliente(selector, mensajeConfirmacion, urlRedireccion) {
         });
     });
 }
-// Función PopUp Crear Nuevo Cliente
-function popupCrearCliente() {
-    var modalCrear = document.getElementById("myModalCrearCliente");
+// Función PopUp Crear Nuevo Empleado
+function popupCrearEmpleado() {
+    var modalCrear = document.getElementById("myModalCrearEmpleado");
     var btnAgregar = document.querySelector(".add_new");
-    var spanCrear = document.querySelector("#myModalCrearCliente .close");
+    var spanCrear = document.querySelector("#myModalCrearEmpleado .close");
 
     btnAgregar.onclick = function () {
         event.preventDefault();
@@ -63,24 +63,24 @@ function popupCrearCliente() {
     };
 }
 
-// Función PopUp Actualizar Cliente
-function popupActualizarCliente() {
-    var editButtons = document.querySelectorAll('.producto-editar');
-    var closeButtons = document.querySelectorAll('.modal .close');
+// Función PopUp Actualizar Empleado
+function popupActualizarEmpleado() {
+    var editButtons = document.querySelectorAll('.producto-editar'); // Selecciona los elementos que abrirán el modal
+    var closeButtons = document.querySelectorAll('#modalEditarEmpleado .close'); // Selecciona los botones de cierre del modal
 
-    // Función para abrir los popups
+    // Función para abrir los modals
     editButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var popup = this.closest('tr').querySelector('.modal');
-            popup.style.display = 'block';
+            var modal = document.getElementById('modalEditarEmpleado');
+            modal.style.display = 'block';
         };
     });
 
-    // Función para cerrar los popups
+    // Función para cerrar los modals
     closeButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var popup = this.closest('.modal');
-            popup.style.display = 'none';
+            var modal = document.getElementById('modalEditarEmpleado');
+            modal.style.display = 'none';
         };
     });
 }
@@ -134,36 +134,36 @@ function togglePasswordInPopup() {
     });
 }
 
-// Función para manejar la edición de cliente
-function handleClientEdit() {
+// Función para manejar la edición de empleado
+function handleEmpleadoEdit() {
     // Obtener todos los botones de editar
     const botonesEditar = document.querySelectorAll('.producto-editar');
 
     // Agregar un evento click a cada botón de editar
     botonesEditar.forEach(boton => {
         boton.addEventListener('click', () => {
-            // Obtener los datos del cliente desde los atributos data-*
-            const idCliente = boton.closest('tr').querySelector('.producto-eliminar a').href.split('=')[1];
+            // Obtener los datos del empleado desde los atributos data-*
+            const idEmpleado = boton.closest('tr').querySelector('.producto-eliminar a').href.split('=')[1];
             const nombre = boton.closest('tr').querySelector('td:nth-child(1)').textContent;
             const apellidos = boton.closest('tr').querySelector('td:nth-child(2)').textContent;
             const cedula = boton.closest('tr').querySelector('td:nth-child(3)').textContent;
             const email = boton.closest('tr').querySelector('td:nth-child(4)').textContent;
             const password = boton.closest('tr').querySelector('td:nth-child(5) .password').dataset.password;
             const telefono = boton.closest('tr').querySelector('td:nth-child(6)').textContent;
-            const credencial = boton.closest('tr').querySelector('td:nth-child(7)').textContent === 'Cliente' ? 0 : 1;
+            const credencial = boton.closest('tr').querySelector('td:nth-child(7)').textContent === 'Empleado' ? 0 : 1;
 
-            // Rellenar los campos del formulario con los datos del cliente
-            document.querySelector('#modalEditar #idCliente').value = idCliente;
-            document.querySelector('#modalEditar input[name="nombre"]').value = nombre;
-            document.querySelector('#modalEditar input[name="apellidos"]').value = apellidos;
-            document.querySelector('#modalEditar input[name="cedula"]').value = cedula;
-            document.querySelector('#modalEditar input[name="email"]').value = email;
-            document.querySelector('#modalEditar input[name="password"]').value = password;
-            document.querySelector('#modalEditar input[name="telefono"]').value = telefono;
-            document.querySelector('#modalEditar select[name="credencial"]').value = credencial;
+            // Rellenar los campos del formulario con los datos del empleado
+            document.querySelector('#modalEditarEmpleado #idEmpleado').value = idEmpleado;
+            document.querySelector('#modalEditarEmpleado input[name="nombre"]').value = nombre;
+            document.querySelector('#modalEditarEmpleado input[name="apellidos"]').value = apellidos;
+            document.querySelector('#modalEditarEmpleado input[name="cedula"]').value = cedula;
+            document.querySelector('#modalEditarEmpleado input[name="email"]').value = email;
+            document.querySelector('#modalEditarEmpleado input[name="password"]').value = password;
+            document.querySelector('#modalEditarEmpleado input[name="telefono"]').value = telefono;
+            document.querySelector('#modalEditarEmpleado select[name="credencial"]').value = credencial;
 
             // Mostrar el modal de edición
-            document.querySelector('#modalEditar').style.display = 'block';
+            document.querySelector('#modalEditarEmpleado').style.display = 'block';
         });
     });
 }
@@ -180,10 +180,10 @@ function closeModal() {
     });
 }
 
-function buscarCliente() {
+function buscarEmpleado() {
     var textoBuscar = document.getElementById("textoBuscar").value;
-    var divClientes = document.getElementById("tablaClientes");
-    fetch("/clientes/buscar?textoBuscar=" + textoBuscar)
+    var divEmpleados = document.getElementById("tablaEmpleados");
+    fetch("/empleados/buscar?textoBuscar=" + textoBuscar)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("Error en la solicitud: " + response.status);
@@ -191,7 +191,7 @@ function buscarCliente() {
                 return response.text();
             })
             .then(function (data) {
-                divClientes.innerHTML = data;
+                divEmpleados.innerHTML = data;
                 initializeEventHandlers(); // Inicializa los eventos después de actualizar la tabla
             })
             .catch(function (error) {
@@ -202,21 +202,22 @@ function buscarCliente() {
 function validarYBuscar() {
     var textoBuscar = document.getElementById("textoBuscar").value;
     if (textoBuscar.trim() === "") {
-        mostrarToastAdvertencia("El campo de búsqueda está vacío. Por favor, ingresa un la cédula del cliente a buscar.");
+        mostrarToastAdvertencia("El campo de búsqueda está vacío. Por favor, ingresa un la cédula del empleado a buscar.");
     } else {
-        buscarCliente();
+        buscarEmpleado();
     }
 }
 
 function initializeEventHandlers() {
-    validarEliminacion('.producto-eliminar', 'Cliente eliminado exitosamente');
-    validarEdicionCliente('.editar-cliente-form', '¿Estás seguro de continuar con la edición de este cliente?', '/clientes/listar');
-    validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este cliente?', '/clientes/listar');
-    popupCrearCliente();
-    popupActualizarCliente();
+    
+    validarEliminacion('.producto-eliminar', 'Empleado eliminado exitosamente');
+    validarEdicionEmpleado('.editar-empleado-form', '¿Estás seguro de continuar con la edición de este empleado?', '/empleados/listar');
+    validarCreacion('.crear-empleado-form', '¿Estás seguro de continuar con la creación de este empleado?', '/empleados/listar');
+    popupCrearEmpleado();
+    popupActualizarEmpleado();
     togglePasswordInTable();
     togglePasswordInPopup();
-    handleClientEdit();
+    handleEmpleadoEdit();
     closeModal();
 }
 
