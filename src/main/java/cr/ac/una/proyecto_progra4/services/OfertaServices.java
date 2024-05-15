@@ -42,6 +42,19 @@ public class OfertaServices {
         return ofertas;
     }
     
+    public LinkedList<Oferta> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina, LinkedList<Oferta> listaOfertas) {
+        LinkedList<Oferta> registrosPagina = new LinkedList<>();
+
+        int inicio = numeroPagina * tamanoPagina;
+        int fin = Math.min(inicio + tamanoPagina, listaOfertas.size());
+
+        for (int i = inicio; i < fin; i++) {
+            registrosPagina.add(listaOfertas.get(i));
+        }
+
+        return registrosPagina;
+    }
+    
     public static boolean eliminar(String codigo){
         boolean resultado= true;
         try {

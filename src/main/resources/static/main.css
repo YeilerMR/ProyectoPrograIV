@@ -13,6 +13,10 @@
     font-family: 'Rubik', sans-serif;
 }
 
+body {
+    background-color: var(--clr-main);
+}
+
 ul {
     list-style-type: none;
 }
@@ -22,10 +26,10 @@ a {
 }
 
 .wrapper {
-   width: 100vw;
+    width: 100vw;
     display: flex;
     flex-direction: column;
-    background-color: var(--clr-main); 
+    background-color: var(--clr-main);
 }
 
 img {
@@ -226,8 +230,8 @@ main {
     justify-content: center;
 }
 
-.goBackBtn:hover {
-    background-color: #1a1a4c;
+    .goBackBtn:hover {
+        background-color: #1a1a4c;
 }
 
 .goBackBtn i {

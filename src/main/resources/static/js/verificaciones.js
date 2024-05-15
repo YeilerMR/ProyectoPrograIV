@@ -46,7 +46,7 @@ function validarCreacion(selector, mensajeConfirmacion, urlRedireccion) {
 
 // Función para validar la eliminación de un objeto
 function validarEliminacion(selector, mensajeExito) {
-  
+
     var deleteButtons = document.querySelectorAll(selector);
     deleteButtons.forEach(function (button) {
         button.addEventListener('click', function (event) {
@@ -78,46 +78,52 @@ function validarEliminacion(selector, mensajeExito) {
 // Función para validar la modificación de un objeto
 // Función para validar la modificación de un objeto
 function validarEdicion(selector, mensajeConfirmacion, urlRedireccion) {
-    var editForm = document.querySelector(selector);
-    editForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        Swal.fire({
-            title: mensajeConfirmacion,
-            text: '¡No podrás revertir esto!',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, continuar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Realizar una petición AJAX o enviar el formulario de forma asíncrona
-                fetch(editForm.action, {
-                    method: 'POST',
-                    body: new FormData(editForm)
-                })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Si el proceso de moficar el cliente fue exitoso, mostrar mensaje de éxito
-                                mostrarToastConfirmacion(data.message);
-                                // Redirigir después de un pequeño retraso
-                                setTimeout(function () {
-                                    window.location.href = urlRedireccion;
-                                }, 1000); // 1000 milisegundos de retraso
-                            } else {
-                                // Si el proceso de modificar el cliente falló, mostrar mensaje de error
-                                mostrarToastError(data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-            }
+    // Seleccionar todos los formularios que coincidan con el selector
+    var editForms = document.querySelectorAll(selector);
+
+    // Agregar un event listener de submit a cada formulario
+    editForms.forEach(function (editForm) {
+        editForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: mensajeConfirmacion,
+                text: '¡No podrás revertir esto!',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, continuar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar una petición AJAX o enviar el formulario de forma asíncrona
+                    fetch(editForm.action, {
+                        method: 'POST',
+                        body: new FormData(editForm)
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Si el proceso de moficar el cliente fue exitoso, mostrar mensaje de éxito
+                                    mostrarToastConfirmacion(data.message);
+                                    // Redirigir después de un pequeño retraso
+                                    setTimeout(function () {
+                                        window.location.href = urlRedireccion;
+                                    }, 1000); // 1000 milisegundos de retraso
+                                } else {
+                                    // Si el proceso de modificar el cliente falló, mostrar mensaje de error
+                                    mostrarToastError(data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                }
+            });
         });
     });
 }
+
 // -----------------------------------------------------------------------------
 // Función para mostrar un Toast de error
 function mostrarToastError(mensaje) {

@@ -12,7 +12,7 @@ import java.sql.Date;
  */
 public class OrdenDeCompra {
     
-    private int idPedido;
+    private Pedido idPedido;
     private Proveedor idProveedor;
     private Date fechaOrden;
     private Date fechaEntrega;
@@ -20,14 +20,14 @@ public class OrdenDeCompra {
     private String numeroReferencia;
 
     public OrdenDeCompra() {
-        idPedido = 0;
+        idPedido = new Pedido();
         idProveedor = new Proveedor();
         fechaOrden = new Date(0, 0, 0);
         fechaEntrega = new Date(0, 0, 0);
         numeroReferencia = "";
     }
 
-    public OrdenDeCompra(int idPedido, Proveedor idProveedor, Date fechaOrden, Date fechaEntrega, String estadoOrden, String numeroReferencia) {
+    public OrdenDeCompra(Pedido idPedido, Proveedor idProveedor, Date fechaOrden, Date fechaEntrega, String estadoOrden, String numeroReferencia) {
         this.idPedido = idPedido;
         this.idProveedor = idProveedor;
         this.fechaOrden = fechaOrden;
@@ -36,11 +36,11 @@ public class OrdenDeCompra {
         this.numeroReferencia = numeroReferencia;
     }
 
-    public int getIdPedido() {
+    public Pedido getIdPedido() {
         return idPedido;
     }
 
-    public void setIdPedido(int idPedido) {
+    public void setIdPedido(Pedido idPedido) {
         this.idPedido = idPedido;
     }
 

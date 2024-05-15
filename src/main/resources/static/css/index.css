@@ -1,0 +1,115 @@
+/* main.css */
+
+.main-header {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.highlight {
+    background-color: var(--clr-main-light);
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.highlight i {
+    font-size: 2rem;
+    color: var(--clr-main);
+}
+
+.highlight h3 {
+    margin: 1rem 0 0.5rem;
+}
+
+.highlight p {
+    font-size: 0.9rem;
+}
+
+.highlight .btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    color: var(--clr-main);
+    border: 2px solid var(--clr-main);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.highlight .btn:hover {
+    background-color: var(--clr-main);
+    color: var(--clr-main-light);
+}
+
+.updates {
+    margin: 2rem 0;
+}
+
+.updates h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.update {
+    background-color: var(--clr-main-light);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.testimonials {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.testimonials h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.testimonial {
+    background-color: var(--clr-main-light);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.testimonial footer {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    color: var(--clr-main);
+}
+
+/* Social Media Section */
+.social-media {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-icons a {
+    color: var(--clr-main);
+    font-size: 2rem;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: var(--clr-accent);
+}

@@ -17,6 +17,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <script type="text/javascript" th:src="@{/js/scriptOrdenDeCompra.js}"></script>
         <link rel="stylesheet" th:href="@{/css/modal.css}" />
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
+        <link rel="stylesheet" th:href="@{/css/paginacion.css}" />
+        <link rel="stylesheet" th:href="@{/css/buscador.css}" />
+        <link rel="stylesheet" th:href="@{/css/OrdenDeCompra.css}" />
     </head>
     <body onload="editarOrden()">
         <div class="wrapper">
@@ -64,6 +67,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <li>
                             <button id="pantalones" class="boton-menu boton-categoria" onclick="window.location.href = '/facturas/listar'"><i class="bi bi-hand-index-thumb"></i> Facturas</button>
                         </li>
+                        <li>
+                            <button id="facturas" class="boton-menu boton-categoria" onclick="window.location.href = '/pedidos/listar'"><i class="bi bi-hand-index-thumb"></i> Pedidos</button>
+                        </li>
                     </ul>
                 </nav>
                 <footer>
@@ -88,6 +94,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="tb-container">
                         <table class="contenedor-productos table table-striped table-hover">
                             <tr>
+                                <th>Código de pedido</th>
                                 <th>Nombre Proveedor</th>
                                 <th>Fecha Orden</th>
                                 <th>Fecha Entrega</th>
@@ -96,15 +103,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <th>Opciones</th>
                             </tr>
                             <tr th:each="orden:${ordenes}">
+                                <td th:text="${orden.getIdPedido.getCodigo}"></td>
                                 <td th:text="${orden.getIdProveedor.getNombreProveedor}"></td>
                                 <td th:text="${orden.getFechaOrden}"></td>
                                 <td th:text="${orden.getFechaEntrega}"></td>
                                 <td th:text="${orden.getEstadoOrden}"></td>
                                 <td th:text="${orden.getNumeroReferencia}"></td>
                                 <td><!--<a th:href="@{/ordenes_compra/editar(orden=${orden.getNumeroReferencia})}">Editar</a>-->
-                                    <button type="button" class="producto-editar btn_editar" th:value="${orden.getNumeroReferencia}">Editar</button>
+                                    <button type="button" class="producto-editar btn_editar" th:value="${orden.getNumeroReferencia}"><i class="bi bi-pen"></i></button>
+                                    <br>
+                                    -----
+                                    <br>
                                     <button class="btn_delete producto-eliminar">
-                                        <a style="text-decoration: none; color: white" th:href="@{/ordenes_compra/eliminar(orden=${orden.getNumeroReferencia})}">Eliminar</a>
+                                        <a style="text-decoration: none; color: white" th:href="@{/ordenes_compra/eliminar(orden=${orden.getNumeroReferencia})}"><i class="bi bi-trash"></i></a>
                                     </button>
                                 </td>
                             </tr>
@@ -112,7 +123,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
 
                     <br><br>
-                    <div th:if="${ordenes != null}">
+                    <div class="divPag" th:if="${ordenes != null}">
                         <!-- Enlaces de paginación -->
                         <a th:href="@{/ordenes_compra/listar(page=0)}">Primera Página</a>
                         <a th:href="@{/ordenes_compra/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
@@ -127,12 +138,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class='crear-cliente-form' th:action="@{/ordenes_compra/registrar}" method="GET">
+                            <form class='crear-cliente-form' id="form-crear" th:action="@{/ordenes_compra/registrar}" method="GET" onsubmit="validarFormularioCrearOrden()">
+                                <label for="combobox-pedido">Pedido: </label>
+                                <select name="combobox-pedido" id="combobox-pedido">
+                                    <option>--Seleccionar--</option>
+                                    <option th:each="pedido : ${pedidos}" th:value="${pedido.getId_pedido()}" th:text="${pedido.getCodigo()}"></option>
+                                </select>
+                                <br><br>
                                 <label for="combobox-proveedores">Proveedor: </label>
                                 <select name="combobox-proveedores" id="combobox-proveedores">
                                     <option>--Seleccionar--</option>
-                                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.getIdProveedor()}"
-                                            th:text="${proveedor.getNombreProveedor()}"></option>
+                                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.getIdProveedor()}" th:text="${proveedor.getNombreProveedor()}"></option>
                                 </select>
                                 <br><br>
                                 <label for="fecha-orden">Fecha de la orden: </label>
@@ -146,9 +162,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <br><br>
                                 <label for="numero-rerencia">Número de referencia: </label>
                                 <input type="text" name="numero-referencia" id="numero-referencia" required>
-                                <br><br>
+                                <br>
+                                <div id="mensaje_container">
+                                    <p id="texto_error"></p>
+                                </div>
+                                <br>
                                 <input type="submit" value="Generar Orden">
-                                <input type="button" value="Cancelar" onclick="window.location.href = './listar'">
+                                <input type="button" value="Cancelar" onclick="cancelarCreacionButton()">
                             </form>
                         </div>
                     </div>

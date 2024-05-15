@@ -17,6 +17,6 @@ public interface IProveedoresService {
 
     public List<Proveedor> getProveedores();
 
-    public void eliminar(int codigo);
+    public void eliminar(int id);
 
 }

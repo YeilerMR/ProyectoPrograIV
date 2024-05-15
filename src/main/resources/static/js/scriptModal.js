@@ -17,3 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 });
+
+function cancelarCreacionButton(){
+    document.getElementById("form-crear").reset();
+    document.getElementById('texto_error').innerHTML = '';
+    document.getElementById("myModalCrearCliente").style.display = "none";
+}

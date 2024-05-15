@@ -15,6 +15,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" th:href="@{/main.css}" />
         <link rel="stylesheet" th:href="@{/css/modal.css}" />
+        <link rel="stylesheet" th:href="@{/css/buscador.css}" />
+        <link rel="stylesheet" th:href="@{/css/paginacion.css}" />
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
     </head>
     <body>
@@ -28,62 +30,29 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </header>
                 <nav>
                     <ul class="menu">
-                        <li>
-                            <button id="todos" class="boton-menu boton-categoria" onclick="window.location.href = '/index'"><i class="bi bi-hand-index-thumb"></i> Inicio</button>
-                        </li>
-                        <li>
-                            <button class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>
-                                Apartados</button>
-                        </li>
-                        <li>
-                            <button class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>
-                                Empleados</button>
-                        </li>
-                        <li>
-                            <button class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i>
-                                Proveedores</button>
-                        </li>
-                        <li>
-                            <button id="camisetas" class="boton-menu boton-categoria" onclick="window.location.href = '/ordenes_compra/listar'"><i class="bi bi-hand-index-thumb"></i> Ordenes de Compra</button>
-                        </li>
-                        <li>
-                            <button class="boton-menu boton-categoria"><i
-                                    class="bi bi-hand-index-thumb"></i>
-                                Clientes </button>
-                        </li>
-                        <li>
-                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/envios/listar'">
-                                <i class="bi bi-hand-index-thumb"></i> Envíos
-                            </button>
-                        </li>
-                        <li>
-                            <button class="boton-menu boton-categoria" th:onclick="window.location.href='/productos/listar'">
-                                <i class="bi bi-hand-index-thumb"></i> Productos
-                            </button>
-                        </li>
-                        <li>
-                            <button class="boton-menu boton-categoria active" th:onclick="window.location.href='/ofertas/listar'">
-                                <i class="bi bi-hand-index-thumb-fill"></i> Ofertas
-                            </button>
-                        </li>
-                        <li>
-                            <button id="pantalones" class="boton-menu boton-categoria" onclick="window.location.href = '/facturas/listar'"><i class="bi bi-hand-index-thumb"></i> Facturas</button>
-                        </li>
+                        <li><button id="todos" class="boton-menu boton-categoria" onclick="window.location.href = '/index'"><i class="bi bi-hand-index-thumb"></i> Inicio</button></li>
+                        <li><button id="apartados" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Apartados</button></li>
+                        <li><button id="empleados" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Empleados</button></li>
+                        <li><button id="proveedores" class="boton-menu boton-categoria" onclick="window.location.href = '/proveedores/listar'"><i class="bi bi-hand-index-thumb"></i> Proveedores</button></li>
+                        <li><button id="ordenes_compra" class="boton-menu boton-categoria" onclick="window.location.href = '/ordenes_compra/listar'"><i class="bi bi-hand-index-thumb"></i> Ordenes de Compra</button></li>
+                        <li><button id="clientes" class="boton-menu boton-categoria" onclick="window.location.href = '/clientes/listar'"><i class="bi bi-hand-index-thumb"></i> Clientes</button></li>
+                        <li><button id="envios" class="boton-menu boton-categoria" onclick="window.location.href = '/envios/listar'"><i class="bi bi-hand-index-thumb"></i> Envios</button></li>
+                        <li><button id="productos" class="boton-menu boton-categoria" onclick="window.location.href = '/productos/listar'"><i class="bi bi-hand-index-thumb"></i> Productos</button></li>
+                        <li><button id="ofertas" class="boton-menu boton-categoria active" onclick="window.location.href = '/ofertas/listar'"><i class="bi bi-hand-index-thumb-fill"></i> Ofertas</button></li>
+                        <li><button id="facturas" class="boton-menu boton-categoria " onclick="window.location.href = '/facturas/listar'"><i class="bi bi-hand-index-thumb"></i> Facturas</button></li>
+                        <li><button id="pedidos" class="boton-menu boton-categoria" onclick="window.location.href = '/pedidos/listar'"><i class="bi bi-hand-index-thumb"></i> Pedidos</button></li>
                     </ul>
                 </nav>
-                <footer>
-                    <p class="texto-footer">© Proyecto Progra 4</p>
-                </footer>
+
             </aside>
             <main>
                 <h1>Lista de Ofertas</h1>
-                <!-- PARTE DE BÚSQUEDA DE ALGÚN CLIENTE MEDIANTE CÉDULA -->
-                <div class="table_header">
+
+                <div class="buscador">
                     <div class="input-container">
-                        <p>Productos</p>
-                        <form class="form_producto" th:action="@{/ofertas/buscar}" method="get">
-                            <input name="producto" placeholder="Codigo de la oferta" required>
-                            <button class="search_producto" type="submit">Buscar</button>
+                        <form class="formBusqueda" th:action="@{/ofertas/buscar}" method="get">
+                            <input id="textoBuscar" name="textoBuscar" placeholder="Código de la oferta">
+                            <button class="searchBtn" type="button">Buscar</button>
                         </form>
                         <button id="add_new" class="add_new">Crear nuevo</button>
                     </div>
@@ -107,24 +76,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <td th:text="${oferta.descuentoOferta}"></td>
                         <td th:text="${oferta.fechaInicio}"></td>
                         <td th:text="${oferta.fechaFin}"></td>
-                        <td th:text="${oferta.estado}"></td>
+                        <td th:text="${oferta.estado ? 'Activo' : 'Inactivo'}"></td>
 
                         <td>
-                            <!--form action="@{/ofertas/eliminar/{codigo}(codigo=${oferta.codigoOferta})}" method="post" onsubmit="return confirm('¿Estás seguro de querer eliminar esta oferta?')">
-                                <input type="hidden" name="_method" value="delete" />
-                                <button type="submit" class="producto-eliminar">Eliminar</button>
-                            </form-->
-                            <form action="/ofertas/eliminarOferta" method="get" onsubmit="return confirm('¿Estás seguro de querer eliminar esta oferta?')">
-                                <input type="hidden" name="codigoOferta" th:value="${oferta.codigoOferta}" />
-                                <button type="submit" class="producto-eliminar">Eliminar</button>
-                            </form>
+                            <button class="producto-eliminar" style="display: inline;">
+                                <i class="bi bi-trash"></i>
+                                <a th:href="@{/ofertas/eliminar(codigoOferta=${oferta.codigoOferta})}" style="text-decoration: none; color: inherit;"></a>
+                            </button>
+                            <br>
                             ----------
-                            <button class="producto-editar" style="display: inline;">Editar</button>
+                            <br>
+                            <button class="producto-editar" style="display: inline;"><i class="bi bi-pen"></i></button>
                             <div class="modal">
                                 <div class="modal-content">
                                     <span class="close">&times;</span>
                                     <div class="container">
-                                        <form th:action="@{/ofertas/actualizar}" method="post" onsubmit="return confirm('¿Estas seguro de querer actualizar este producto?')">
+                                        <form class="editar-oferta-form" th:action="@{/ofertas/actualizar}" method="post">
 
                                             <input type="hidden" name="codigoOferta" th:value="${oferta.codigoOferta}">
 
@@ -142,11 +109,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                                             <!-- Ajustar validacion de fecha -->
                                             <label>Fecha Inicio:</label>
-                                            <input type="date" name="fechaInicio">
+                                            <input type="date" name="fechaInicio" required>
 
                                             <!-- Ajustar validacion de fecha -->
                                             <label>Fecha Final:</label>
-                                            <input type="date" name="fechaFin">
+                                            <input type="date" name="fechaFin" required>
 
                                             <label>Estado:</label>
                                             <select name="estado">
@@ -163,14 +130,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </td>
                     </tr>
                 </table>
-
+                <!-- PARTE DE PAGINACIÓN -->
+                <div class="divPag" th:if="${ofertas != null}">
+                    <!-- Enlaces de paginación -->
+                    <a th:href="@{/ofertas/listar(page=0)}">Primera Página</a>
+                    <a th:href="@{/ofertas/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
+                    <span th:text="${page + 1}"></span>
+                    <a th:href="@{/ofertas/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente
+                        Página</a>
+                    <a th:href="@{/ofertas/listar(page=${ultimaPagina})}"
+                       th:unless="${ofertas.size() &lt; pageSize}">Última Página</a>
+                </div>
 
             </main>
             <div id="modal" class="modal">
                 <div class="modal-content">
                     <span id="closeModalNuevo" class="close">&times;</span>
                     <div class="container">
-                        <form th:action="@{/ofertas/guardar}" method="get" onsubmit="return confirm('¿Estas seguro de querer guardar esta oferta?')">
+                        <form class="crear-oferta-form" th:action="@{/ofertas/guardar}" method="post">
 
                             <label for="nombre">Código de la oferta</label>
                             <input type="text" name="codigoOferta" class="form-control" placeholder="Código de la oferta" required>
@@ -188,10 +165,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <input type="number" name="descuentoOferta" placeholder="descuento %" required><!-- -->
 
                             <label>Fecha Inicio:</label>
-                            <input type="date" name="fechaInicio"><!--  -->
+                            <input type="date" name="fechaInicio" required><!--  -->
 
                             <label>Fecha Final:</label>
-                            <input type="date" name="fechaFin">  
+                            <input type="date" name="fechaFin" required>  
 
                             <label>Estado:</label>
                             <select name="estado">
@@ -207,6 +184,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
 
         </div>
-
+        <footer>
+            <p class="texto-footer">© Proyecto Progra 4</p>
+        </footer>
+        <!-- SCRIPTS -->    
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </body>
+
 </html>

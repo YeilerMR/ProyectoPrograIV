@@ -3,14 +3,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
 */
 /* 
-    Created on : 5 may. 2024, 10:52:00
+    Created on : 14 may. 2024, 12:06:57
     Author     : Adam Acuña
 */
-
-.btn_eliminar{
-    text-decoration: none;
-    color: white;
-}
 
 #texto_error{
     color: red;

@@ -19,7 +19,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <script type="text/javascript" th:src="@{/js/scriptProveedores.js}"></script>
         <link rel="stylesheet" th:href="@{/css/modal.css}" />
         <script src="https://kit.fontawesome.com/a2dd6045c4.js"></script>
-
+        <link rel="stylesheet" th:href="@{/css/paginacion.css}" />
+        <link rel="stylesheet" th:href="@{/css/buscador.css}" />
     </head>
 
     <body onload="editarProveedor()">
@@ -69,6 +70,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <li>
                             <button id="pantalones" class="boton-menu boton-categoria" onclick="window.location.href = '/facturas/listar'"><i class="bi bi-hand-index-thumb"></i> Facturas</button>
                         </li>
+                        <li>
+                            <button id="facturas" class="boton-menu boton-categoria" onclick="window.location.href = '/pedidos/listar'"><i class="bi bi-hand-index-thumb"></i> Pedidos</button>
+                        </li>
                     </ul>
                 </nav>
                 <footer>
@@ -77,7 +81,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </aside>
             <main>
                 <div class="title-admin-pro-container">
-                    <h1>Panel de administracion de proveedores</h1>
+                    <h1>Panel de administración de proveedores</h1>
                 </div>
 
                 <div class="create-button_container">
@@ -108,9 +112,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <td th:text="${proveedor.getCategoriaServicio}"></td>
                             <td th:text="${proveedor.getInformacionAdicional}"></td>
                             <td>
-                                <button type="button" class="producto-editar btn_editar" th:value="${proveedor.getIdProveedor}">Editar</button>
+                                <button type="button" class="producto-editar btn_editar" th:value="${proveedor.getIdProveedor}"><i class="bi bi-pen"></i></button>
+                                <br>
+                                -----
+                                <br>
                                 <button class="btn_delete producto-eliminar">
-                                    <a class="btn_eliminar" th:href="@{/proveedores/eliminar(proveedor=${proveedor.getIdProveedor})}">Eliminar</a>
+                                    <a class="btn_eliminar" th:href="@{/proveedores/eliminar(proveedor=${proveedor.getIdProveedor})}"><i class="bi bi-trash"></i></a>
                                 </button>
                             </td>
                         </tr>
@@ -120,7 +127,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="modal-content">
                             <span class="close">&times;</span>
                             <div class="container">
-                                <form class='crear-cliente-form' th:action="@{/proveedores/registrar}" method="GET">
+                                <form class='crear-cliente-form' id="form-crear" th:action="@{/proveedores/registrar}" method="GET" onsubmit="validarFormularioCrear()">
                                     <label for="nombre">Nombre: </label>
                                     <input type="text" name="nombre" id="nombre" required>
                                     <br><br>
@@ -141,9 +148,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <br><br>
                                     <label for="informacionadicional">Información adicional: </label>
                                     <textarea name="informacionadicional" id="informacionadicional"></textarea>
-                                    <br><br>
+                                    <br>
+                                    <div id="mensaje_container">
+                                        <p id="texto_error"></p>
+                                    </div>
+                                    <br>
                                     <input type="submit" id="submitButton" value="Registrar Proveedor">
-                                    <input type="button" value="Cancelar" onclick="window.location.href='./listar'">
+                                    <input type="button" value="Cancelar" onclick="cancelarCreacionButton()">
                                 </form>
                             </div>
                         </div>
@@ -157,7 +168,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         });
                     </script>
                     <br><br>
-                    <div th:if="${proveedores != null}">
+                    <div class="divPag" th:if="${proveedores != null}">
                         <!-- Enlaces de paginación -->
                         <a th:href="@{/proveedores/listar(page=0)}">Primera Página</a>
                         <a th:href="@{/proveedores/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
