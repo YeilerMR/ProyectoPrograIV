@@ -10,68 +10,74 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.LinkedList;
-
 
 /**
  *
  * @author kinco
  */
 public class DataApartado {
+
     private static final String TBAPARTADO = "apartado";
     private static final String IDENTIFICADOR = "id_Apartado";
-   
+
     public static boolean insertarApartado(Apartado apartado) throws SQLException {
-    String sql = "INSERT INTO " + TBAPARTADO + " (idCliente, idProducto, fechaInicioApartado, fechaFinalApartado, abono, estadoApartado) VALUES (?, ?, ?, ?, ?, ?)";
-    Connection conexion = conectar();
-    PreparedStatement statement = conexion.prepareStatement(sql);
-    statement.setInt(1, apartado.getIdCliente());
-    statement.setInt(2, apartado.getIdProducto());
-    statement.setDate(3, new java.sql.Date(apartado.getFechaInicioApartado().getTime()));
-    statement.setDate(4, new java.sql.Date(apartado.getFechaFinalApartado().getTime()));
-    statement.setDouble(5, apartado.getAbono());
-    statement.setString(6, apartado.getEstadoApartado());
-    
-    ResultSet generatedKeys = statement.getGeneratedKeys();
-        int idApartado = -1;
-        if (generatedKeys.next()) {
-            idApartado = generatedKeys.getInt(1);
+        String sql = "INSERT INTO " + TBAPARTADO + " (id_Apartado, idCliente_Apartado, idProducto_Apartado, fechaInicio_Apartado, fechaFinal_Apartado, abono_Apartado, estado_Apartado) VALUES(?,?,?,?,?,?,?);";
+        Connection conexion = conectar();
+        PreparedStatement statement = conexion.prepareStatement(sql);
+        statement.setInt(1, apartado.getIdApartado());
+        statement.setInt(2, apartado.getIdCliente());
+        statement.setInt(3, apartado.getIdProducto());
+
+        java.util.Date fechaInicio = apartado.getFechaInicioApartado();
+        if (fechaInicio != null) {
+            java.sql.Timestamp timestampInicio = new java.sql.Timestamp(fechaInicio.getTime());
+            statement.setTimestamp(4, timestampInicio);
         } else {
-            throw new SQLException("No se pudo obtener el ID generado para el usuario.");
+            statement.setNull(4, Types.TIMESTAMP);
         }
-        statement.close(); 
-        boolean inserted = statement.executeUpdate() > 0;
+
+        java.util.Date fechaFinal = apartado.getFechaFinalApartado();
+        if (fechaFinal != null) {
+            java.sql.Timestamp timestampFinal = new java.sql.Timestamp(fechaFinal.getTime());
+            statement.setTimestamp(5, timestampFinal);
+        } else {
+            statement.setNull(5, Types.TIMESTAMP);
+        }
+        statement.setDouble(6, apartado.getAbono());
+        statement.setString(7, apartado.getEstadoApartado());
+
+        int resultado = statement.executeUpdate();
+        System.out.println("result= " + resultado);
         statement.close();
-        conexion.close();    
-    return inserted;
-}
-    
-    public static LinkedList<Apartado> getApartados() throws SQLException {
-    LinkedList<Apartado> apartados = new LinkedList<>();
-    String sql = "SELECT a.*, c.nombre_cliente, p.nombre_producto " +
-                 "FROM " + TBAPARTADO + " a " +
-                 "INNER JOIN Clientes c ON a.idCliente_Apartado = c.id_cliente " +
-                 "INNER JOIN Productos p ON a.idProducto_Apartado = p.id_producto";
-    Connection conexion = conectar();
-    PreparedStatement statement = conexion.prepareStatement(sql);
-    ResultSet result = statement.executeQuery();
-    Apartado apartado;
-    while (result.next()) {
-        apartado = new Apartado();
-        apartado.setIdCliente(result.getInt("idCliente_Apartado"));
-        apartado.setIdProducto(result.getInt("idProducto_Apartado"));
-        apartado.setFechaInicioApartado(result.getDate("fecha_inicio_apartado"));
-        apartado.setFechaFinalApartado(result.getDate("fecha_final_apartado"));
-        apartado.setAbono(result.getDouble("abono_apartado"));
-        apartado.setEstadoApartado(result.getString("estado_apartado"));
-        apartados.add(apartado);
+        conexion.close();
+
+        return true;
     }
-    statement.close();
-    conexion.close();
-    return apartados;
-}
-    
-        public static boolean actualizar(Apartado apartado) throws SQLException {
+
+    public static LinkedList<Apartado> getApartados() throws SQLException {
+        LinkedList<Apartado> apartado = new LinkedList();
+        String sql = "SELECT * FROM " + TBAPARTADO + ";";
+        Connection conexion = conectar();
+        PreparedStatement statement = conexion.prepareStatement(sql);
+        ResultSet result = statement.executeQuery();
+        Apartado apt;
+        while (result.next()) {
+            apt = new Apartado();
+            apt.setIdApartado(result.getInt("id_Apartado"));
+            apt.setIdCliente(result.getInt("idCliente_Apartado"));
+            apt.setIdProducto(result.getInt("idProducto_Apartado"));
+            apt.setFechaInicioApartado(result.getDate("fechaInicio_Apartado"));
+            apt.setFechaFinalApartado(result.getDate("fechaFinal_Apartado"));
+            apt.setAbono(result.getDouble("abono_Apartado"));
+            apt.setEstadoApartado(result.getString("estado_Apartado"));
+            apartado.add(apt);
+        }
+        return apartado;
+    }
+
+    public static boolean actualizar(Apartado apartado) throws SQLException {
         Connection conexion = conectar();
         boolean actualizadoApartado = false;
         try {
@@ -93,7 +99,7 @@ public class DataApartado {
         return actualizadoApartado;
     }
 
-public static boolean eliminar(int idApartado) throws SQLException {
+    public static boolean eliminar(int idApartado) throws SQLException {
         Connection conexion = conectar();
         boolean eliminado = false;
         try {

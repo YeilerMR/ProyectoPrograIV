@@ -44,12 +44,12 @@ public class ApartadosController {
     }
     
     @PostMapping({"/guardar"})
-    public ResponseEntity<?> save(@RequestParam("idApartado") int idApartado, @RequestParam("idCliente") int idCliente,
+    public ResponseEntity<?> save( @RequestParam("idCliente") int idCliente,
             @RequestParam("idProducto") int idProducto, @RequestParam("fechaInicioApartado") Date fechaInicioApartado,
             @RequestParam("fechaFinalApartado") Date fechaFinalApartado, @RequestParam("abono") double abono,
             @RequestParam("estadoApartado") String estadoApartado) {
         System.out.println("fechaInicioApartado" + fechaInicioApartado);
-        Apartado apartado = new Apartado(idApartado, idCliente, idProducto, fechaInicioApartado, fechaFinalApartado, abono, estadoApartado);
+        Apartado apartado = new Apartado(0, idCliente, idProducto, fechaInicioApartado, fechaFinalApartado, abono, estadoApartado);
         ApartadosServices.agregar(apartado);
         return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Apartado agregado exitosamente\"}");
     }
