@@ -19,40 +19,60 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApartadosServices {
     
+    public static boolean agregar(Apartado apartado) {
+        boolean resultado= true;
+        try {
+            resultado= DataApartado.insertarApartado(apartado);
+        } catch (SQLException ex) {
+            Logger.getLogger(ApartadosServices.class.getName()).log(Level.SEVERE,null,ex);
+            
+        }
+        return resultado;
+    }
+    
     public static LinkedList<Apartado> getApartados(){
         LinkedList<Apartado> apartados;
         try {
-            apartados = new DataApartado().getApartados();
+            apartados= DataApartado.getApartados();
+
         } catch (SQLException ex) {
-            apartados = null;
-            Logger.getLogger(ApartadosServices.class.getName()).log(Level.SEVERE, null, ex);
+            apartados=null;
+            Logger.getLogger(ApartadosServices.class.getName()).log(Level.SEVERE,null,ex);
         }
-        
         return apartados;
     }
     
-    public static boolean eliminar(int identificador) {
-         return new DataApartado().eliminar(identificador); 
+        public LinkedList<Apartado> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina, LinkedList<Apartado> listaApartados) {
+        LinkedList<Apartado> registrosPagina = new LinkedList<>();
+
+        int inicio = numeroPagina * tamanoPagina;
+        int fin = Math.min(inicio + tamanoPagina, listaApartados.size());
+
+        for (int i = inicio; i < fin; i++) {
+            registrosPagina.add(listaApartados.get(i));
+        }
+
+        return registrosPagina;
     }
-    
-    public static boolean insertar(Apartado apartado) {
-        boolean result = false;
+        
+         public static boolean eliminar(int codigo){
+        boolean resultado= true;
         try {
-        new DataApartado().insertar(apartado);
-        result = true;
+            resultado= DataApartado.eliminar(codigo);
         } catch (SQLException ex) {
             Logger.getLogger(ApartadosServices.class.getName()).log(Level.SEVERE, null, ex);
-            result=false;
         }
-        return result;
+        return resultado;
     }
     
-    public static boolean editar(Apartado apartado) {
+    public static boolean modificar(Apartado apartado){
+        boolean resultado= true;
         try {
-            return new DataApartado().editar(apartado);
+            resultado= DataApartado.actualizar(apartado);
         } catch (SQLException ex) {
-            Logger.getLogger(EmpleadosServices.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            Logger.getLogger(ApartadosServices.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return resultado;
     }
+    
 }

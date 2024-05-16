@@ -4,27 +4,21 @@
  */
 package cr.ac.una.proyecto_progra4.domain;
 
-import java.util.Date;
-import org.springframework.format.annotation.DateTimeFormat;
+import java.sql.Date;
 
 /**
  *
  * @author kinco
  */
 public class Apartado {
-
         private int idApartado;
         private int idCliente;
         private int idProducto;
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
         private Date fechaInicioApartado;
-    
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
-        private Date fechaFinalApartado;
-    
+        private Date fechaFinalApartado;    
         private double abono;
         private String estadoApartado;
-     
+
     public Apartado(int idApartado, int idCliente, int idProducto, Date fechaInicioApartado, Date fechaFinalApartado, double abono, String estadoApartado) {
         this.idApartado = idApartado;
         this.idCliente = idCliente;
@@ -34,11 +28,12 @@ public class Apartado {
         this.abono = abono;
         this.estadoApartado = estadoApartado;
     }
+     
+   
 
     public Apartado() {
         
     }
-
 
     public int getIdApartado() {
         return idApartado;

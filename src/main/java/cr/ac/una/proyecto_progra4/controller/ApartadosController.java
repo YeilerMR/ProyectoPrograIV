@@ -5,9 +5,16 @@
 package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Apartado;
+
+import cr.ac.una.proyecto_progra4.domain.Producto;
 import cr.ac.una.proyecto_progra4.services.ApartadosServices;
+import cr.ac.una.proyecto_progra4.services.ProductoServices;
+
+import java.sql.Date;
 import java.util.LinkedList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +22,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 /**
@@ -26,80 +34,63 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/apartados")
 public class ApartadosController {
     
-    private final ApartadosServices apartadosServices;
-
     @Autowired
-    public ApartadosController(ApartadosServices apartadosServices) {
-        this.apartadosServices = apartadosServices;
-    }
-    
-   @GetMapping("/")
-    public String index() {
-        return "index";
-    }
+    private ProductoServices productoServices;
 
+        
     @GetMapping("/agregar")
-    public String agregar() {
-        return "form_apartados";
+    public String crearOferta() {
+        return "apartados/form_Apartados";
     }
     
+    @PostMapping({"/guardar"})
+    public ResponseEntity<?> save(@RequestParam("idApartado") int idApartado, @RequestParam("idCliente") int idCliente,
+            @RequestParam("idProducto") int idProducto, @RequestParam("fechaInicioApartado") Date fechaInicioApartado,
+            @RequestParam("fechaFinalApartado") Date fechaFinalApartado, @RequestParam("abono") double abono,
+            @RequestParam("estadoApartado") String estadoApartado) {
+        System.out.println("fechaInicioApartado" + fechaInicioApartado);
+        Apartado apartado = new Apartado(idApartado, idCliente, idProducto, fechaInicioApartado, fechaFinalApartado, abono, estadoApartado);
+        ApartadosServices.agregar(apartado);
+        return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Apartado agregado exitosamente\"}");
+    }
     
     @GetMapping("/listar")
-  public String listar(Model model) {
-    System.out.println("listado apartados");
-    LinkedList<Apartado> apartados = ApartadosServices.getApartados();
-    model.addAttribute("apartados", apartados);
-    return "lista_apartados.html";
-  }
+    public String mostrarLista(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        LinkedList<Apartado> apartados = ApartadosServices.getApartados();
+        LinkedList<Apartado> ApartadosPagina = new ApartadosServices().obtenerRegistrosPaginados(page, pageSize, apartados);
+        List<Producto> productos = productoServices.getProductos();
 
-    
-    public String buscar(){
-        return "vista";
+        int ultimaPagina = (int) Math.ceil((double) apartados.size() / pageSize) - 1;
+
+        model.addAttribute("ultimaPagina", ultimaPagina);
+        model.addAttribute("apartados", ApartadosPagina);
+        model.addAttribute("productos", productos);
+        model.addAttribute("page", page);
+        model.addAttribute("pageSize", pageSize);
+
+        return "apartados/form_Apartados";
     }
+    
+    @PostMapping("/eliminar/{codigo}")
+    public String eliminar(@PathVariable int codigo, RedirectAttributes redAttributes) {
+        boolean elimino = ApartadosServices.eliminar(codigo);
+        System.out.println("elimino?" + elimino);
+
+        if (elimino) {
+            redAttributes.addFlashAttribute("mensajeExitoso", "Apartado eliminado correctamente");
+        } else {
+            redAttributes.addFlashAttribute("mensajeError", "El Apartado no pudo ser eliminado");
+            return "redirect:/error";
+        }
+        return "redirect:/apartados/listar";
+    }
+    
+    @PostMapping("/actualizar")
+    public ResponseEntity<?> actualizar(@ModelAttribute Apartado apartado) {
+        System.out.println("Metodo Actualizar\nCodigoApartado: " + apartado.getIdApartado() );
+
         
-    @PostMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable int id){
-        String vista = "redirect:/apartados/listar";
-        System.out.println("ident= " + id);
-        boolean elimino = ApartadosServices.eliminar(id);
-        System.out.println("elimino? " + elimino);
-        if (!elimino){
-            return "error" ;
-        }
-        System.out.println("vista=" + vista);
-        return vista;
+        ApartadosServices.modificar(apartado);
+        return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Apartado modificado exitosamente\"}");
     }
-    
-    @PostMapping("/insertar")
-    public String insertar(@ModelAttribute Apartado apartado) {
-        boolean resultado = ApartadosServices.insertar(apartado);
-        if (resultado) {
-            return "redirect:/apartados/listar";
-        } else {
-            return "error";
-        }
-    }
-    
-    @PostMapping("/guardar")
-    public ModelAndView guardar(@ModelAttribute Apartado apartado) {
-        ModelAndView modelAndView = new ModelAndView();
-        boolean resultado = ApartadosServices.insertar(apartado);
-        if (resultado) {
-            modelAndView.setViewName("redirect:/apartados/listar");
-        } else {
-            modelAndView.setViewName("error");
-        }
-        return modelAndView;
-    }
-    
-     @PostMapping("/editar/{id}")
-    public String editar(@PathVariable int id, @ModelAttribute Apartado apartado) {
-    apartado.setIdApartado(id); 
-    boolean editado = ApartadosServices.editar(apartado);
-    if (editado) {
-        return "redirect:/empleados/listar"; 
-    } else {
-        return "error"; 
-    }
-}
 }

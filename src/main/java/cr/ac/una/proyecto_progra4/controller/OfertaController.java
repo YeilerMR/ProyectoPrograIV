@@ -35,7 +35,7 @@ public class OfertaController {
     @Autowired
     private ProductoServices productoServices;
 
-    @GetMapping("/agregar")
+    @GetMapping("/agregar") 
     public String crearOferta() {
         return "ofertas/form_Ofertas";
     }
