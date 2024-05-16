@@ -144,7 +144,7 @@
 
                                 <label for="idCliente_Envio">Cliente</label>
 
-                                <select name="idCliente">
+                                <select name="idCliente_Envio">
                                     <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.idCliente}" 
                                             th:text="${cliente.cedula + ' ' + cliente.nombre + ' ' + cliente.apellidos}"></option>                                    
                                 </select>
