@@ -128,7 +128,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
                     <script>
                                 document.addEventListener("DOMContentLoaded", function () {
-                                    validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
+                                    validarEliminacionProveedor('.btn_delete', "¿Estas seguro?", './listar')
                                 });
                     </script>
                     <br><br>
@@ -149,22 +149,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="container">
                             <form class="crear-cliente-form" id="form-crear" th:action="@{/proveedores/registrar}" method="POST">
                                 <label for="nombre">Nombre: </label>
-                                <input type="text" name="nombre" id="nombre" required>
+                                <input type="text" name="nombre" id="nombre">
                                 <br><br>
                                 <label for="telefono">Teléfono: </label>
-                                <input type="text" name="telefono" id="telefono" required>
+                                <input type="text" name="telefono" id="telefono">
                                 <br><br>
                                 <label for="descripcion">Descripción: </label>
-                                <textarea name="descripcion" id="descripcion" required=""></textarea>
+                                <textarea name="descripcion" id="descripcion"></textarea>
                                 <br><br>
                                 <label for="correo">Correo: </label>
-                                <input type="email" name="correo" id="correo" required>
+                                <input type="email" name="correo" id="correo">
                                 <br><br>
                                 <label for="direccion">Dirección: </label>
-                                <input type="text" name="direccion" id="direccion" required>
+                                <input type="text" name="direccion" id="direccion">
                                 <br><br>
                                 <label for="categoria">Categoria: </label>
-                                <input type="text" name="categoria" id="categoria" required>
+                                <input type="text" name="categoria" id="categoria">
                                 <br><br>
                                 <label for="informacionadicional">Información adicional: </label>
                                 <textarea name="informacionadicional" id="informacionadicional"></textarea>

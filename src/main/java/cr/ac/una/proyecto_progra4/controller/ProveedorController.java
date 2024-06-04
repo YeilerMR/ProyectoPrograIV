@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +44,7 @@ public class ProveedorController {
         } else {
             return "error";
         }*/
-        
+
         LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedores());
 
         int ultimaPagina = (int) Math.ceil((double) proveedores().size() / pageSize) - 1;
@@ -85,20 +86,15 @@ public class ProveedorController {
         return "error";
     }
 
-    @GetMapping("/editar_proveedor")
-    public String editarInfoProveedor(@RequestParam("proveedor") int proveedorID, @RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {
+    @PostMapping("/editar_proveedor")
+    public ResponseEntity<?> editarInfoProveedor(@RequestParam("proveedor") int proveedorID, @RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {
         Proveedor proveedor = new Proveedor(proveedorID, nombre, telefono, descripcion, correo, direccion, categoria, informacion);
-        if (new ProveedoresServices().editarProveedor(proveedor)) {
-            proveedores();
-            return "excito";
-        } else {
-            return "error";
-        }
+        return ResponseEntity.ok().body(servicePro.actualizarProveedor(proveedor));
     }
 
-    @GetMapping("/eliminar")
-    public String eliminarProveedor(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("proveedor") int proveedorID) {
-        servicePro.eliminar(proveedorID);
+    @DeleteMapping("/eliminar")
+    public ResponseEntity<?> eliminarProveedor(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("proveedor") int proveedorID) {
+
         LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedores());
 
         int ultimaPagina = (int) Math.ceil((double) proveedores().size() / pageSize) - 1;
@@ -107,6 +103,6 @@ public class ProveedorController {
         model.addAttribute("proveedores", proveedoresPagina);
         model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
         model.addAttribute("pageSize", pageSize); // Asegúrate de pasar el tamaño de página al modelo        
-        return "proveedor/Proveedores_admin";
+        return ResponseEntity.ok().body(servicePro.eliminar(proveedorID));
     }
 }

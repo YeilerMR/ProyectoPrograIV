@@ -15,3 +15,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 #texto_error{
     color: red;
 }
+
+.modalEditar{
+    display: none;
+}

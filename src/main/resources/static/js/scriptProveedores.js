@@ -22,22 +22,47 @@ function editarProveedor() {
     });
 }
 
-function submitForm(event) {
-    event.preventDefault(); // Evita que el formulario se envíe automáticamente
-
-    var container = document.getElementById('mensaje_container');
-    var form = document.getElementById('editForm');
-    var formData = new FormData(form);
-
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', form.getAttribute('action') + '?' + new URLSearchParams(formData).toString(), true);
-    xmlhttp.send();
-
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            container.innerHTML = this.responseText;
-        }
-    };
+function submitFormProveedor() {
+    var crearForm = document.querySelector('.editForm');
+    crearForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Desea continuar con la edición de este proveedor?',
+            text: '¡Asegurate de tener los datos correctos!',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Realizar una petición AJAX o enviar el formulario de forma asíncrona
+                //alert("Si llega aqui.");
+                fetch(crearForm.action, {
+                    method: 'POST',
+                    body: new FormData(crearForm)
+                })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Si el proceso de agregar el cliente fue exitoso, mostrar mensaje de éxito
+                                mostrarToastConfirmacion(data.message);
+                                // Redirigir después de un pequeño retraso
+                                setTimeout(function () {
+                                    window.location.href = "./listar";
+                                }, 1000); // 1000 milisegundos de retraso
+                            } else {
+                                // Si el proceso de agregar el cliente falló, mostrar mensaje de error
+                                mostrarToastError(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+            }
+        });
+    });
 }
 
 function validarFormularioCrear(event) {
@@ -75,18 +100,17 @@ function validarCreacionProveedor(selector, mensajeConfirmacion, urlRedireccion)
     var crearForm = document.querySelector(selector);
     crearForm.addEventListener('submit', function (event) {
         event.preventDefault();
-
-        Swal.fire({
-            title: mensajeConfirmacion,
-            text: '¡Asegurate de tener los datos correctos!',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, continuar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (validarFormularioCrear(event)) {
+        if (validarFormularioCrear(event)) {
+            Swal.fire({
+                title: mensajeConfirmacion,
+                text: '¡Asegurate de tener los datos correctos!',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, continuar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
                 if (result.isConfirmed) {
                     // Realizar una petición AJAX o enviar el formulario de forma asíncrona
                     //alert("Si llega aqui.");
@@ -112,9 +136,13 @@ function validarCreacionProveedor(selector, mensajeConfirmacion, urlRedireccion)
                                 console.error('Error:', error);
                             });
                 }
-            }
-        });
+            });
+        }
     });
+}
+
+function validarEdicionProveedor(selector, mensajeConfirmacion, urlRedireccion) {
+    alert("ajajajaja");
 }
 
 // Función para mostrar un Toast de error
@@ -142,5 +170,49 @@ function mostrarToastConfirmacion(titulo) {
     Toast.fire({
         icon: 'success',
         title: titulo
+    });
+}
+
+function validarEliminacionProveedor(selector, mensajeConfirmacion, urlRedireccion) {
+    var deleteButtons = document.querySelectorAll(selector);
+    deleteButtons.forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            var url = this.querySelector('a').getAttribute('href');
+            Swal.fire({
+                title: mensajeConfirmacion,
+                text: '¡No podrás revertir esto!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar una petición AJAX para eliminar el proveedor
+                    fetch(url, {
+                        method: 'DELETE'
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Si el proceso de eliminación fue exitoso, mostrar mensaje de éxito
+                                    mostrarToastConfirmacion(data.message);
+                                    // Redirigir después de un pequeño retraso
+                                    setTimeout(function () {
+                                        window.location.href = urlRedireccion;
+                                    }, 1000); // 1000 milisegundos de retraso
+                                } else {
+                                    // Si el proceso de eliminación falló, mostrar mensaje de error
+                                    mostrarToastError(data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                }
+            });
+        });
     });
 }

@@ -17,6 +17,8 @@ public interface IProveedoresService {
 
     public List<Proveedor> getProveedores();
 
-    public void eliminar(int id);
+    public String eliminar(int id);
+    
+    public String actualizarProveedor(Proveedor proveedorActualizado);
 
 }

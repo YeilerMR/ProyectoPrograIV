@@ -49,14 +49,18 @@ public class ProveedoresServices implements IProveedoresService {
     public boolean eliminarProveedor(int proveedorID) {
         return new ProveedoresData().eliminarProveedorBD(proveedorID);
     }
-    
+
     @Autowired
     private ProveedorRepository proveedorRep;
 
     @Override
     public String guardar(Proveedor proveedor) {
-        proveedorRep.save(proveedor);
-        return "{\"success\": true, \"message\": \"¡Proveedor agregado exitosamente!\"}";
+        try {
+            proveedorRep.save(proveedor);
+            return "{\"success\": true, \"message\": \"¡Proveedor agregado exitosamente!\"}";
+        } catch (Exception e) {
+            return "{\"success\": false, \"message\": \"Error al guardar el proveedor: " + e.getMessage() + "\"}";
+        }
     }
 
     @Override
@@ -65,13 +69,22 @@ public class ProveedoresServices implements IProveedoresService {
     }
 
     @Override
-    public void eliminar(int id) {
-        proveedorRep.deleteById(id);
+    public String eliminar(int id) {
+        try {
+            proveedorRep.deleteById(id);
+            return "{\"success\": true, \"message\": \"¡Proveedor eliminado exitosamente!\"}";
+        } catch (Exception e) {
+            return "{\"success\": false, \"message\": \"Error al eliminar el proveedor: " + e.getMessage() + "\"}";
+        }
     }
-
-    public void actualizarProveedor(Proveedor proveedorActualizado) {
-        Proveedor proveedorExistente = proveedorRep.findById(proveedorActualizado.getIdProveedor()).orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
-
-        proveedorRep.save(proveedorExistente);
+    
+    @Override
+    public String actualizarProveedor(Proveedor proveedor) {
+        try {
+            proveedorRep.save(proveedor);
+            return "{\"success\": true, \"message\": \"¡Proveedor editado exitosamente!\"}";
+        } catch (Exception e) {
+            return "{\"success\": false, \"message\": \"Error al editar el proveedor: " + e.getMessage() + "\"}";
+        }
     }
 }
