@@ -54,13 +54,26 @@ public class ProveedoresServices implements IProveedoresService {
 
     @Autowired
     private ProveedorRepository proveedorRep;
-    
+
     /*@Autowired
     private OrdenDeCompraRepository ordenDeCompraRep;*/
-
     @Override
     public String guardar(Proveedor proveedor) {
         try {
+            // Validación de campos vacíos
+            if (proveedor.getIdProveedor() == 0
+                    || proveedor.getNombreProveedor() == null || proveedor.getNombreProveedor().isEmpty()
+                    || proveedor.getTelefonoProveedor() == null || proveedor.getTelefonoProveedor().isEmpty()
+                    || proveedor.getDescripcionProveedor() == null || proveedor.getDescripcionProveedor().isEmpty()
+                    || proveedor.getCorreo() == null || proveedor.getCorreo().isEmpty()
+                    || proveedor.getDireccionProveedor() == null || proveedor.getDireccionProveedor().isEmpty()
+                    || proveedor.getCategoriaServicio() == null || proveedor.getCategoriaServicio().isEmpty()
+                    || proveedor.getInformacionAdicional() == null || proveedor.getInformacionAdicional().isEmpty()) {
+
+                return "{\"success\": false, \"message\": \"Por favor, rellene todos los campos.\"}";
+            }
+
+            // Guardar el proveedor si todos los campos están completos
             proveedorRep.save(proveedor);
             return "{\"success\": true, \"message\": \"¡Proveedor agregado exitosamente!\"}";
         } catch (Exception e) {
@@ -79,7 +92,7 @@ public class ProveedoresServices implements IProveedoresService {
             // Verificar si el proveedor está asociado a alguna orden de compra
             //List<OrdenDeCompra> ordenesDeCompra = ordenDeCompraRep.findByProveedorId(id);
             boolean existe = new OrdenDeCompraData().proveedorById(id);
-            if (/*!ordenesDeCompra.isEmpty()*/ existe) {
+            if (/*!ordenesDeCompra.isEmpty()*/existe) {
                 return "{\"success\": false, \"message\": \"No se puede eliminar el proveedor porque está asociado a una o más órdenes de compra.\"}";
             }
 
@@ -89,7 +102,7 @@ public class ProveedoresServices implements IProveedoresService {
             return "{\"success\": false, \"message\": \"Error al eliminar el proveedor: " + e.getMessage() + "\"}";
         }
     }
-    
+
     @Override
     public String actualizarProveedor(Proveedor proveedor) {
         try {
