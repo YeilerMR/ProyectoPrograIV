@@ -4,19 +4,29 @@
  */
 package cr.ac.una.proyecto_progra4.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.sql.Date;
 
 /**
  *
  * @author Adam Acuña
  */
+@Entity
+@Table(name = "ordendecompra")
 public class OrdenDeCompra {
     
     private Pedido idPedido;
+    @OneToMany
+    @JoinColumn(name = "idProveedor_OrdenDeCompra", nullable = false)
     private Proveedor idProveedor;
     private Date fechaOrden;
     private Date fechaEntrega;
     private String estadoOrden;
+    @Id
     private String numeroReferencia;
 
     public OrdenDeCompra() {
