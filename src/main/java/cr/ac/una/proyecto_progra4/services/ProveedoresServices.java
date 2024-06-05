@@ -4,8 +4,8 @@
  */
 package cr.ac.una.proyecto_progra4.services;
 
+import cr.ac.una.proyecto_progra4.data.OrdenDeCompraData;
 import cr.ac.una.proyecto_progra4.data.ProveedoresData;
-import cr.ac.una.proyecto_progra4.domain.OrdenDeCompra;
 import cr.ac.una.proyecto_progra4.domain.Proveedor;
 import cr.ac.una.proyecto_progra4.jpa.OrdenDeCompraRepository;
 import cr.ac.una.proyecto_progra4.jpa.ProveedorRepository;
@@ -55,8 +55,8 @@ public class ProveedoresServices implements IProveedoresService {
     @Autowired
     private ProveedorRepository proveedorRep;
     
-    @Autowired
-    private OrdenDeCompraRepository ordenDeCompraRep;
+    /*@Autowired
+    private OrdenDeCompraRepository ordenDeCompraRep;*/
 
     @Override
     public String guardar(Proveedor proveedor) {
@@ -77,8 +77,9 @@ public class ProveedoresServices implements IProveedoresService {
     public String eliminar(int id) {
         try {
             // Verificar si el proveedor está asociado a alguna orden de compra
-            List<OrdenDeCompra> ordenesDeCompra = ordenDeCompraRep.findByProveedorId(id);
-            if (!ordenesDeCompra.isEmpty()) {
+            //List<OrdenDeCompra> ordenesDeCompra = ordenDeCompraRep.findByProveedorId(id);
+            boolean existe = new OrdenDeCompraData().proveedorById(id);
+            if (/*!ordenesDeCompra.isEmpty()*/ existe) {
                 return "{\"success\": false, \"message\": \"No se puede eliminar el proveedor porque está asociado a una o más órdenes de compra.\"}";
             }
 

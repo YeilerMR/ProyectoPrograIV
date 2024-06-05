@@ -76,6 +76,27 @@ public class OrdenDeCompraData {
         }
         return listaOrdenes;
     }
+    
+    public boolean proveedorById(int proveedorId) {
+        boolean flag = false;
+        try {
+            String sql = "SELECT * FROM " + TBORDENESDECOMPRA + " WHERE idProveedor_OrdenDeCompra = " + proveedorId;
+            Connection cn = conectar();
+            PreparedStatement statement = cn.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            OrdenDeCompra orden;
+            if (rs.next()) {
+                flag = true;
+            }
+
+            cn.close();
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Error sin controlar: " + e.toString());
+        }
+        return flag;
+    }
 
     public boolean editarOrdenDB(OrdenDeCompra orden) {
         try {

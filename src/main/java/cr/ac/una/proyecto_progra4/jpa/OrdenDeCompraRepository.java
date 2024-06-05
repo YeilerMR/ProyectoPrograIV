@@ -14,9 +14,9 @@ import org.springframework.data.repository.query.Param;
  *
  * @author Adam Acuña
  */
-public interface OrdenDeCompraRepository extends JpaRepository<OrdenDeCompra, Integer> {
+public interface OrdenDeCompraRepository /*extends JpaRepository<OrdenDeCompra, Integer>*/ {
     
-    @Query("SELECT o FROM OrdenDeCompra o WHERE o.proveedor.id = :proveedorId")
-    List<OrdenDeCompra> findByProveedorId(@Param("proveedorId") int proveedorId);
+    /*@Query("SELECT o FROM OrdenDeCompra o WHERE o.proveedor.id = :proveedorId")
+    List<OrdenDeCompra> findByProveedorId(@Param("proveedorId") int proveedorId);*/
 
 }
