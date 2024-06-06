@@ -7,11 +7,15 @@ package cr.ac.una.proyecto_progra4.controller;
 import cr.ac.una.proyecto_progra4.domain.OrdenDeCompra;
 import cr.ac.una.proyecto_progra4.domain.Pedido;
 import cr.ac.una.proyecto_progra4.domain.Proveedor;
+import cr.ac.una.proyecto_progra4.services.IOrdenDeCompraService;
+import cr.ac.una.proyecto_progra4.services.IProveedoresService;
 import cr.ac.una.proyecto_progra4.services.OrdenDeCompraServices;
 import cr.ac.una.proyecto_progra4.services.PedidoServices;
-import cr.ac.una.proyecto_progra4.services.ProveedoresServices;
 import java.sql.Date;
 import java.util.LinkedList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,35 +30,47 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/ordenes_compra")
 public class OredenDeCompraController {
-
-    private static LinkedList<Proveedor> proveedores = new ProveedoresServices().listaProveedores();
-    private static LinkedList<Pedido> pedidos = new PedidoServices().lista_Pedido();
-    private static LinkedList<OrdenDeCompra> ordenes = new OrdenDeCompraServices().listaOrdenes();
-
-    public void actualizarListaOrdenes() {
-        ordenes = new OrdenDeCompraServices().listaOrdenes();
+    
+    @Autowired
+    private IProveedoresService proveedorSer;
+    
+    @Autowired
+    private IOrdenDeCompraService ordenSer;
+    
+    private List<Proveedor> proveedores() {
+        return proveedorSer.getProveedores();
     }
+    
+    private List<OrdenDeCompra> ordenes(){
+        return ordenSer.getOrdenes();
+    }
+    private static LinkedList<Pedido> pedidos = new PedidoServices().lista_Pedido();
+    //private static LinkedList<OrdenDeCompra> ordenes = new OrdenDeCompraServices().listaOrdenes();
+
+    /*public void actualizarListaOrdenes() {
+        ordenes = new OrdenDeCompraServices().listaOrdenes();
+    }*/
 
     @GetMapping("crear")
     public String crearOrdenCompra(Model model) {
-        model.addAttribute("proveedores", proveedores);
+        model.addAttribute("proveedores", proveedores());
         return "OrdenDeCompra/registrar_orden";
     }
 
     @PostMapping("registrar")
-    public String registrarOrden(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("combobox-pedido") int idPedido, @RequestParam("combobox-proveedores") int idProveedor, @RequestParam("fecha-orden") Date fechaOrden, @RequestParam("fecha-entrega") Date fechaEntrega, @RequestParam("estado") String estado, @RequestParam("numero-referencia") String numeroReferencia) {
+    public ResponseEntity<?> registrarOrden(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("combobox-pedido") int idPedido, @RequestParam("combobox-proveedores") int idProveedor, @RequestParam("fecha-orden") Date fechaOrden, @RequestParam("fecha-entrega") Date fechaEntrega, @RequestParam("estado") String estado, @RequestParam("numero-referencia") String numeroReferencia) {
         Proveedor proveedor = new Proveedor();
         Pedido pedido = new Pedido();
         proveedor.setIdProveedor(idProveedor);
         pedido.setId_pedido(idPedido);
 
-        if (new OrdenDeCompraServices().crearOrdenCompra(new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia))) {
+        /*if (new OrdenDeCompraServices().crearOrdenCompra(new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia))) {
             actualizarListaOrdenes();
             LinkedList<OrdenDeCompra> ordenDeCompraPagina = new OrdenDeCompraServices().obtenerRegistrosPaginados(page, pageSize, ordenes);
 
             int ultimaPagina = (int) Math.ceil((double) ordenes.size() / pageSize) - 1;
             model.addAttribute("pedidos", pedidos);
-            model.addAttribute("proveedores", proveedores);
+            model.addAttribute("proveedores", proveedores());
             model.addAttribute("ultimaPagina", ultimaPagina);
             model.addAttribute("ordenes", ordenDeCompraPagina);
             model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
@@ -63,16 +79,18 @@ public class OredenDeCompraController {
             return "/OrdenDeCompra/orden_compra";
         } else {
             return "error";
-        }
+        }*/
+        
+        return ResponseEntity.ok().body(ordenSer.guardar(new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia)));
     }
 
     @GetMapping("listar")
     public String listarOrdenes(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
-        LinkedList<OrdenDeCompra> ordenDeCompraPagina = new OrdenDeCompraServices().obtenerRegistrosPaginados(page, pageSize, ordenes);
+        LinkedList<OrdenDeCompra> ordenDeCompraPagina = new OrdenDeCompraServices().obtenerRegistrosPaginados(page, pageSize, ordenes());
 
-        int ultimaPagina = (int) Math.ceil((double) ordenes.size() / pageSize) - 1;
+        int ultimaPagina = (int) Math.ceil((double) ordenes().size() / pageSize) - 1;
         model.addAttribute("pedidos", pedidos);
-        model.addAttribute("proveedores", proveedores);
+        model.addAttribute("proveedores", proveedores());
         model.addAttribute("ultimaPagina", ultimaPagina);
         model.addAttribute("ordenes", ordenDeCompraPagina);
         model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
@@ -83,12 +101,12 @@ public class OredenDeCompraController {
 
     @GetMapping("editar")
     public String editar(Model model, @RequestParam("orden") String numeroReferencia) {
-        for (OrdenDeCompra orden : ordenes) {
+        for (OrdenDeCompra orden : ordenes()) {
             //System.out.println(orden.getNumeroReferencia());
             if (orden.getNumeroReferencia().equals(numeroReferencia)) {
                 model.addAttribute("orden", orden);
                 model.addAttribute("pedidos", pedidos);
-                model.addAttribute("proveedores", proveedores);
+                model.addAttribute("proveedores", proveedores());
             }
         }
         return "OrdenDeCompra/editar_orden";
@@ -101,7 +119,6 @@ public class OredenDeCompraController {
         proveedor.setIdProveedor(idProveedor);
         pedido.setId_pedido(idPedido);
         if (new OrdenDeCompraServices().editarOrden(new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia))) {
-            actualizarListaOrdenes();
             return "excito";
         } else {
             return "error";
@@ -111,7 +128,6 @@ public class OredenDeCompraController {
     @GetMapping("eliminar")
     public String eliminarOren(@RequestParam("orden") String numeroReferencia) {
         if (new OrdenDeCompraServices().eliminarOrden(numeroReferencia)) {
-            actualizarListaOrdenes();
             return "excito";
         } else {
             return "error";

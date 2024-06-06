@@ -1,0 +1,23 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ */
+package cr.ac.una.proyecto_progra4.services;
+
+import cr.ac.una.proyecto_progra4.domain.OrdenDeCompra;
+import java.util.List;
+
+/**
+ *
+ * @author Adam Acuña
+ */
+public interface IOrdenDeCompraService {
+
+    public String guardar(OrdenDeCompra orden);
+
+    public List<OrdenDeCompra> getOrdenes();
+
+    /*public String eliminar(int id);
+
+    public String actualizarOrden(OrdenDeCompra orden);*/
+}

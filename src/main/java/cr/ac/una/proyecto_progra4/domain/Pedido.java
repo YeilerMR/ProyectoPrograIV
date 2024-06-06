@@ -22,7 +22,7 @@ public class Pedido{
     @Column(name="id_Pedido")
     private int id_pedido;
     
-//    @Column(name="codigo_Pedido")
+    @Column(name="codigo_Pedido")
     private String codigo;   
 //    @OneToOne
 //    @JoinColumn(name = "usuario_id") Object obj;
@@ -30,20 +30,20 @@ public class Pedido{
 //    @Column(name="idEmpleado_Pedido")
     private int id_empleado;
     
-//    @Column(name="estadoPedido_Pedido")
+    @Column(name="estadoPedido_Pedido")
     private String estado_pedido;
     
-//    @Column(name="fechaPedido__Pedido")
+    @Column(name="fechaPedido__Pedido")
 //    @Temporal(TemporalType.DATE)
     private Date fecha;
     
-//    @Column(name="direccionEnvioPedido_Pedido")
+    @Column(name="direccionEnvioPedido_Pedido")
     private String direccion_pedido;
     
-//    @Column(name="provinciaEnvioPedido_pedido")
+    @Column(name="provinciaEnvioPedido_pedido")
     private String Provincia;
     
-//    @Column(name="cantonEnvio_Pedido")
+    @Column(name="cantonEnvio_Pedido")
     private String canton;
     
     
@@ -52,7 +52,7 @@ public class Pedido{
 //    @JoinColumn(name ="id_Producto")
     private int id_producto;
     
-//    @Column(name="cantidadProductos_pedido")
+    @Column(name="cantidadProductos_pedido")
     private int cantidad;
     
 //  @Column(name="idFactura_Pedido")
