@@ -13,7 +13,6 @@ import cr.ac.una.proyecto_progra4.services.PedidoServices;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,44 +54,6 @@ public class controllerPedidos {
 
         LinkedList<Pedido> pedidos = new PedidoServices().obtenerRegistrosPaginados(page, pageSize, auxiliar);
         int ultimaPagina = (auxiliar != null) ? ((int) Math.ceil((double) auxiliar.size() / pageSize) - 1) : 0;
-        
-        // LinkedList<Cliente> clientes = new LinkedList<>();
-        if (pedidos != null) {
-            for (int i = 0; i < pedidos.size(); i++) {
-                if(empleados!=null){
-                        for(Empleado e: empleados){
-                            if(e.getIdEmpleado() == pedidos.get(i).getId_empleado()){
-                                print("Empleado allado");
-                                 pedidos.get(i).setEmpleado(e);
-                                 break;
-                            }
-                        }
-                }else{
-                    print("empleados es nulo");
-                }
-                if (productos != null) {
-                    for (Producto p1 : productos) {
-                        if (p1.getId() == pedidos.get(i).getId_producto()) {
-                            print("producto agregado");
-                            pedidos.get(i).setProducto(p1);
-                            break;
-                        }
-                    }
-                }
-                pedidos.get(i).setFacturaObjt(ifs.getFacturaById(pedidos.get(i).getFactura()));
-                
-                Pedido p1 = pedidos.get(i);
-                //print("Pedido "+p1.getEmpleado().getNombre()+" "+p1.getFacturaObjt().getCodigo_factura()+" "+p1.getProducto().getNombre());
-                
-            }
-        }
-        
-//        for(Pedido p1: pedidos){
-//            print("Pedido "+p1.getEmpleado().getNombre()+" "+p1.getFacturaObjt().getCodigo_factura()+" "+p1.getProducto().getNombre());
-//        }
-//        
-        
-        
  
         model.addAttribute("productos", productos);
         model.addAttribute("facturas", facturas);
@@ -123,18 +84,33 @@ public class controllerPedidos {
             @RequestParam("cantidad") int cantidad,
             @RequestParam("id_f") int id_factura) {
 
+        Empleado e = new Empleado();
+        e.setIdEmpleado(id_empleado);
+
+        Producto pd = new Producto();
+        pd.setId(id_factura);
+
+        Factura f = new Factura();
+        f.setId_factura(id_factura);
+
         Pedido p = new Pedido();
         p.setId_pedido(id);
         p.setCodigo(codigo);
-        p.setId_empleado(id_empleado);
+
+        p.setEmpleado(e);
+        
         p.setEstado_pedido(estado);
         p.setFecha(fecha);
         p.setDireccion_pedido(direccion);
         p.setCanton(canton);
         p.setProvincia(provincia);
-        p.setId_producto(id_producto);
+        p.setProducto(pd);
         p.setCantidad(cantidad);
-        p.setFactura(id_factura);
+        p.setFactura(f);
+
+
+
+
         return ResponseEntity.ok().body(new PedidoServices().modificar_Pedido(p));
     }
 
@@ -161,21 +137,26 @@ public class controllerPedidos {
             @RequestParam("id_f") int id_factura) {
 
         print("Llego a guardar");
+        Empleado e = new Empleado();
+        e.setIdEmpleado(id_empleado);
+
+        Producto pd = new Producto();
+        pd.setId(id_factura);
+
+        Factura f = new Factura();
+        f.setId_factura(id_factura);
+
         Pedido p = new Pedido();
-
         p.setCodigo(codigo);
-        p.setId_empleado(id_empleado);
-
+        p.setEmpleado(e);
         p.setEstado_pedido(estado);
         p.setFecha(fecha);
-
-        p.setProvincia(provincia);
-        p.setCanton(canton);
         p.setDireccion_pedido(direccion);
-
+        p.setCanton(canton);
+        p.setProvincia(provincia);
+        p.setProducto(pd);
         p.setCantidad(cantidad);
-        p.setId_producto(id_producto);
-        p.setFactura(id_factura);
+        p.setFactura(f);
 
         return ResponseEntity.ok().body(new PedidoServices().insertar_Pedido(p));
     }

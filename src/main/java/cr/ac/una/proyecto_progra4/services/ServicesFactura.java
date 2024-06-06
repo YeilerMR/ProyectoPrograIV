@@ -32,7 +32,7 @@ public class ServicesFactura implements IFacturaServices {
         } else {
             if (factRp.existsById(factura.getId_factura())) {
                 if (!verificar_codigo(factura.getCodigo_factura(), factura.getId_factura(), true)) {
-                    Factura aux = factRp.save(factura);
+                    /*Factura aux =*/ factRp.save(factura);
                     return "{\"success\": true, \"message\": \"¡Factura modificada exitosamente!\"}";
                 }
                 return "{\"success\": false, \"message\": \"¡El código ya se encuentra en uso!\"}";
@@ -42,7 +42,7 @@ public class ServicesFactura implements IFacturaServices {
     }
 
     @Override
-    public List getFacturas() {
+    public List<Factura> getFacturas() {
         return factRp.findAll();
     }
 

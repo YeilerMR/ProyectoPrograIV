@@ -7,12 +7,12 @@ import java.util.List;
 
 
 /**
- * @author UNA
+ * @author Gonzalo Dormos Rodriguez
  */
 public interface IFacturaServices {
     public String Insertar_factura(Factura factura);
     
-    public List getFacturas();
+    public List<Factura> getFacturas();
     
     public boolean Eliminar_factura(int id);
     
