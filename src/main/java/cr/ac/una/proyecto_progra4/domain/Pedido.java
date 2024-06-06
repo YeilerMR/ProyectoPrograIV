@@ -31,7 +31,7 @@ public class Pedido{
     @Column(name="codigo_Pedido")
     private String codigo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne //(fetch = FetchType.EAGER)
     @JoinColumn(name ="idEmpleado_Pedido")
     private Empleado empleado;
     
@@ -69,14 +69,14 @@ public class Pedido{
     private String canton;
     
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne //(fetch = FetchType.EAGER)
     @JoinColumn(name ="idProducto_Pedido")
     private Producto producto;
     
     @Column(name="cantidadProductos_pedido")
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne //(fetch = FetchType.EAGER)
     @JoinColumn(name ="idFactura_Pedido")
     private Factura factura;
     
