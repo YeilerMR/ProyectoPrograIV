@@ -8,8 +8,9 @@ import cr.ac.una.proyecto_progra4.domain.Pedido;
 import cr.ac.una.proyecto_progra4.domain.Producto;
 import static cr.ac.una.proyecto_progra4.services.EmpleadosServices.getEmpleados;
 import cr.ac.una.proyecto_progra4.services.IFacturaServices;
+import cr.ac.una.proyecto_progra4.services.IPedidoServices;
 import cr.ac.una.proyecto_progra4.services.IProductoServices;
-import cr.ac.una.proyecto_progra4.services.PedidoServices;
+
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -41,20 +42,27 @@ public class controllerPedidos {
     @Autowired
     private IProductoServices ips;
 
+    @Autowired 
+    private IPedidoServices Ipedido;
+
     //@Autowired
     // private IPedidoServices iPedido;
     @GetMapping("listar")
     public String listaProveedores(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) throws SQLException {
-        LinkedList<Pedido> auxiliar = new PedidoServices().lista_Pedido();
-
+        List<Pedido> auxiliar =  Ipedido.getPedidos();//new PedidoServices().lista_Pedido();
+        print(">>"+auxiliar.size());
         //Listas necesarias para los forms
         List<Producto> productos = ips.getProductos();
         List<Factura> facturas = ifs.getFacturas();
         List<Empleado> empleados = getEmpleados();
 
-        LinkedList<Pedido> pedidos = new PedidoServices().obtenerRegistrosPaginados(page, pageSize, auxiliar);
+        LinkedList<Pedido> pedidos = Ipedido.ObtenerRegistrosPaginados(page, pageSize, auxiliar);//new PedidoServices().obtenerRegistrosPaginados(page, pageSize, auxiliar);
         int ultimaPagina = (auxiliar != null) ? ((int) Math.ceil((double) auxiliar.size() / pageSize) - 1) : 0;
  
+
+       print("Empleado del pedido "+pedidos.get(1).getEmpleado().getNombre());
+
+
         model.addAttribute("productos", productos);
         model.addAttribute("facturas", facturas);
         model.addAttribute("empleados", empleados);
@@ -111,13 +119,13 @@ public class controllerPedidos {
 
 
 
-        return ResponseEntity.ok().body(new PedidoServices().modificar_Pedido(p));
+        return ResponseEntity.ok().body(Ipedido.Insertar_pedido(p));//new PedidoServices().modificar_Pedido(p));
     }
 
     @GetMapping("eliminar")
     public String Eliminar_pedido(@RequestParam("id") int id) {
         String vista = "redirect:/pedidos/listar";
-        if (!new PedidoServices().eliminar_Pedido(id)) {
+        if (Ipedido.Eliminar_pedido(id)) {
             vista = "Error";
         }
         return vista;
@@ -158,7 +166,7 @@ public class controllerPedidos {
         p.setCantidad(cantidad);
         p.setFactura(f);
 
-        return ResponseEntity.ok().body(new PedidoServices().insertar_Pedido(p));
+        return ResponseEntity.ok().body(Ipedido.Insertar_pedido(p));//new PedidoServices().insertar_Pedido(p));
     }
 
 }

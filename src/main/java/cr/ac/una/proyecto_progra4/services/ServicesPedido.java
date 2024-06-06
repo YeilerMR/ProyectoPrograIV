@@ -5,10 +5,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 import cr.ac.una.proyecto_progra4.domain.Pedido;
 import cr.ac.una.proyecto_progra4.jpa.PedidoRepository;
 
+
+@Service
+@Primary
 public class ServicesPedido implements IPedidoServices{
 
     @Autowired
@@ -47,6 +52,7 @@ public class ServicesPedido implements IPedidoServices{
     @Override
     public LinkedList<Pedido> ObtenerRegistrosPaginados(int numeroPagina, int tamanoPagina, List<Pedido> pedidos) {
         LinkedList<Pedido> registrosPagina = new LinkedList<>();
+        System.out.println("Entro a paginado >>"+pedidos.size());
         if (pedidos != null) {
             int inicio = numeroPagina * tamanoPagina;
             int fin = Math.min(inicio + tamanoPagina, pedidos.size());

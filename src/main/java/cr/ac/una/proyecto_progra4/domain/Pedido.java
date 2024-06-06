@@ -3,6 +3,7 @@ package cr.ac.una.proyecto_progra4.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 // import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +31,7 @@ public class Pedido{
     @Column(name="codigo_Pedido")
     private String codigo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name ="idEmpleado_Pedido")
     private Empleado empleado;
     
@@ -68,14 +69,14 @@ public class Pedido{
     private String canton;
     
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name ="idProducto_Pedido")
     private Producto producto;
     
     @Column(name="cantidadProductos_pedido")
     private int cantidad;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name ="idFactura_Pedido")
     private Factura factura;
     
