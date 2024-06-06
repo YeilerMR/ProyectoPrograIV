@@ -45,8 +45,6 @@ public class controllerPedidos {
     @Autowired 
     private IPedidoServices Ipedido;
 
-    //@Autowired
-    // private IPedidoServices iPedido;
     @GetMapping("listar")
     public String listaProveedores(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) throws SQLException {
         List<Pedido> auxiliar =  Ipedido.getPedidos();//new PedidoServices().lista_Pedido();
