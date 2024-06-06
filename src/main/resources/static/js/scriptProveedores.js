@@ -141,10 +141,6 @@ function validarCreacionProveedor(selector, mensajeConfirmacion, urlRedireccion)
     });
 }
 
-function validarEdicionProveedor(selector, mensajeConfirmacion, urlRedireccion) {
-    alert("ajajajaja");
-}
-
 // Función para mostrar un Toast de error
 function mostrarToastError(mensaje) {
     const Toast = Swal.mixin({

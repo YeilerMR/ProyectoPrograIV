@@ -3,26 +3,23 @@ package cr.ac.una.proyecto_progra4.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import java.sql.Date;
 /**
  * @author GONZALO DORMOS RODRIGUEZ g.d.r
  */
 /*----- CREANDO PEDIDO -------*/
-//@Entity
-//@Table(name="pedido")
+@Entity
+@Table(name="pedido")
 public class Pedido{ 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name="id_Pedido")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_Pedido")
     private int id_pedido;
     
 //    @Column(name="codigo_Pedido")
@@ -62,9 +59,14 @@ public class Pedido{
 //    @OneToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name ="id_Facturacion")
     private int factura;
-    
+    @ManyToOne
+    @JoinColumn(name ="idProducto_Pedido")
     private Producto producto;
+    @ManyToOne
+    @JoinColumn(name ="idEmpleado_Pedido")
     private Empleado empleado;
+    @ManyToOne
+    @JoinColumn(name ="idFactura_Pedido")
     private Factura facturaObjt;
     
     

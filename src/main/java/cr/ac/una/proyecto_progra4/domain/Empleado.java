@@ -4,12 +4,17 @@
  */
 package cr.ac.una.proyecto_progra4.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 
 /**
  *
  * @author kinco
  */
+@Entity
 public class Empleado extends Usuario{
+    @Id
     private int idEmpleado;
     
     public Empleado() {

@@ -56,15 +56,81 @@ function validarFormularioCrear(event) {
         }
     }
 
-    // Si todos los campos están llenos, enviar el formulario después de 3 segundos
-    setTimeout(function() {
-        form.submit(); // Envía el formulario de manera programática
-    }, 2000); // 3000 milisegundos = 3 segundos
-
     return true; // Devuelve true para indicar que el formulario se enviará después del retraso
 }
 
+function validarCreacionOrden(selector, mensajeConfirmacion, urlRedireccion) {
+    var crearForm = document.querySelector(selector);
+    crearForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (validarFormularioCrear(event)) {
+            Swal.fire({
+                title: mensajeConfirmacion,
+                text: '¡Asegurate de tener los datos correctos!',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, continuar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar una petición AJAX o enviar el formulario de forma asíncrona
+                    //alert("Si llega aqui.");
+                    fetch(crearForm.action, {
+                        method: 'POST',
+                        body: new FormData(crearForm)
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Si el proceso de agregar el cliente fue exitoso, mostrar mensaje de éxito
+                                    mostrarToastConfirmacion(data.message);
+                                    // Redirigir después de un pequeño retraso
+                                    setTimeout(function () {
+                                        window.location.href = urlRedireccion;
+                                    }, 1000); // 1000 milisegundos de retraso
+                                } else {
+                                    // Si el proceso de agregar el cliente falló, mostrar mensaje de error
+                                    mostrarToastError(data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                }
+            });
+        }
+    });
+}
 
+// Función para mostrar un Toast de error
+function mostrarToastError(mensaje) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-end',
+        showConfirmButton: false,
+        timer: 2500
+    });
+    Toast.fire({
+        icon: 'error',
+        title: mensaje
+    });
+}
+
+// Función para mostrar un Toast de confirmación
+function mostrarToastConfirmacion(titulo) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-end',
+        showConfirmButton: false,
+        timer: 2500
+    });
+    Toast.fire({
+        icon: 'success',
+        title: titulo
+    });
+}
 function mostrarMensaje(mensaje, container) {
     container.innerHTML = mensaje;
 }

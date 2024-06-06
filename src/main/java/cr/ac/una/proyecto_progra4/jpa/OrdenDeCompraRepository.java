@@ -9,14 +9,16 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Adam Acuña
  */
-public interface OrdenDeCompraRepository /*extends JpaRepository<OrdenDeCompra, Integer>*/ {
+@Repository
+public interface OrdenDeCompraRepository extends JpaRepository<OrdenDeCompra, Integer> {
     
-    /*@Query("SELECT o FROM OrdenDeCompra o WHERE o.proveedor.id = :proveedorId")
-    List<OrdenDeCompra> findByProveedorId(@Param("proveedorId") int proveedorId);*/
+    @Query("SELECT o FROM OrdenDeCompra o WHERE o.idProveedor.idProveedor = :proveedorId")
+    List<OrdenDeCompra> findByProveedorId(@Param("proveedorId") int proveedorId);
 
 }

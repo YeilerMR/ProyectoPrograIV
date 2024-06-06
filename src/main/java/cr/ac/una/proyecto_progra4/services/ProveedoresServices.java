@@ -4,8 +4,8 @@
  */
 package cr.ac.una.proyecto_progra4.services;
 
-import cr.ac.una.proyecto_progra4.data.OrdenDeCompraData;
 import cr.ac.una.proyecto_progra4.data.ProveedoresData;
+import cr.ac.una.proyecto_progra4.domain.OrdenDeCompra;
 import cr.ac.una.proyecto_progra4.domain.Proveedor;
 import cr.ac.una.proyecto_progra4.jpa.OrdenDeCompraRepository;
 import cr.ac.una.proyecto_progra4.jpa.ProveedorRepository;
@@ -53,16 +53,16 @@ public class ProveedoresServices implements IProveedoresService {
     }
 
     @Autowired
-    private ProveedorRepository proveedorRep;
+    private OrdenDeCompraRepository ordenDeCompraRep;
 
-    /*@Autowired
-    private OrdenDeCompraRepository ordenDeCompraRep;*/
+    @Autowired
+    private ProveedorRepository proveedorRep;
+    
     @Override
     public String guardar(Proveedor proveedor) {
         try {
             // Validación de campos vacíos
-            if (proveedor.getIdProveedor() == 0
-                    || proveedor.getNombreProveedor() == null || proveedor.getNombreProveedor().isEmpty()
+            if (proveedor.getNombreProveedor() == null || proveedor.getNombreProveedor().isEmpty()
                     || proveedor.getTelefonoProveedor() == null || proveedor.getTelefonoProveedor().isEmpty()
                     || proveedor.getDescripcionProveedor() == null || proveedor.getDescripcionProveedor().isEmpty()
                     || proveedor.getCorreo() == null || proveedor.getCorreo().isEmpty()
@@ -90,9 +90,9 @@ public class ProveedoresServices implements IProveedoresService {
     public String eliminar(int id) {
         try {
             // Verificar si el proveedor está asociado a alguna orden de compra
-            //List<OrdenDeCompra> ordenesDeCompra = ordenDeCompraRep.findByProveedorId(id);
-            boolean existe = new OrdenDeCompraData().proveedorById(id);
-            if (/*!ordenesDeCompra.isEmpty()*/existe) {
+            List<OrdenDeCompra> ordenesDeCompra = ordenDeCompraRep.findByProveedorId(id);
+            //boolean existe = new OrdenDeCompraData().proveedorById(id);
+            if (!ordenesDeCompra.isEmpty()/*existe*/) {
                 return "{\"success\": false, \"message\": \"No se puede eliminar el proveedor porque está asociado a una o más órdenes de compra.\"}";
             }
 

@@ -133,12 +133,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                     </div>
                 </div>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
+                <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
+                                });
+                </script>
                 <div type="hidden" id="myModalCrearCliente" class="modal">
                     <!-- Modal content -->
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class='crear-cliente-form' id="form-crear" th:action="@{/ordenes_compra/registrar}" method="GET" onsubmit="return validarFormularioCrear(event)">
+                            <form class='crear-cliente-form' id="form-crear" th:action="@{/ordenes_compra/registrar}" method="POST">
                                 <label for="combobox-pedido">Pedido: </label>
                                 <select name="combobox-pedido" id="combobox-pedido">
                                     <option>--Seleccionar--</option>
@@ -152,22 +159,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 </select>
                                 <br><br>
                                 <label for="fecha-orden">Fecha de la orden: </label>
-                                <input type="date" id="fecha-orden" name="fecha-orden" required>
+                                <input type="date" id="fecha-orden" name="fecha-orden">
                                 <br><br>
                                 <label for="fecha-entrega">Fecha de entrega: </label>
-                                <input type="date" id="fecha-entrega" name="fecha-entrega" required>
+                                <input type="date" id="fecha-entrega" name="fecha-entrega">
                                 <br><br>
                                 <label for="estado">Estado de la orden: </label>
-                                <input type="text" name="estado" id="estado" required>
+                                <input type="text" name="estado" id="estado">
                                 <br><br>
                                 <label for="numero-rerencia">Número de referencia: </label>
-                                <input type="text" name="numero-referencia" id="numero-referencia" required>
+                                <input type="text" name="numero-referencia" id="numero-referencia">
                                 <br>
                                 <div id="mensaje_container">
                                     <p id="texto_error"></p>
                                 </div>
                                 <br>
-                                <input type="submit" value="Generar Orden">
+                                <input type="submit" id="submitButton" value="Generar Orden">
                                 <input type="button" value="Cancelar" onclick="cancelarCreacionButton()">
                             </form>
                         </div>
@@ -175,12 +182,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
                 <!-- IMPORTS Y SCRIPTS -->
                 <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
                 <script>
-                                    document.addEventListener("DOMContentLoaded", function () {
-                                        validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
-                                    });
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        validarCreacionOrden('.crear-cliente-form', '¿Estás seguro de continuar con la creación de esta orden de compra?', './listar')
+                    });
                 </script>
                 <div th:if="${ordenes.empty}">
                     <p>No se encontraron registros para mostrar.</p>
