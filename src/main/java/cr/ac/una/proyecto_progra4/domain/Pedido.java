@@ -16,7 +16,7 @@ import jakarta.persistence.TemporalType;
 
 import java.sql.Date;
 /**
- * @author GONZALO DORMOS RODRIGUEZ g.d.r
+ * @author GONZALO DORMOS RODRIGUEZ 
  */
 /*----- CREANDO PEDIDO -------*/
 @Entity
