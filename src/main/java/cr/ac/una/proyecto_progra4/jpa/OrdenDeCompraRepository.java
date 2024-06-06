@@ -6,6 +6,7 @@ package cr.ac.una.proyecto_progra4.jpa;
 
 import cr.ac.una.proyecto_progra4.domain.OrdenDeCompra;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,5 +21,9 @@ public interface OrdenDeCompraRepository extends JpaRepository<OrdenDeCompra, In
     
     @Query("SELECT o FROM OrdenDeCompra o WHERE o.idProveedor.idProveedor = :proveedorId")
     List<OrdenDeCompra> findByProveedorId(@Param("proveedorId") int proveedorId);
+    
+    void deleteByNumeroReferencia(String numeroReferencia);
+    
+    Optional<OrdenDeCompra> findByNumeroReferencia(String numeroReferencia);
 
 }

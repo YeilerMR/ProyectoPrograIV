@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -112,25 +113,22 @@ public class OredenDeCompraController {
         return "OrdenDeCompra/editar_orden";
     }
 
-    @GetMapping("editar_orden")
-    public String editarOrden(@RequestParam("combobox-pedidos") int idPedido, @RequestParam("combobox-proveedores") int idProveedor, @RequestParam("fecha-orden") Date fechaOrden, @RequestParam("fecha-entrega") Date fechaEntrega, @RequestParam("estado") String estado, @RequestParam("numero-referencia") String numeroReferencia) {
+    @PostMapping("editar_orden")
+    public ResponseEntity<?> editarOrden(@RequestParam("combobox-pedidos") int idPedido, @RequestParam("combobox-proveedores") int idProveedor, @RequestParam("fecha-orden") Date fechaOrden, @RequestParam("fecha-entrega") Date fechaEntrega, @RequestParam("estado") String estado, @RequestParam("numero-referencia") String numeroReferencia) {
         Proveedor proveedor = new Proveedor();
         Pedido pedido = new Pedido();
         proveedor.setIdProveedor(idProveedor);
         pedido.setId_pedido(idPedido);
-        if (new OrdenDeCompraServices().editarOrden(new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia))) {
+        /*if (new OrdenDeCompraServices().editarOrden(new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia))) {
             return "excito";
         } else {
             return "error";
-        }
+        }*/
+        return ResponseEntity.ok().body(ordenSer.actualizarOrden(numeroReferencia, new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia)));
     }
 
-    @GetMapping("eliminar")
-    public String eliminarOren(@RequestParam("orden") String numeroReferencia) {
-        if (new OrdenDeCompraServices().eliminarOrden(numeroReferencia)) {
-            return "excito";
-        } else {
-            return "error";
-        }
+    @DeleteMapping("/eliminar")
+    public ResponseEntity<?> eliminarOren(@RequestParam("orden") String numeroReferencia) {
+        return ResponseEntity.ok().body(ordenSer.eliminar(numeroReferencia));
     }
 }

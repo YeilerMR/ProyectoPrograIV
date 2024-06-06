@@ -84,16 +84,7 @@ public class ProveedorController {
     }
 
     @DeleteMapping("/eliminar")
-    public ResponseEntity<?> eliminarProveedor(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("proveedor") int proveedorID) {
-
-        LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedores());
-
-        int ultimaPagina = (int) Math.ceil((double) proveedores().size() / pageSize) - 1;
-
-        model.addAttribute("ultimaPagina", ultimaPagina);
-        model.addAttribute("proveedores", proveedoresPagina);
-        model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
-        model.addAttribute("pageSize", pageSize); // Asegúrate de pasar el tamaño de página al modelo        
+    public ResponseEntity<?> eliminarProveedor(@RequestParam("proveedor") int proveedorID) {
         return ResponseEntity.ok().body(servicePro.eliminar(proveedorID));
     }
 }
