@@ -20,7 +20,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
 
             <div class="form-container">
-                <form th:action="@{/ordenes_compra/editar_orden}" method="GET" id="editForm" onsubmit="submitForm(event)">
+                <form th:action="@{/ordenes_compra/editar_orden}" method="POST" class="editForm" id="editForm">
                     <div class="form-group">
                         <label for="combobox-pedidos">Pedido</label>
                         <select class="form-control" name="combobox-pedidos" id="combobox-pedidos">
@@ -61,7 +61,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                th:value="${orden.getNumeroReferencia}" required>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary">Editar Orden</button>
+                    <input type="submit" class="btn btn-primary" value="Editar Orden" onclick="submitFormOrden()">
                     <input type="button" class="btn btn-danger" value="Cancelar" onclick="window.location.href = './listar'">
                 </form>
                 <br><br>

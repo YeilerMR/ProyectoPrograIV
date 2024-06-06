@@ -17,7 +17,7 @@ public interface IOrdenDeCompraService {
 
     public List<OrdenDeCompra> getOrdenes();
 
-    /*public String eliminar(int id);
+    public String eliminar(String id);
 
-    public String actualizarOrden(OrdenDeCompra orden);*/
+    public String actualizarOrden(String numeroReferencia, OrdenDeCompra nuevaOrden);
 }

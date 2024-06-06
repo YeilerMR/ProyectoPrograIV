@@ -137,7 +137,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
                 <script>
                                 document.addEventListener("DOMContentLoaded", function () {
-                                    validarEliminacion('.btn_delete', 'Cliente eliminado exitosamente.')
+                                    validarEliminacionOrden('.btn_delete', "¿Estas seguro?", './listar')
                                 });
                 </script>
                 <div type="hidden" id="myModalCrearCliente" class="modal">
@@ -183,10 +183,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <!-- IMPORTS Y SCRIPTS -->
                 <script type="text/javascript" th:src="@{/js/scriptModal.js}"></script>
                 <script>
-
                     document.addEventListener("DOMContentLoaded", function () {
                         validarCreacionOrden('.crear-cliente-form', '¿Estás seguro de continuar con la creación de esta orden de compra?', './listar')
                     });
+                    window.onload = function () {
+                        var today = new Date();
+                        var yyyy = today.getFullYear();
+                        var mm = String(today.getMonth() + 1).padStart(2, '0'); // Meses empiezan en 0
+                        var dd = String(today.getDate()).padStart(2, '0');
+
+                        var todayString = yyyy + '-' + mm + '-' + dd;
+
+                        document.getElementById('fecha-orden').value = todayString;
+                        document.getElementById('fecha-entrega').value = todayString;
+                    }
                 </script>
                 <div th:if="${ordenes.empty}">
                     <p>No se encontraron registros para mostrar.</p>
