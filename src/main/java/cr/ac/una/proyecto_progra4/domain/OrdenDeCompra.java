@@ -1,5 +1,6 @@
     package cr.ac.una.proyecto_progra4.domain;
 
+import jakarta.persistence.Column;
     import jakarta.persistence.Entity;
     import jakarta.persistence.Id;
     import jakarta.persistence.JoinColumn;
@@ -12,6 +13,7 @@
     public class OrdenDeCompra {
 
         @Id
+        @Column(name = "numeroReferencia_OrdenDeCompra")
         private String numeroReferencia;
 
         @ManyToOne
@@ -21,9 +23,11 @@
         @ManyToOne
         @JoinColumn(name = "idPedido_OrdenDeCompra", nullable = false)
         private Pedido idPedido;
-
+        @Column(name = "fechaOrden_OrdenDeCompra")
         private Date fechaOrden;
+        @Column(name = "fechaEntrega_OrdenDeCompra")
         private Date fechaEntrega;
+        @Column(name = "estadoOrden_OrdenDeCompra")
         private String estadoOrden;
 
         public OrdenDeCompra() {

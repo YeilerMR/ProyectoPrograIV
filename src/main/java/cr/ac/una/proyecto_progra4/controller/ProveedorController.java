@@ -36,7 +36,7 @@ public class ProveedorController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarProveedor(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {
+    public ResponseEntity<?> registrarProveedor(@RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {
         Proveedor proveedor = new Proveedor(0, nombre, telefono, descripcion, correo, direccion, categoria, informacion);
         /*if (new ProveedoresServices().crearProveedor(proveedor)) {
             actualizarListaProveedores();
@@ -44,15 +44,6 @@ public class ProveedorController {
         } else {
             return "error";
         }*/
-
-        LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedores());
-
-        int ultimaPagina = (int) Math.ceil((double) proveedores().size() / pageSize) - 1;
-
-        model.addAttribute("ultimaPagina", ultimaPagina);
-        model.addAttribute("proveedores", proveedoresPagina);
-        model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
-        model.addAttribute("pageSize", pageSize); // Asegúrate de pasar el tamaño de página al modelo        
         return ResponseEntity.ok().body(servicePro.guardar(proveedor));
     }
 

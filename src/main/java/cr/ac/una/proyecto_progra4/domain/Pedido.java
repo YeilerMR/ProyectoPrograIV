@@ -27,13 +27,29 @@ public class Pedido{
     @Column(name="id_Pedido")
     private int id_pedido;
     
-
     @Column(name="codigo_Pedido")
     private String codigo;
-    
+
     @ManyToOne
     @JoinColumn(name ="idEmpleado_Pedido")
     private Empleado empleado;
+    
+    //@Column(name="idProducto_Pedido")
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name ="id_Producto")
+//
+    
+    // @Column(name="cantidadProductos_pedido")
+    // private int cantidad;
+    
+//  @Column(name="idFactura_Pedido")
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name ="id_Facturacion")
+// //
+//     @ManyToOne
+//     @JoinColumn(name ="idProducto_Pedido")
+//     private Producto producto;
+
 
     @Column(name="estadoPedido_Pedido")
     private String estado_pedido;
@@ -51,16 +67,6 @@ public class Pedido{
     @Column(name="cantonEnvio_Pedido")
     private String canton;
     
-    
-    // @Column(name="idProducto_Pedido")
-    // @OneToOne(fetch = FetchType.EAGER)
-    // @JoinColumn(name ="id_Producto")
-    // private int id_producto;
-    
-    // @Column(name="idFactura_Pedido")
-    // @OneToOne(fetch = FetchType.EAGER)
-    // @JoinColumn(name ="id_Facturacion")
-    // private int factura;
 
     @ManyToOne
     @JoinColumn(name ="idProducto_Pedido")
@@ -202,7 +208,4 @@ public class Pedido{
     public void setFactura(Factura factura) {
         this.factura = factura;
     }
-    
-
-    
 }
