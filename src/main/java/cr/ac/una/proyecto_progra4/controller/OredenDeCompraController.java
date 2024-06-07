@@ -52,37 +52,21 @@ public class OredenDeCompraController {
         ordenes = new OrdenDeCompraServices().listaOrdenes();
     }*/
 
-    @GetMapping("crear")
-    public String crearOrdenCompra(Model model) {
-        model.addAttribute("proveedores", proveedores());
-        return "OrdenDeCompra/registrar_orden";
-    }
-
     @PostMapping("registrar")
-    public ResponseEntity<?> registrarOrden(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("combobox-pedido") int idPedido, @RequestParam("combobox-proveedores") int idProveedor, @RequestParam("fecha-orden") Date fechaOrden, @RequestParam("fecha-entrega") Date fechaEntrega, @RequestParam("estado") String estado, @RequestParam("numero-referencia") String numeroReferencia) {
+    public ResponseEntity<?> registrarOrden(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("combobox-pedido") int idPedido, @RequestParam("combobox-proveedores") int idProveedor, @RequestParam("fecha-orden") Date fechaOrden, @RequestParam("fecha-entrega") Date fechaEntrega, @RequestParam("estado") String estado) {
         Proveedor proveedor = new Proveedor();
         Pedido pedido = new Pedido();
         proveedor.setIdProveedor(idProveedor);
         pedido.setId_pedido(idPedido);
 
-        /*if (new OrdenDeCompraServices().crearOrdenCompra(new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia))) {
-            actualizarListaOrdenes();
-            LinkedList<OrdenDeCompra> ordenDeCompraPagina = new OrdenDeCompraServices().obtenerRegistrosPaginados(page, pageSize, ordenes);
-
-            int ultimaPagina = (int) Math.ceil((double) ordenes.size() / pageSize) - 1;
-            model.addAttribute("pedidos", pedidos);
-            model.addAttribute("proveedores", proveedores());
-            model.addAttribute("ultimaPagina", ultimaPagina);
-            model.addAttribute("ordenes", ordenDeCompraPagina);
-            model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
-            model.addAttribute("pageSize", pageSize); // Asegúrate de pasar el tamaño de página al modelo
-
-            return "/OrdenDeCompra/orden_compra";
-        } else {
-            return "error";
-        }*/
+        OrdenDeCompra orden = new OrdenDeCompra();
+        orden.setIdPedido(pedido);
+        orden.setIdProveedor(proveedor);
+        orden.setFechaOrden(fechaOrden);
+        orden.setFechaEntrega(fechaEntrega);
+        orden.setEstadoOrden(estado);
         
-        return ResponseEntity.ok().body(ordenSer.guardar(new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia)));
+        return ResponseEntity.ok().body(ordenSer.guardar(orden));
     }
 
     @GetMapping("listar")
@@ -124,7 +108,7 @@ public class OredenDeCompraController {
         } else {
             return "error";
         }*/
-        return ResponseEntity.ok().body(ordenSer.actualizarOrden(numeroReferencia, new OrdenDeCompra(pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia)));
+        return ResponseEntity.ok().body(ordenSer.actualizarOrden(numeroReferencia, new OrdenDeCompra(0, pedido, proveedor, fechaOrden, fechaEntrega, estado, numeroReferencia)));
     }
 
     @DeleteMapping("/eliminar")

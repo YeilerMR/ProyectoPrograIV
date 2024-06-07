@@ -56,20 +56,33 @@ public class OrdenDeCompraServices implements IOrdenDeCompraService {
     private OrdenDeCompraRepository ordenRep;
 
     @Override
+    @Transactional
     public String guardar(OrdenDeCompra orden) {
         if (orden.getIdProveedor() == null || orden.getIdPedido() == null
                 || orden.getFechaOrden() == null || orden.getFechaEntrega() == null
-                || orden.getEstadoOrden() == null || orden.getEstadoOrden().isEmpty()
-                || orden.getNumeroReferencia() == null || orden.getNumeroReferencia().isEmpty()) {
+                || orden.getEstadoOrden() == null || orden.getEstadoOrden().isEmpty()) {
 
             return "{\"success\": false, \"message\": \"Por favor, rellene todos los campos.\"}";
         }
 
         try {
+            // Obtener el último id de orden de compra
+            List<OrdenDeCompra> lastOrdenDeCompraList = ordenRep.findLastOrdenDeCompra();
+            int lastId = 0;
+            if (!lastOrdenDeCompraList.isEmpty()) {
+                OrdenDeCompra lastOrdenDeCompra = lastOrdenDeCompraList.get(0);
+                lastId = lastOrdenDeCompra.getIdOrdenDeCompra();
+            }
+
+            // Generar el nuevo número de referencia
+            String nuevoNumeroReferencia = "ORD-" + (lastId + 1);
+            orden.setNumeroReferencia(nuevoNumeroReferencia);
+
+            // Guardar la orden de compra
             ordenRep.save(orden);
             return "{\"success\": true, \"message\": \"La orden de compra se ha registrado exitosamente.\"}";
         } catch (Exception e) {
-            return "{\"success\": false, \"message\": \"Ha ocurrido un error al registrar la orden de compra.\"}";
+            return "{\"success\": false, \"message\": \"Error al guardar la orden de compra: " + e.getMessage() + "\"}";
         }
     }
 

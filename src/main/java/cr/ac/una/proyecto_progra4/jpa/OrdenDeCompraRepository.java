@@ -25,5 +25,8 @@ public interface OrdenDeCompraRepository extends JpaRepository<OrdenDeCompra, In
     void deleteByNumeroReferencia(String numeroReferencia);
     
     Optional<OrdenDeCompra> findByNumeroReferencia(String numeroReferencia);
+    
+    @Query("SELECT o FROM OrdenDeCompra o ORDER BY o.idOrdenDeCompra DESC")
+    List<OrdenDeCompra> findLastOrdenDeCompra();
 
 }

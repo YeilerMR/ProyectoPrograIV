@@ -7,7 +7,7 @@ function editarOrden() {
         boton.addEventListener('click', function () {
             // Obtener el valor (ID del producto) del botón clicado
             var numeroReferencia = this.value;
-            //alert("ID del producto: " + idProveedor);
+            //alert("ID del producto: " + numeroReferencia);
 
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", "/ordenes_compra/editar?orden=" + numeroReferencia, true);

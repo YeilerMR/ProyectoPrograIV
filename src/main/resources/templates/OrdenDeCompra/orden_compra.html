@@ -21,7 +21,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <link rel="stylesheet" th:href="@{/css/buscador.css}" />
         <link rel="stylesheet" th:href="@{/css/OrdenDeCompra.css}" />
     </head>
-    <body onload="editarOrden()">
+    <body>
         <div class="wrapper">
 
             <aside>
@@ -105,8 +105,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <tr th:each="orden:${ordenes}">
                                 <td th:text="${orden.getIdPedido.getCodigo}"></td>
                                 <td th:text="${orden.getIdProveedor.getNombreProveedor}"></td>
-                                <td th:text="${orden.getFechaOrden}"></td>
-                                <td th:text="${orden.getFechaEntrega}"></td>
+                                <td th:text="${#dates.format(orden.getFechaOrden, 'dd/MM/yyyy')}"></td>
+                                <td th:text="${#dates.format(orden.getFechaEntrega, 'dd/MM/yyyy')}"></td>
                                 <td th:text="${orden.getEstadoOrden}"></td>
                                 <td th:text="${orden.getNumeroReferencia}"></td>
                                 <td><!--<a th:href="@{/ordenes_compra/editar(orden=${orden.getNumeroReferencia})}">Editar</a>-->
@@ -137,7 +137,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <script src="text/javascript" th:src="@{/js/alertScript.js}"></script>
                 <script>
                                 document.addEventListener("DOMContentLoaded", function () {
-                                    validarEliminacionOrden('.btn_delete', "¿Estas seguro?", './listar')
+                                    validarEliminacionOrden('.btn_delete', "¿Estas seguro?", './listar'),
+                                    editarOrden();
                                 });
                 </script>
                 <div type="hidden" id="myModalCrearCliente" class="modal">
@@ -166,9 +167,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 <br><br>
                                 <label for="estado">Estado de la orden: </label>
                                 <input type="text" name="estado" id="estado">
-                                <br><br>
-                                <label for="numero-rerencia">Número de referencia: </label>
-                                <input type="text" name="numero-referencia" id="numero-referencia">
                                 <br>
                                 <div id="mensaje_container">
                                     <p id="texto_error"></p>

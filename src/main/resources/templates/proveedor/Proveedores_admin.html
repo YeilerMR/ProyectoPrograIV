@@ -98,21 +98,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <tr>
                             <th>Nombre</th>
                             <th>Teléfono</th>
-                            <th>Descripción</th>
+                            
                             <th>Correo</th>
-                            <th>Dirección</th>
+                            
                             <th>Categoría</th>
-                            <th>Información Adicional</th>
+                            
                             <th>Opciones</th>
                         </tr>
                         <tr th:each="proveedor:${proveedores}">
                             <td th:text="${proveedor.getNombreProveedor}"></td>
                             <td th:text="${proveedor.getTelefonoProveedor}"></td>
-                            <td th:text="${proveedor.getDescripcionProveedor}"></td>
+                            
                             <td th:text="${proveedor.getCorreo}"></td>
-                            <td th:text="${proveedor.getDireccionProveedor}"></td>
+                            
                             <td th:text="${proveedor.getCategoriaServicio}"></td>
-                            <td th:text="${proveedor.getInformacionAdicional}"></td>
+                            
                             <td>
                                 <button type="button" class="producto-editar btn_editar" th:value="${proveedor.getIdProveedor}"><i class="bi bi-pen"></i></button>
                                 <br>
