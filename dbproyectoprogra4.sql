@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-06-2024 a las 17:26:49
+-- Tiempo de generación: 07-06-2024 a las 04:16:24
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -134,26 +134,21 @@ CREATE TABLE `oferta` (
 CREATE TABLE `ordendecompra` (
   `id_OrdenDeCompra` int(11) NOT NULL,
   `idPedido_OrdenDeCompra` int(11) NOT NULL,
-  `idProveedor_OrdenDeCompra` int(11) DEFAULT NULL,
-  `fechaOrden_OrdenDeCompra` datetime DEFAULT NULL,
-  `fechaEntrega_OrdenDeCompra` datetime DEFAULT NULL,
-  `estadoOrden_OrdenDeCompra` varchar(50) DEFAULT NULL,
-  `numeroReferencia_OrdenDeCompra` varchar(50) DEFAULT NULL,
-  `numeroReferencia` varchar(255) NOT NULL,
-  `estadoOrden` varchar(255) DEFAULT NULL,
-  `fechaEntrega` date DEFAULT NULL,
-  `fechaOrden` date DEFAULT NULL
+  `idProveedor_OrdenDeCompra` int(11) NOT NULL,
+  `fechaOrden_OrdenDeCompra` date NOT NULL,
+  `fechaEntrega_OrdenDeCompra` date NOT NULL,
+  `estadoOrden_OrdenDeCompra` varchar(50) NOT NULL,
+  `numeroReferencia_OrdenDeCompra` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `ordendecompra`
 --
 
-INSERT INTO `ordendecompra` (`id_OrdenDeCompra`, `idPedido_OrdenDeCompra`, `idProveedor_OrdenDeCompra`, `fechaOrden_OrdenDeCompra`, `fechaEntrega_OrdenDeCompra`, `estadoOrden_OrdenDeCompra`, `numeroReferencia_OrdenDeCompra`, `numeroReferencia`, `estadoOrden`, `fechaEntrega`, `fechaOrden`) VALUES
-(2, 1, 1, '2024-06-05 00:00:00', '2024-06-29 00:00:00', 'Pendiente', '001', '', NULL, NULL, NULL),
-(3, 1, 1, '2024-06-07 00:00:00', '2024-06-07 00:00:00', 'Pendiente', '002', '', NULL, NULL, NULL),
-(5, 1, 1, '2024-06-28 00:00:00', '2024-06-29 00:00:00', 'Completo', '6743', '', NULL, NULL, NULL),
-(6, 1, 1, '2024-06-28 00:00:00', '2024-06-29 00:00:00', 'Completo', '6743', '', NULL, NULL, NULL);
+INSERT INTO `ordendecompra` (`id_OrdenDeCompra`, `idPedido_OrdenDeCompra`, `idProveedor_OrdenDeCompra`, `fechaOrden_OrdenDeCompra`, `fechaEntrega_OrdenDeCompra`, `estadoOrden_OrdenDeCompra`, `numeroReferencia_OrdenDeCompra`) VALUES
+(2, 1, 5, '2024-06-08', '2024-06-29', 'Completo', '001'),
+(12, 1, 1, '2024-06-19', '2024-06-20', 'Pendiente', '002'),
+(14, 1, 6, '2024-06-06', '2024-06-08', 'Pendiente', 'ORD-13');
 
 -- --------------------------------------------------------
 
@@ -166,21 +161,14 @@ CREATE TABLE `pedido` (
   `idEmpleado_Pedido` int(11) DEFAULT NULL,
   `codigo_Pedido` varchar(50) DEFAULT NULL,
   `estadoPedido_Pedido` varchar(50) DEFAULT NULL,
-  `fechaPedido__Pedido` datetime DEFAULT NULL,
+  `fechaPedido__Pedido` date DEFAULT NULL,
   `direccionEnvioPedido_Pedido` varchar(255) DEFAULT NULL,
   `provinciaEnvioPedido_pedido` varchar(255) DEFAULT NULL,
   `cantonEnvio_Pedido` varchar(255) DEFAULT NULL,
   `idProducto_Pedido` int(11) DEFAULT NULL,
   `cantidadProductos_pedido` int(50) DEFAULT NULL,
   `idFactura_Pedido` int(11) DEFAULT NULL,
-  `Provincia` varchar(255) DEFAULT NULL,
-  `cantidad` int(11) NOT NULL,
-  `canton` varchar(255) DEFAULT NULL,
-  `codigo` varchar(255) DEFAULT NULL,
-  `direccion_pedido` varchar(255) DEFAULT NULL,
-  `estado_pedido` varchar(255) DEFAULT NULL,
   `factura` int(11) NOT NULL,
-  `fecha` date DEFAULT NULL,
   `id_empleado` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -189,8 +177,8 @@ CREATE TABLE `pedido` (
 -- Volcado de datos para la tabla `pedido`
 --
 
-INSERT INTO `pedido` (`id_Pedido`, `idEmpleado_Pedido`, `codigo_Pedido`, `estadoPedido_Pedido`, `fechaPedido__Pedido`, `direccionEnvioPedido_Pedido`, `provinciaEnvioPedido_pedido`, `cantonEnvio_Pedido`, `idProducto_Pedido`, `cantidadProductos_pedido`, `idFactura_Pedido`, `Provincia`, `cantidad`, `canton`, `codigo`, `direccion_pedido`, `estado_pedido`, `factura`, `fecha`, `id_empleado`, `id_producto`) VALUES
-(1, 1, '0001', 'Pendiente', '2024-06-05 00:00:00', 'La Guaria, 300 metros oeste del sementerio', 'Heredia', 'Sarapiqui', 1, 25, 1, NULL, 0, NULL, NULL, NULL, NULL, 0, NULL, 0, 0);
+INSERT INTO `pedido` (`id_Pedido`, `idEmpleado_Pedido`, `codigo_Pedido`, `estadoPedido_Pedido`, `fechaPedido__Pedido`, `direccionEnvioPedido_Pedido`, `provinciaEnvioPedido_pedido`, `cantonEnvio_Pedido`, `idProducto_Pedido`, `cantidadProductos_pedido`, `idFactura_Pedido`, `factura`, `id_empleado`, `id_producto`) VALUES
+(1, 1, '0001', 'Pendiente', '2024-06-05', 'La Guaria, 300 metros oeste del sementerio', 'Heredia', 'Sarapiqui', 1, 25, 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -250,7 +238,9 @@ CREATE TABLE `proveedor` (
 --
 
 INSERT INTO `proveedor` (`id_Proveedor`, `nombreProveedor_Proveedor`, `telefonoProveedor_Proveedor`, `descripcionProveedor_Proveedor`, `correo_Proveedor`, `direccionProveedor_Proveedor`, `categoriaServicio_Proveedor`, `informacionAdicional_Proveedor`) VALUES
-(1, 'Adam Acuña', '63133860', 'Proveedor de productos tecnológicos', 'adam.acuna.gonzalez@est.una.ac.cr', 'Sarapiqui, Horquetas.', 'Tecnología', 'Da un 50% de descuento si se realizan compras mayores a 1000000 de colones');
+(1, 'Adam Acuña', '63133860', 'Proveedor de productos tecnológicos', 'adam.acuna.gonzalez@est.una.ac.cr', 'Sarapiqui, Horquetas.', 'Tecnología', 'Da un 50% de descuento si se realizan compras mayores a 1000000 de colones'),
+(5, 'Karolay Marianne Vargas Gomez', '85218760', 'Proveedora de productos medicos', 'karovg@gmail.com', 'La Guara, 300 metros oeste del sementerio', 'Medicina', 'Ninguna'),
+(6, 'Erick David Quiros Mena', '23145698', 'Proveedor de videojuegos', 'erick@gmail.com', 'Sarapiqui, Horquetas.', 'Videojuegos', 'Ninguna');
 
 -- --------------------------------------------------------
 
@@ -327,6 +317,7 @@ ALTER TABLE `oferta`
 --
 ALTER TABLE `ordendecompra`
   ADD PRIMARY KEY (`id_OrdenDeCompra`),
+  ADD UNIQUE KEY `numeroReferencia_OrdenDeCompra` (`numeroReferencia_OrdenDeCompra`),
   ADD KEY `FK_PROVEEDOR` (`idProveedor_OrdenDeCompra`),
   ADD KEY `FK_PEDIDO` (`idPedido_OrdenDeCompra`);
 
@@ -401,7 +392,7 @@ ALTER TABLE `oferta`
 -- AUTO_INCREMENT de la tabla `ordendecompra`
 --
 ALTER TABLE `ordendecompra`
-  MODIFY `id_OrdenDeCompra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_OrdenDeCompra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `pedido`
@@ -419,7 +410,7 @@ ALTER TABLE `producto`
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `id_Proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_Proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`

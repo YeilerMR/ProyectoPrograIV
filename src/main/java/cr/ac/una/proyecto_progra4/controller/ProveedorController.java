@@ -76,6 +76,17 @@ public class ProveedorController {
         }
         return "error";
     }
+    
+    @GetMapping("/detalles")
+    public String verDetalles(@RequestParam("proveedor") int proveedorID, Model model){
+        for (Proveedor proveedor : proveedores()) {
+            if (proveedor.getIdProveedor() == proveedorID) {
+                model.addAttribute("proveedor", proveedor);
+                return "proveedor/detalles_proveedor";
+            }
+        }
+        return "error";
+    }
 
     @PostMapping("/editar_proveedor")
     public ResponseEntity<?> editarInfoProveedor(@RequestParam("proveedor") int proveedorID, @RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {

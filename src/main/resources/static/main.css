@@ -139,7 +139,7 @@ main {
     border-radius: 10px;
 }
 
-.producto-eliminar, .producto-editar, .boton-anadir {
+.producto-eliminar, .producto-editar, .boton-anadir, .btn_detalles {
     color: var(--clr-white);
     padding: 0.4rem 1rem;
     border-radius: 0.5rem;
@@ -156,12 +156,19 @@ main {
     background-color: red;
 }
 
+.btn_detalles{
+    background-color: #007bff80;
+}
+
 .producto-editar {
     background-color: #F99B1C;
 }
 
 .producto-editar:hover {
     background-color: #FCB762;
+}
+.btn_detalles:hover {
+    background-color: blue;
 }
 
 .boton-anadir {
