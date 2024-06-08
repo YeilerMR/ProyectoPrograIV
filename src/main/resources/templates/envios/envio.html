@@ -40,7 +40,7 @@
                     </ul>
                 </nav>
             </aside>
-           <main>
+            <main>
                 <h1>Lista de Envíos</h1>
                 <!-- PARTE DE BÚSQUEDA DE ALGÚN ENVÍO MEDIANTE CÉDULA -->
                 <div class="buscador">
@@ -67,24 +67,18 @@
                         </tr>
                         <tr th:each="envio: ${envios}">
                             <td th:text="${envio.codigoEnvio}"></td>
-                            <td th:text="${envio.idPedido}"></td>
-                            <!-- 
-                            <td>
-                                COMO EN ESTE PROYECTO ESTAN SOLO MIS MÓDULOS (CLIENTE, ENVÍO)
-                                NO FUNCIONA QUE APAREZCA LA INFORMACIÓN IMPORTANTE DEL PEDIDO
-                                POR ESO LO MANEJO CON ID DEL PEDIDO EN ESTE CASO
 
+                            <td>
                                 <span th:each="pedido : ${pedidosListaTotal}">
-                                    <th:block th:if="${pedido.id_pedido == envio.idPedido}">
+                                    <th:block th:if="${pedido.id_pedido == envio.pedido.id_pedido}">
                                         Código: <span th:text="' ' + ${pedido.codigo}"></span><br>
                                         Fecha: <span th:text="' ' + ${pedido.fecha}"></span><br>
                                         Dirección: <span th:text="' ' + ${pedido.direccion_pedido}"></span><br>
                                         <th:block th:break="${true}"></th:block>
                                     </th:block>
                                 </span>
-
                             </td>
-                            -->
+
                             <td>
                                 <span th:each="cliente : ${clientes}">
                                     <th:block th:if="${cliente.idCliente == envio.cliente.idCliente}">
@@ -144,19 +138,8 @@
                                 <label for="idPedido_Envio">Pedido</label>
 
                                 <select name="idPedido_Envio">
-                                    <option th:value="1" th:text="1"></option>
-                                    <option th:value="2" th:text="2"></option>
-                                    <option th:value="3" th:text="3"></option>
-                                    <option th:value="4" th:text="4"></option>
-                                    <option th:value="6" th:text="6"></option>
-                                    <!--
-                                        COMO EN ESTE PROYECTO ESTAN SOLO MIS MÓDULOS (CLIENTE, ENVÍO)
-                                        NO FUNCIONA QUE APAREZCAN TODOS LOS PEDIDOS EN EL SISTEMA
-                                        PARA PODER SELECCIONAR. EN EL PROYECTO UNIFICADO SI ESTA TODO!
-                                    
                                     <option th:each="pedido : ${pedidosListaTotal}" th:value="${pedido.id_pedido}" 
                                             th:text="${pedido.codigo}"></option>               
-                                    -->
                                 </select>
 
                                 <label for="idCliente_Envio">Cliente</label>
@@ -177,7 +160,19 @@
                                 <input type="tel" id="observacion_Envio" name="observacion_Envio" placeholder="Observación del envio" required>
 
                                 <label for="estadoEnvio_Envio">Estado</label>
-                                <input type="tel" id="estadoEnvio_Envio" name="estadoEnvio_Envio" placeholder="Estado del envio" required>
+
+                                <select type="text" id="estadoEnvio_Envio" name="estadoEnvio_Envio">
+                                    <option value="En proceso">En proceso</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="En camino">En camino</option>
+                                    <option value="Entregado">Entregado</option>
+                                    <option value="Devuelto">Devuelto</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                    <option value="Preparando envío">Preparando envío</option>
+                                    <option value="En aduana">En aduana</option>
+                                    <option value="Retrasado">Retrasado</option>
+                                    <option value="Listo para recoger">Listo para recoger</option>
+                                </select>
 
                                 <input type="submit" value="Realizar envio">
                             </form>
@@ -198,19 +193,8 @@
 
                                     <label for="idPedido_Envio">Pedido</label>
                                     <select name="idPedido_Envio">
-                                        <option th:value="1" th:text="1"></option>
-                                        <option th:value="2" th:text="2"></option>
-                                        <option th:value="3" th:text="3"></option>
-                                        <option th:value="4" th:text="4"></option>
-                                        <option th:value="6" th:text="6"></option>
-                                        <!--
-                                            COMO EN ESTE PROYECTO ESTAN SOLO MIS MÓDULOS (CLIENTE, ENVÍO)
-                                            NO FUNCIONA QUE APAREZCAN TODOS LOS PEDIDOS EN EL SISTEMA
-                                            PARA PODER SELECCIONAR. EN EL PROYECTO UNIFICADO SI ESTA TODO!
-                                        
                                         <option th:each="pedido : ${pedidosListaTotal}" th:value="${pedido.id_pedido}" 
                                                 th:text="${pedido.codigo}"></option>               
-                                        -->
                                     </select>
 
                                     <label for="idCliente_Envio">Cliente</label>
@@ -231,7 +215,19 @@
                                     <input type="text" id="observacion" name="observacion" placeholder="Observación del envio" required>
 
                                     <label for="estadoEnvio_Envio">Estado</label>
-                                    <input type="text" id="estadoEnvio" name="estadoEnvio" placeholder="Estado del envio" required>
+
+                                    <select type="text" id="estadoEnvio" name="estadoEnvio">
+                                        <option value="En proceso">En proceso</option>
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="En camino">En camino</option>
+                                        <option value="Entregado">Entregado</option>
+                                        <option value="Devuelto">Devuelto</option>
+                                        <option value="Cancelado">Cancelado</option>
+                                        <option value="Preparando envío">Preparando envío</option>
+                                        <option value="En aduana">En aduana</option>
+                                        <option value="Retrasado">Retrasado</option>
+                                        <option value="Listo para recoger">Listo para recoger</option>
+                                    </select>
                                 </div>
                                 <input type="submit" value="Realizar envio">
                             </form>

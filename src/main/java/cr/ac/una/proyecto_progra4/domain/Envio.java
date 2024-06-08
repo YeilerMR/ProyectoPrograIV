@@ -30,8 +30,9 @@ public class Envio {
     @Column(name = "codigo_envio")
     private String codigoEnvio;
 
-    @Column(name = "idPedido_Envio")
-    private int idPedido;
+    @ManyToOne
+    @JoinColumn(name = "idPedido_Envio", referencedColumnName = "id_Pedido")
+    private Pedido pedido;
 
     @ManyToOne
     @JoinColumn(name = "idCliente_Envio", referencedColumnName = "id_Cliente")
@@ -52,10 +53,10 @@ public class Envio {
     public Envio() {
     }
 
-    public Envio(int idEnvio, String codigoEnvio, int idPedido, Cliente cliente, LocalDateTime fechaEnvio, String observacion, String direccionEnvio, String estadoEnvio) {
+    public Envio(int idEnvio, String codigoEnvio, Pedido pedido, Cliente cliente, LocalDateTime fechaEnvio, String observacion, String direccionEnvio, String estadoEnvio) {
         this.idEnvio = idEnvio;
         this.codigoEnvio = codigoEnvio;
-        this.idPedido = idPedido;
+        this.pedido = pedido;
         this.cliente = cliente;
         this.fechaEnvio = fechaEnvio;
         this.observacion = observacion;
@@ -79,12 +80,12 @@ public class Envio {
         this.codigoEnvio = codigoEnvio;
     }
 
-    public int getIdPedido() {
-        return idPedido;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setIdPedido(int idPedido) {
-        this.idPedido = idPedido;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     public Cliente getCliente() {

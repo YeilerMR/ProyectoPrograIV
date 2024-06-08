@@ -6,8 +6,10 @@ package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Cliente;
 import cr.ac.una.proyecto_progra4.domain.Envio;
+import cr.ac.una.proyecto_progra4.domain.Pedido;
 import cr.ac.una.proyecto_progra4.services.ClienteServices;
 import cr.ac.una.proyecto_progra4.services.EnvioServices;
+import cr.ac.una.proyecto_progra4.services.PedidoServices;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +31,8 @@ public class EnvioController {
     private EnvioServices envioServices;
     @Autowired
     private ClienteServices clienteServices;
+    @Autowired
+    private PedidoServices pedidoServices;
 
     @PostMapping("/guardar")
     public ResponseEntity<String> save(@RequestParam("codigoEnvio_Envio") String codigoEnvio,
@@ -43,7 +47,11 @@ public class EnvioController {
 
         Envio envio = new Envio();
         envio.setCodigoEnvio(codigoEnvio);
-        envio.setIdPedido(idPedido);
+        // Pedido del Envio
+        Pedido pedido = new Pedido();
+        pedido.setId_pedido(idPedido);
+        envio.setPedido(pedido);
+        // Cliente del Envio
         Cliente clienteEnvio = new Cliente();
         clienteEnvio.setIdCliente(idCliente);
         envio.setCliente(clienteEnvio);
@@ -78,7 +86,7 @@ public class EnvioController {
         List<Cliente> clientesConEnvios = clienteServices.getClientesConEnvios();
         List<Cliente> clientesListaTotal = clienteServices.getClientes();
         List<Envio> enviosPagina = envioServices.obtenerRegistrosPaginados(page, pageSize);
-        //LinkedList<Pedido> pedidosListaTotal = new PedidoServices().lista_Pedido();
+        List<Pedido> pedidosListaTotal = pedidoServices.lista_Pedido();
 
         int ultimaPagina = (int) Math.ceil((double) envios.size() / pageSize) - 1;
 
@@ -88,7 +96,7 @@ public class EnvioController {
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("clientes", clientesConEnvios);
         model.addAttribute("clientesListaTotal", clientesListaTotal);
-        //model.addAttribute("pedidosListaTotal", pedidosListaTotal);
+        model.addAttribute("pedidosListaTotal", pedidosListaTotal);
 
         return "envios/envio";
     }
@@ -99,13 +107,18 @@ public class EnvioController {
             @RequestParam("idCliente_Envio") int idCliente
     ) {
 
-        envio.setIdPedido(idPedido);
+        Pedido pedido = new Pedido();
+        pedido.setId_pedido(idPedido);
+        envio.setPedido(pedido);
+        envio.getPedido().setId_pedido(idPedido);
+        // Cliente del Envio
         Cliente clienteEnvio = new Cliente();
         clienteEnvio.setIdCliente(idCliente);
         envio.setCliente(clienteEnvio);
         envio.getCliente().setIdCliente(idCliente);
+
         System.out.println("ID-> " + envio.getIdEnvio());
-        System.out.println("ID PEDIDO-> " + envio.getIdPedido());
+        System.out.println("ID PEDIDO-> " + envio.getPedido().getId_pedido());
         System.out.println("ID CLIENTE-> " + envio.getCliente().getIdCliente());
         return ResponseEntity.ok().body(envioServices.verificarPreModificar(envio));
     }

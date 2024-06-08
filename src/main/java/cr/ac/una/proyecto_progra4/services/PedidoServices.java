@@ -4,10 +4,14 @@ package cr.ac.una.proyecto_progra4.services;
 import cr.ac.una.proyecto_progra4.data.DataPedido;
 import cr.ac.una.proyecto_progra4.domain.Pedido;
 import java.util.LinkedList;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 /**
  * @author GONZALO DORMOS RODRIGUEZ
  */
+@Service
+@Primary
 public class PedidoServices {
 
     public LinkedList<Pedido> lista_Pedido() {

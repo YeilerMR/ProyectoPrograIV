@@ -119,15 +119,18 @@ function handleEnvioEdit() {
             // Rellenar los campos del formulario con los datos del envío
             document.querySelector('#modalEditarEnvio #idEnvio').value = idEnvio;
             document.querySelector('#modalEditarEnvio input[name="codigoEnvio"]').value = codigoEnvio;
-            /*document.querySelector('#modalEditarEnvio input[name="idPedido"]').value = idPedido;/
-            /*document.querySelector('#modalEditarEnvio select[name="idCliente"]').value = idCliente;*/
+
+
             document.querySelector('#modalEditarEnvio input[name="direccionEnvio"]').value = direccionEnvio;
             // Convertir el texto de fecha al formato requerido ('yyyy-MM-ddThh:mm')
             const fechaEnvio = fechaEnvioTexto.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5');
             // Asignar la fecha al input datetime-local
             document.querySelector('#modalEditarEnvio input[name="fechaEnvio"]').value = fechaEnvio;
             document.querySelector('#modalEditarEnvio input[name="observacion"]').value = observacion;
-            document.querySelector('#modalEditarEnvio input[name="estadoEnvio"]').value = estadoEnvio;
+
+            // Seleccionar el estado correcto en el select
+            const selectEstadoEnvio = document.querySelector('#modalEditarEnvio select[name="estadoEnvio"]');
+            selectEstadoEnvio.value = estadoEnvio;
 
             // Mostrar el modal de edición
             document.querySelector('#modalEditarEnvio').style.display = 'block';
