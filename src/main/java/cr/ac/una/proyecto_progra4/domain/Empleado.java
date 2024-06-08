@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
  * @author kinco
  */
 @Entity
-public class Empleado extends Usuario{
+public class Empleado {
     @Id
     private int idEmpleado;
     
@@ -23,11 +23,11 @@ public class Empleado extends Usuario{
     public Empleado(int idEmpleado) {
         this.idEmpleado = idEmpleado;
     }
-
-    public Empleado(int idEmpleado, int id, String nombre, String apellidos, String email, String password, String cedula, String telefono, int credencial) {
-        super(id, nombre, apellidos, email, password, cedula, telefono, credencial);
-        this.idEmpleado = idEmpleado;
-    }
+//
+//    public Empleado(int idEmpleado, int id, String nombre, String apellidos, String email, String password, String cedula, String telefono, int credencial) {
+//        super(id, nombre, apellidos, email, password, cedula, telefono, credencial);
+//        this.idEmpleado = idEmpleado;
+//    }
 
     public int getIdEmpleado() {
         return idEmpleado;

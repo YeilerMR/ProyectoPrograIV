@@ -4,19 +4,39 @@
  */
 package cr.ac.una.proyecto_progra4.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 /**
  *
  * @author Aaron
  */
-public class Cliente extends Usuario {
+@Entity
+@Table(name = "cliente")
+public class Cliente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_Cliente")
     private int idCliente;
 
+    @ManyToOne
+    @JoinColumn(name = "idUsuario_Cliente", referencedColumnName = "id_Usuario")
+    private Usuario usuario;
+
     public Cliente() {
+        //   this.usuario = new Usuario();
     }
 
-    public Cliente(int idCliente, int id, String nombre, String apellidos, String email, String password, String cedula, String telefono, int credencial) {
-        super(id, nombre, apellidos, email, password, cedula, telefono, credencial);
+    public Cliente(int idCliente, Usuario usuario) {
+        this.idCliente = idCliente;
+        this.usuario = usuario;
     }
 
     public int getIdCliente() {
@@ -27,4 +47,11 @@ public class Cliente extends Usuario {
         this.idCliente = idCliente;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

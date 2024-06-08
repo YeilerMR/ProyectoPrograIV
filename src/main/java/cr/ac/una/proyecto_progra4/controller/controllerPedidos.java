@@ -58,7 +58,7 @@ public class controllerPedidos {
         int ultimaPagina = (auxiliar != null) ? ((int) Math.ceil((double) auxiliar.size() / pageSize) - 1) : 0;
  
 
-       print("Empleado del pedido "+pedidos.get(1).getEmpleado().getNombre());
+        //print("Empleado del pedido "+pedidos.get(1).getEmpleado().getNombre());
 
 
         model.addAttribute("productos", productos);

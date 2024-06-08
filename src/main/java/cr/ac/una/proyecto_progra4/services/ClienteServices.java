@@ -4,158 +4,108 @@
  */
 package cr.ac.una.proyecto_progra4.services;
 
-import cr.ac.una.proyecto_progra4.data.DataCliente;
 import cr.ac.una.proyecto_progra4.domain.Cliente;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import cr.ac.una.proyecto_progra4.domain.Usuario;
+import cr.ac.una.proyecto_progra4.jpa.ClienteRepository;
+import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Aaron
  */
-public class ClienteServices {
+@Service
+@Primary
+public class ClienteServices implements IClienteServices {
 
-    //-----------------------------MÉTODOS CRUD---------------------------------
-    // Agregar cliente con validación de cédula y email
-    public static boolean agregar(Cliente cliente) {
+    @Autowired
+    private ClienteRepository clienteRepo;
+    @Autowired
+    private UsuarioServices userServices;
+
+    @Override
+    public boolean agregar(Cliente cliente) {
+        Usuario usuarioGuardado = userServices.agregar(cliente.getUsuario());
+        if (usuarioGuardado != null) {
+            clienteRepo.save(cliente);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Cliente> getClientes() {
+        return clienteRepo.getClientes();
+    }
+
+    @Override
+    @Transactional
+    public boolean eliminar(int idCliente) {
         try {
-            // Verificar si ya existe un cliente con la misma cédula
-            Cliente clienteExistenteCedula = getClientePorCedula(cliente.getCedula());
-            // Verificar si ya existe un cliente con el mismo email
-            Cliente clienteExistenteEmail = getClientePorEmail(cliente.getEmail());
-            // Si clienteExistenteCedula no es null, significa que ya hay un cliente con esa cédula
-            if (clienteExistenteCedula != null) {
-                System.out.println("Error: Ya existe un cliente con la misma cédula.");
-                return false;
-            } else if (clienteExistenteEmail != null) {
-                // Si clienteExistenteEmail no es null, significa que ya hay un cliente con ese email
-                System.out.println("Error: El email ya está asociado a otro cliente.");
-                return false;
+            // Buscar el cliente por su ID
+            Optional<Cliente> clienteOptional = clienteRepo.findById(idCliente);
+
+            // Verificar si el cliente existe
+            if (clienteOptional.isPresent()) {
+                Cliente cliente = clienteOptional.get();
+
+                // Obtener el usuario asociado al cliente
+                Usuario usuario = cliente.getUsuario();
+
+                // Eliminar el usuario
+                userServices.eliminar(usuario.getId());
+
+                // Eliminar el cliente
+                clienteRepo.delete(cliente);
+
+                return true; // Se eliminó correctamente
             } else {
-                // Si no hay un cliente existente con la misma cédula ni con el mismo email, procede a insertar el nuevo cliente
-                return DataCliente.insertar(cliente);
+                return false; // Cliente no encontrado
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ClienteServices.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+        } catch (Exception e) {
+            return false; // Error al eliminar
         }
     }
 
-    // Mostrar lista clientes
-    public static LinkedList<Cliente> getClientes() {
-        LinkedList<Cliente> clientes;
-
-        try {
-            clientes = DataCliente.getClientes();
-        } catch (SQLException ex) {
-            clientes = null;
-            Logger.getLogger(ClienteServices.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return clientes;
+    @Override
+    public Cliente getClientePorCedula(String cedula) {
+        return clienteRepo.findByCedula(cedula);
     }
 
-    // Actualizar cliente
-    public static boolean actualizar(Cliente cliente) {
-        try {
-            return DataCliente.actualizar(cliente);
-        } catch (SQLException ex) {
-            Logger.getLogger(ClienteServices.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+    @Override
+    public Cliente getClientePorID(int idUsuario) {
+        return clienteRepo.findById(idUsuario).orElse(null);
     }
 
-    // Eliminar un cliente
-    public static boolean eliminar(int idUsuario_Cliente) {
-        try {
-            return DataCliente.eliminar(idUsuario_Cliente);
-        } catch (SQLIntegrityConstraintViolationException ex) {
-            Logger.getLogger(ClienteServices.class.getName()).log(Level.WARNING, "Atención, el cliente está presente en un envío por lo cual no se puede eliminar!");
-            return false;
-        } catch (SQLException ex) {
-            Logger.getLogger(ClienteServices.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+    @Override
+    public Cliente getClientePorEmail(String email) {
+        return clienteRepo.findByEmail(email);
     }
 
-    //--------------MÉTODOS DE VERIFICACIÓN DE DATOS DUPLICADOS-----------------
-    // Obtener cliente por id
-    public static Cliente getClientePorID(int idUsuario_Cliente) {
-        for (Cliente cliente : getClientes()) {
-            if (cliente.getId() == (idUsuario_Cliente)) {
-                return cliente;
-            }
-        }
-        return null; // Si no se encuentra ningún cliente con la cédula especificado
+    @Override
+    public Cliente getClientePorTelefono(String telefono) {
+        return clienteRepo.findByTelefono(telefono);
     }
 
-    // Obtener cliente por cédula
-    public static Cliente getClientePorCedula(String cedula) {
-        for (Cliente cliente : getClientes()) {
-            if (cliente.getCedula().equals(cedula)) {
-                return cliente;
-            }
-        }
-        return null; // Si no se encuentra ningún cliente con la cédula especificado
-    }
-
-    // Método para obtener un cliente por su email
-    public static Cliente getClientePorEmail(String email) {
-        for (Cliente cliente : getClientes()) {
-            if (cliente.getEmail().equals(email)) {
-                return cliente;
-            }
-        }
-        return null; // Si no se encuentra ningún cliente con el email especificado
-    }
-
-    // Método para obtener un cliente por su email
-    public static Cliente getClientePorTelefono(String telefono) {
-        for (Cliente cliente : getClientes()) {
-            if (cliente.getTelefono().equals(telefono)) {
-                return cliente;
-            }
-        }
-        return null; // Si no se encuentra ningún cliente con el email especificado
-    }
-
-    //-------------------MÉTODOS FUNCIONALIDES NECESARIAS-----------------------
-    // Obtener clientes con envios
-    public static LinkedList<Cliente> getClientesConEnvios() {
-        LinkedList<Cliente> clientes;
-
-        try {
-            clientes = DataCliente.getClientesConEnvios();
-        } catch (SQLException ex) {
-            clientes = null;
-            Logger.getLogger(ClienteServices.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return clientes;
-    }
-
-    public LinkedList<Cliente> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina, LinkedList<Cliente> listaClientes) {
-        LinkedList<Cliente> registrosPagina = new LinkedList<>();
-
-        int inicio = numeroPagina * tamanoPagina;
-        int fin = Math.min(inicio + tamanoPagina, listaClientes.size());
-
-        for (int i = inicio; i < fin; i++) {
-            registrosPagina.add(listaClientes.get(i));
-        }
-
-        return registrosPagina;
+    @Override
+    public List<Cliente> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina) {
+        Page<Cliente> paginaCliente = clienteRepo.getClientesPages(PageRequest.of(numeroPagina, tamanoPagina));
+        return paginaCliente.getContent();
     }
 
     //-------------------MÉTODOS FUNCIONALIDES PRE CRUD-------------------------
     //Verificar si alguno de los datos esta repetido antes de agregar un nuevo cliente
-    public static String verificarPreAgregar(Cliente cliente) {
-        Cliente clienteExistenteCedula = getClientePorCedula(cliente.getCedula());
-        Cliente clienteExistenteEmail = getClientePorEmail(cliente.getEmail());
-        Cliente clienteExistenteTelefono = getClientePorTelefono(cliente.getTelefono());
+    @Override
+    public String verificarPreAgregar(Cliente cliente) {
+        Cliente clienteExistenteCedula = getClientePorCedula(cliente.getUsuario().getCedula());
+        Cliente clienteExistenteEmail = getClientePorEmail(cliente.getUsuario().getEmail());
+        Cliente clienteExistenteTelefono = getClientePorTelefono(cliente.getUsuario().getTelefono());
 
         if (clienteExistenteCedula != null) {
             return "{\"success\": false, \"message\": \"La cédula ya se encuentra asociada a otro cliente\"}";
@@ -164,7 +114,7 @@ public class ClienteServices {
         } else if (clienteExistenteTelefono != null) {
             return "{\"success\": false, \"message\": \"El télefono está asociado a otro cliente\"}";
         } else {
-            boolean agregadoExitosamente = ClienteServices.agregar(cliente);
+            boolean agregadoExitosamente = agregar(cliente);
             if (agregadoExitosamente) {
                 return "{\"success\": true, \"message\": \"Cliente agregado exitosamente\"}";
             } else {
@@ -173,9 +123,10 @@ public class ClienteServices {
         }
     }
 
-    public static String verificarPreModificar(Cliente cliente) {
+    @Override
+    public String verificarPreModificar(Cliente cliente) {
         // Obtener el cliente existente por ID
-        Cliente clienteExistente = getClientePorID(cliente.getId());
+        Cliente clienteExistente = getClientePorID(cliente.getIdCliente());
 
         // Verificar si el cliente existe
         if (clienteExistente == null) {
@@ -185,7 +136,7 @@ public class ClienteServices {
         // Verificar si los datos modificados son iguales a los datos actuales del cliente
         if (cliente.equals(clienteExistente)) {
             // Si los datos son iguales, no es necesario hacer más verificaciones
-            boolean actualizadoExitosamente = ClienteServices.actualizar(cliente);
+            boolean actualizadoExitosamente = agregar(cliente);
             if (actualizadoExitosamente) {
                 return "{\"success\": true, \"message\": \"Cliente actualizado exitosamente\"}";
             } else {
@@ -194,26 +145,31 @@ public class ClienteServices {
         }
 
         // Verificar si algún otro cliente tiene los mismos datos
-        Cliente clienteExistenteCedula = getClientePorCedula(cliente.getCedula());
-        Cliente clienteExistenteEmail = getClientePorEmail(cliente.getEmail());
-        Cliente clienteExistenteTelefono = getClientePorTelefono(cliente.getTelefono());
+        Cliente clienteExistenteCedula = getClientePorCedula(cliente.getUsuario().getCedula());
+        Cliente clienteExistenteEmail = getClientePorEmail(cliente.getUsuario().getEmail());
+        Cliente clienteExistenteTelefono = getClientePorTelefono(cliente.getUsuario().getTelefono());
 
         // Verificar si algún otro cliente tiene la misma cédula, email o teléfono
-        if (clienteExistenteCedula != null && clienteExistenteCedula.getId() != cliente.getId()) {
+        if (clienteExistenteCedula != null && clienteExistenteCedula.getIdCliente() != cliente.getIdCliente()) {
             return "{\"success\": false, \"message\": \"La cédula ya se encuentra asociada a otro cliente\"}";
-        } else if (clienteExistenteEmail != null && clienteExistenteEmail.getId() != cliente.getId()) {
+        } else if (clienteExistenteEmail != null && clienteExistenteEmail.getIdCliente() != cliente.getIdCliente()) {
             return "{\"success\": false, \"message\": \"El email ya está asociado a otro cliente\"}";
-        } else if (clienteExistenteTelefono != null && clienteExistenteTelefono.getId() != cliente.getId()) {
+        } else if (clienteExistenteTelefono != null && clienteExistenteTelefono.getIdCliente() != cliente.getIdCliente()) {
             return "{\"success\": false, \"message\": \"El teléfono está asociado a otro cliente\"}";
         } else {
             // Si todos los datos están bien, procede con la actualización del cliente
-            boolean actualizadoExitosamente = ClienteServices.actualizar(cliente);
+            boolean actualizadoExitosamente = agregar(cliente);
             if (actualizadoExitosamente) {
                 return "{\"success\": true, \"message\": \"Cliente actualizado exitosamente\"}";
             } else {
                 return "{\"success\": false, \"message\": \"Error al actualizar el cliente\"}";
             }
         }
+    }
+
+    @Override
+    public List<Cliente> getClientesConEnvios() {
+        return clienteRepo.findClientesConEnvios();
     }
 
 }

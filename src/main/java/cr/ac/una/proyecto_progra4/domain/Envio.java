@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -31,8 +33,9 @@ public class Envio {
     @Column(name = "idPedido_Envio")
     private int idPedido;
 
-    @Column(name = "idCliente_Envio")
-    private int idCliente;
+    @ManyToOne
+    @JoinColumn(name = "idCliente_Envio", referencedColumnName = "id_Cliente")
+    private Cliente cliente;
 
     @Column(name = "fechaEnvio_Envio")
     private LocalDateTime fechaEnvio;
@@ -49,11 +52,11 @@ public class Envio {
     public Envio() {
     }
 
-    public Envio(int idEnvio, String codigoEnvio, int idPedido, int idCliente, LocalDateTime fechaEnvio, String observacion, String direccionEnvio, String estadoEnvio) {
+    public Envio(int idEnvio, String codigoEnvio, int idPedido, Cliente cliente, LocalDateTime fechaEnvio, String observacion, String direccionEnvio, String estadoEnvio) {
         this.idEnvio = idEnvio;
         this.codigoEnvio = codigoEnvio;
         this.idPedido = idPedido;
-        this.idCliente = idCliente;
+        this.cliente = cliente;
         this.fechaEnvio = fechaEnvio;
         this.observacion = observacion;
         this.direccionEnvio = direccionEnvio;
@@ -84,12 +87,12 @@ public class Envio {
         this.idPedido = idPedido;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public LocalDateTime getFechaEnvio() {

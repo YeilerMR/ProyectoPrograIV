@@ -40,7 +40,7 @@
                     </ul>
                 </nav>
             </aside>
-            <main>
+           <main>
                 <h1>Lista de Envíos</h1>
                 <!-- PARTE DE BÚSQUEDA DE ALGÚN ENVÍO MEDIANTE CÉDULA -->
                 <div class="buscador">
@@ -67,8 +67,13 @@
                         </tr>
                         <tr th:each="envio: ${envios}">
                             <td th:text="${envio.codigoEnvio}"></td>
-
+                            <td th:text="${envio.idPedido}"></td>
+                            <!-- 
                             <td>
+                                COMO EN ESTE PROYECTO ESTAN SOLO MIS MÓDULOS (CLIENTE, ENVÍO)
+                                NO FUNCIONA QUE APAREZCA LA INFORMACIÓN IMPORTANTE DEL PEDIDO
+                                POR ESO LO MANEJO CON ID DEL PEDIDO EN ESTE CASO
+
                                 <span th:each="pedido : ${pedidosListaTotal}">
                                     <th:block th:if="${pedido.id_pedido == envio.idPedido}">
                                         Código: <span th:text="' ' + ${pedido.codigo}"></span><br>
@@ -77,15 +82,16 @@
                                         <th:block th:break="${true}"></th:block>
                                     </th:block>
                                 </span>
-                            </td>
 
+                            </td>
+                            -->
                             <td>
                                 <span th:each="cliente : ${clientes}">
-                                    <th:block th:if="${cliente.idCliente == envio.idCliente}">
-                                        Nombre: <span th:text="' ' + ${cliente.nombre + ' ' + cliente.apellidos}"></span><br>
-                                        Cédula: <span th:text="' ' + ${cliente.cedula}"></span><br>
-                                        Email: <span th:text="' ' + ${cliente.email}"></span><br>
-                                        Télefono: <span th:text="' ' + ${cliente.telefono}"></span><br>
+                                    <th:block th:if="${cliente.idCliente == envio.cliente.idCliente}">
+                                        Nombre: <span th:text="' ' + ${cliente.usuario.nombre + ' ' + cliente.usuario.apellidos}"></span><br>
+                                        Cédula: <span th:text="' ' + ${cliente.usuario.cedula}"></span><br>
+                                        Email: <span th:text="' ' + ${cliente.usuario.email}"></span><br>
+                                        Télefono: <span th:text="' ' + ${cliente.usuario.telefono}"></span><br>
                                         <th:block th:break="${true}"></th:block>
                                     </th:block>
                                 </span>
@@ -138,15 +144,26 @@
                                 <label for="idPedido_Envio">Pedido</label>
 
                                 <select name="idPedido_Envio">
+                                    <option th:value="1" th:text="1"></option>
+                                    <option th:value="2" th:text="2"></option>
+                                    <option th:value="3" th:text="3"></option>
+                                    <option th:value="4" th:text="4"></option>
+                                    <option th:value="6" th:text="6"></option>
+                                    <!--
+                                        COMO EN ESTE PROYECTO ESTAN SOLO MIS MÓDULOS (CLIENTE, ENVÍO)
+                                        NO FUNCIONA QUE APAREZCAN TODOS LOS PEDIDOS EN EL SISTEMA
+                                        PARA PODER SELECCIONAR. EN EL PROYECTO UNIFICADO SI ESTA TODO!
+                                    
                                     <option th:each="pedido : ${pedidosListaTotal}" th:value="${pedido.id_pedido}" 
-                                            th:text="${pedido.codigo}"></option>                                    
+                                            th:text="${pedido.codigo}"></option>               
+                                    -->
                                 </select>
 
                                 <label for="idCliente_Envio">Cliente</label>
 
                                 <select name="idCliente_Envio">
                                     <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.idCliente}" 
-                                            th:text="${cliente.cedula + ' ' + cliente.nombre + ' ' + cliente.apellidos}"></option>                                    
+                                            th:text="${cliente.usuario.cedula + ' ' + cliente.usuario.nombre + ' ' + cliente.usuario.apellidos}"></option>                                    
                                 </select>
 
                                 <label for="fechaEnvio_Envio">Fecha de Envio</label>
@@ -181,15 +198,26 @@
 
                                     <label for="idPedido_Envio">Pedido</label>
                                     <select name="idPedido_Envio">
+                                        <option th:value="1" th:text="1"></option>
+                                        <option th:value="2" th:text="2"></option>
+                                        <option th:value="3" th:text="3"></option>
+                                        <option th:value="4" th:text="4"></option>
+                                        <option th:value="6" th:text="6"></option>
+                                        <!--
+                                            COMO EN ESTE PROYECTO ESTAN SOLO MIS MÓDULOS (CLIENTE, ENVÍO)
+                                            NO FUNCIONA QUE APAREZCAN TODOS LOS PEDIDOS EN EL SISTEMA
+                                            PARA PODER SELECCIONAR. EN EL PROYECTO UNIFICADO SI ESTA TODO!
+                                        
                                         <option th:each="pedido : ${pedidosListaTotal}" th:value="${pedido.id_pedido}" 
-                                                th:text="${pedido.codigo}"></option>                                    
+                                                th:text="${pedido.codigo}"></option>               
+                                        -->
                                     </select>
 
                                     <label for="idCliente_Envio">Cliente</label>
 
-                                    <select name="idCliente">
+                                    <select name="idCliente_Envio">
                                         <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.idCliente}" 
-                                                th:text="${cliente.cedula + ' ' + cliente.nombre + ' ' + cliente.apellidos}"></option>                                    
+                                                th:text="${cliente.usuario.cedula + ' ' + cliente.usuario.nombre + ' ' + cliente.usuario.apellidos}"></option>                                    
                                     </select>
 
                                     <label for="fechaEnvio_Envio">Fecha de Envio</label>

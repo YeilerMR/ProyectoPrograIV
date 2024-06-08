@@ -23,32 +23,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/empleados")
 public class EmpleadosController {
-    
-   @PostMapping("/guardar")
+
+    @PostMapping("/guardar")
     public ResponseEntity<?> save(@RequestParam("nombre") String nombre,
             @RequestParam("apellidos") String apellidos, @RequestParam("email") String email,
             @RequestParam("password") String password, @RequestParam("telefono") String telefono,
             @RequestParam("credencial") String credencial, @RequestParam("cedula") String cedula) {
 
         Empleado empleado = new Empleado();
-        empleado.setNombre(nombre);
-        empleado.setApellidos(apellidos);
-        empleado.setEmail(email);
-        empleado.setPassword(password);
-        empleado.setTelefono(telefono);
-        empleado.setCedula(cedula);
+//        empleado.setNombre(nombre);
+//        empleado.setApellidos(apellidos);
+//        empleado.setEmail(email);
+//        empleado.setPassword(password);
+//        empleado.setTelefono(telefono);
+//        empleado.setCedula(cedula);
         // Cliente = 0
         // Empleado = 1
-        int credencialInt =1;
+        int credencialInt = 1;
         if (credencial.equalsIgnoreCase("Empleado")) {
             credencialInt = 1;
         }
-        empleado.setCredencial(credencialInt);
+//      empleado.setCredencial(credencialInt);
         return ResponseEntity.ok().body(EmpleadosServices.verificarPreAgregar(empleado));
 
     }
 
-       @GetMapping("/buscar")
+    @GetMapping("/buscar")
     public String buscarEmpleado(@RequestParam(value = "textoBuscar", required = true) String cedula, Model model) {
         Empleado empleado = EmpleadosServices.getEmpleadoPorCedula(cedula);
         LinkedList<Empleado> empleados = new LinkedList<>();
@@ -60,7 +60,7 @@ public class EmpleadosController {
         model.addAttribute("empleados", empleados);
         return "empleados/resultadoBusquedaEmpleado";
     }
-    
+
     @GetMapping("/listar")
     public String mostrarLista(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
         LinkedList<Empleado> empleados = EmpleadosServices.getEmpleados();
@@ -75,7 +75,7 @@ public class EmpleadosController {
 
         return "empleados/empleado";
     }
-    
+
     @PostMapping("/actualizar")
     public ResponseEntity<?> actualizarEmpleado(@ModelAttribute("empleadoItem") Empleado empleado) {
         return ResponseEntity.ok().body(EmpleadosServices.verificarPreModificar(empleado));

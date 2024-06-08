@@ -66,23 +66,23 @@ function validarEliminacionCliente(selector, mensajeExito, mensajeError) {
                             'Content-Type': 'application/json'
                         }
                     })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    // Mostrar el mensaje de éxito después de la redirección
-                                    mostrarToastConfirmacion(mensajeExito);
-                                    setTimeout(function () {
-                                        window.location.href = '/clientes/listar';
-                                    }, 1000); // 1000 milisegundos de retraso
-                                } else {
-                                    // Mostrar el mensaje de error
-                                    mostrarToastError(data.message || mensajeError);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                mostrarToastError('Ocurrió un error inesperado');
-                            });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Mostrar el mensaje de éxito después de la redirección
+                            mostrarToastConfirmacion(mensajeExito);
+                            setTimeout(function () {
+                                window.location.href = '/clientes/listar';
+                            }, 1000); // 1000 milisegundos de retraso
+                        } else {
+                            // Mostrar el mensaje de error
+                            mostrarToastError(data.message || mensajeError);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        mostrarToastError('Ocurrió un error inesperado');
+                    });
                 }
             });
         });
@@ -201,13 +201,13 @@ function handleClientEdit() {
 
             // Rellenar los campos del formulario con los datos del cliente
             document.querySelector('#modalEditar #idCliente').value = idCliente;
-            document.querySelector('#modalEditar input[name="nombre"]').value = nombre;
-            document.querySelector('#modalEditar input[name="apellidos"]').value = apellidos;
-            document.querySelector('#modalEditar input[name="cedula"]').value = cedula;
-            document.querySelector('#modalEditar input[name="email"]').value = email;
-            document.querySelector('#modalEditar input[name="password"]').value = password;
-            document.querySelector('#modalEditar input[name="telefono"]').value = telefono;
-            document.querySelector('#modalEditar select[name="credencial"]').value = credencial;
+            document.querySelector('#modalEditar input[name="usuario.nombre"]').value = nombre;
+            document.querySelector('#modalEditar input[name="usuario.apellidos"]').value = apellidos;
+            document.querySelector('#modalEditar input[name="usuario.cedula"]').value = cedula;
+            document.querySelector('#modalEditar input[name="usuario.email"]').value = email;
+            document.querySelector('#modalEditar input[name="usuario.password"]').value = password;
+            document.querySelector('#modalEditar input[name="usuario.telefono"]').value = telefono;
+            document.querySelector('#modalEditar select[name="usuario.credencial"]').value = credencial;
 
             // Mostrar el modal de edición
             document.querySelector('#modalEditar').style.display = 'block';

@@ -66,24 +66,24 @@
                             <th>Acciones</th>
                         </tr>
                         <tr th:each="clienteItem : ${clientes}">
-                            <td th:text="${clienteItem.nombre}"></td>
-                            <td th:text="${clienteItem.apellidos}"></td>
-                            <td th:text="${clienteItem.cedula}"></td>
-                            <td th:text="${clienteItem.email}"></td>
+                            <td th:text="${clienteItem.usuario.nombre}"></td>
+                            <td th:text="${clienteItem.usuario.apellidos}"></td>
+                            <td th:text="${clienteItem.usuario.cedula}"></td>
+                            <td th:text="${clienteItem.usuario.email}"></td>
 
                             <td>
-                                <span class="password" th:data-password="${clienteItem.password}">******</span>
+                                <span class="password" th:data-password="${clienteItem.usuario.password}">******</span>
                                 <button class="toggle-password transparent-button">
                                     <i id="eye-open" class="bi bi-eye"></i>
                                     <i id="eye-close"class="bi bi-eye-slash" style="display:none;"></i>
                                 </button>
                             </td>
-                            <td th:text="${clienteItem.telefono}"></td>
-                            <td th:text="${clienteItem.credencial == 0 ? 'Cliente' : 'Empleado'}"></td>
+                            <td th:text="${clienteItem.usuario.telefono}"></td>
+                            <td th:text="${clienteItem.usuario.credencial == 0 ? 'Cliente' : 'Empleado'}"></td>
                             <td>
                                 <button class="producto-eliminar" style="display: inline;">
                                     <i class="bi bi-trash"></i>
-                                    <a th:href="@{/clientes/eliminar(idUsuario_Cliente=${clienteItem.id})}" style="text-decoration: none; color: inherit;"></a>
+                                    <a th:href="@{/clientes/eliminar(id_Cliente=${clienteItem.idCliente})}" style="text-decoration: none; color: inherit;"></a>
                                 </button>
                                 <br>
                                 ----------
@@ -161,20 +161,21 @@
                         <span class="close">&times;</span>
                         <div class="container">
                             <form class="editar-cliente-form" method="post" th:action="@{/clientes/actualizar}">
-                                <input type="hidden" name="id" id="idCliente">
+                                
+                                <input type="hidden" name="idCliente" id="idCliente">
                                 <div class="form-input">
                                     <label for="nombre">Nombre</label>
-                                    <input type="text" name="nombre" class="form-control" placeholder="Nombre del cliente" required>
+                                    <input type="text" name="usuario.nombre" class="form-control" placeholder="Nombre del cliente" required>
 
                                     <label for="apellidos">Apellidos</label>
-                                    <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos del cliente" required>
+                                    <input type="text" id="apellidos" name="usuario.apellidos" placeholder="Apellidos del cliente" required>
 
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" placeholder="Email del cliente" required>
+                                    <input type="email" id="email" name="usuario.email" placeholder="Email del cliente" required>
 
                                     <label for="password">Contraseña</label>
                                     <div class="password-wrapper">
-                                        <input type="password" id="password" name="password" placeholder="Contraseña del cliente" required>
+                                        <input type="password" id="password" name="usuario.password" placeholder="Contraseña del cliente" required>
                                         <button type="button" class="toggle-password transparent-button" aria-label="Toggle Password Visibility">
                                             <i id="eye-open" class="bi bi-eye"></i>
                                             <i id="eye-close" class="bi bi-eye-slash" style="display: none;"></i>
@@ -182,13 +183,13 @@
                                     </div>
 
                                     <label for="cedula">Cédula</label>
-                                    <input type="text" id="cedula" name="cedula" placeholder="Cédula del cliente" required>
+                                    <input type="text" id="cedula" name="usuario.cedula" placeholder="Cédula del cliente" required>
 
                                     <label for="telefono">Teléfono</label>
-                                    <input type="tel" id="telefono" name="telefono" placeholder="Teléfono del cliente" required>
+                                    <input type="tel" id="telefono" name="usuario.telefono" placeholder="Teléfono del cliente" required>
 
                                     <label for="credencial">Credencial</label>
-                                    <select id="credencial" name="credencial" required>
+                                    <select id="credencial" name="usuario.credencial" required>
                                         <option value="0">Cliente</option>
                                         <option value="1">Empleado</option>
                                     </select>

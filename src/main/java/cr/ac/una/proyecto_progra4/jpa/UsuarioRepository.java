@@ -4,8 +4,11 @@
  */
 package cr.ac.una.proyecto_progra4.jpa;
 
-import cr.ac.una.proyecto_progra4.domain.Envio;
-import java.util.List;
+/**
+ *
+ * @author Aaron
+ */
+import cr.ac.una.proyecto_progra4.domain.Usuario;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,11 +20,8 @@ import org.springframework.stereotype.Repository;
  * @author Aaron
  */
 @Repository
-public interface EnviosRepository extends JpaRepository<Envio, Integer> {
-
-    @Query("SELECT e FROM Envio e")
-    List<Envio> findAllEnvios();
-
-    @Query("SELECT e FROM Envio e WHERE LOWER(e.codigoEnvio) = LOWER(:codigo)")
-    Optional<Envio> findByCodigoEnvioIgnoreCase(@Param("codigo") String codigo);
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+    
+    @Query("SELECT u FROM Usuario u WHERE LOWER(u.cedula) = LOWER(:cedula)")
+    Optional<Usuario> findByCedulaIgnoreCase(@Param("cedula") String cedula);
 }

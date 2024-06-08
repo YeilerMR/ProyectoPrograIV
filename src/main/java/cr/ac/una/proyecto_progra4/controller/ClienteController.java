@@ -5,10 +5,13 @@
 package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Cliente;
+import cr.ac.una.proyecto_progra4.domain.Usuario;
 import cr.ac.una.proyecto_progra4.services.ClienteServices;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +30,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/clientes")
 public class ClienteController {
 
+    @Autowired
+    private ClienteServices clienteServices;
+
+    @GetMapping("/cliente")
+    public String get() {
+        List<Cliente> clientes = clienteServices.getClientes();
+        for (Cliente c : clientes) {
+            System.out.println("---------------------------/n");
+            System.out.println("ID CLIENTE: " + c.getIdCliente());
+            System.out.println("ID USUARIO: " + c.getUsuario().getId());
+            System.out.println("NOMBRE USUARIO: " + c.getUsuario().getNombre());
+            System.out.println("---------------------------/n");
+        }
+
+        return "HOLA";
+    }
+
     @PostMapping("/guardar")
     public ResponseEntity<?> save(@RequestParam("nombre") String nombre,
             @RequestParam("apellidos") String apellidos, @RequestParam("email") String email,
@@ -34,25 +54,27 @@ public class ClienteController {
             @RequestParam("credencial") String credencial, @RequestParam("cedula") String cedula) {
 
         Cliente cliente = new Cliente();
-        cliente.setNombre(nombre);
-        cliente.setApellidos(apellidos);
-        cliente.setEmail(email);
-        cliente.setPassword(password);
-        cliente.setTelefono(telefono);
-        cliente.setCedula(cedula);
-        // Cliente = 0
-        // Empleado = 1
-        int credencialInt = 1;
+        Usuario clienteUsuario = new Usuario();
+        clienteUsuario.setNombre(nombre);
+        clienteUsuario.setApellidos(apellidos);
+        clienteUsuario.setEmail(email);
+        clienteUsuario.setPassword(password);
+        clienteUsuario.setCedula(cedula);
+        clienteUsuario.setTelefono(telefono);
         if (credencial.equalsIgnoreCase("Cliente")) {
-            credencialInt = 0;
+            clienteUsuario.setCredencial(0);
+        } else {
+            clienteUsuario.setCredencial(1);
         }
-        cliente.setCredencial(credencialInt);
-        return ResponseEntity.ok().body(ClienteServices.verificarPreAgregar(cliente));
+        return ResponseEntity.ok().body(clienteServices.verificarPreAgregar(cliente));
     }
 
     @GetMapping("/buscar")
     public String buscarCliente(@RequestParam(value = "textoBuscar", required = true) String cedula, Model model) {
-        Cliente cliente = ClienteServices.getClientePorCedula(cedula);
+        System.out.println("TEXTO" + cedula);
+        Cliente cliente = clienteServices.getClientePorCedula(cedula);
+
+        System.out.println(cliente.getUsuario().getNombre());
         LinkedList<Cliente> clientes = new LinkedList<>();
 
         if (cliente != null) {
@@ -65,28 +87,33 @@ public class ClienteController {
 
     @GetMapping("/listar")
     public String mostrarLista(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
-        LinkedList<Cliente> clientes = ClienteServices.getClientes();
-        LinkedList<Cliente> clientessPagina = new ClienteServices().obtenerRegistrosPaginados(page, pageSize, clientes);
-
+        List<Cliente> clientes = clienteServices.getClientes();
+        List<Cliente> clientessPagina = clienteServices.obtenerRegistrosPaginados(page, pageSize);
         int ultimaPagina = (int) Math.ceil((double) clientes.size() / pageSize) - 1;
-
         model.addAttribute("ultimaPagina", ultimaPagina);
         model.addAttribute("clientes", clientessPagina);
-        model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
-        model.addAttribute("pageSize", pageSize); // Asegúrate de pasar el tamaño de página al modelo
+        model.addAttribute("page", page);
+        model.addAttribute("pageSize", pageSize);
 
         return "clientes/cliente";
     }
 
     @PostMapping("/actualizar")
-    public ResponseEntity<?> actualizarCliente(@ModelAttribute("clienteItem") Cliente cliente) {
-        return ResponseEntity.ok().body(ClienteServices.verificarPreModificar(cliente));
+    public ResponseEntity<?> actualizarCliente(@ModelAttribute("clienteItem") Cliente cliente, @RequestParam("idCliente") int idCliente) {
+
+        //System.out.println("CLIENTE USUARIO CEDULA= " +cliente.getUsuario().getCedula());
+        System.out.println("CLIENTE  ID= " + idCliente);
+        System.out.println("CLIENTE  ID= " + cliente.getUsuario().getNombre());
+
+        System.out.println((clienteServices.getClientePorCedula(cliente.getUsuario().getCedula())).getUsuario().getCedula());
+
+        return ResponseEntity.ok().body(clienteServices.verificarPreModificar(cliente));
     }
-    
+
     @GetMapping("/eliminar")
     @ResponseBody
-    public Map<String, Object> eliminarCliente(@RequestParam("idUsuario_Cliente") int idUsuario_Cliente) {
-        boolean eliminadoExitosamente = ClienteServices.eliminar(idUsuario_Cliente);
+    public Map<String, Object> eliminarCliente(@RequestParam("id_Cliente") int id_Cliente) {
+        boolean eliminadoExitosamente = clienteServices.eliminar(id_Cliente);
         Map<String, Object> response = new HashMap<>();
         response.put("success", eliminadoExitosamente);
         if (!eliminadoExitosamente) {
@@ -94,5 +121,4 @@ public class ClienteController {
         }
         return response;
     }
-
 }

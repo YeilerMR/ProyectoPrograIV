@@ -4,20 +4,41 @@
  */
 package cr.ac.una.proyecto_progra4.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
+
 /**
  *
  * @author Aaron
  */
+@Entity
+@Table(name = "usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_Usuario")
     private int id;
-
+    @Column(name = "nombre_Usuario")
     private String nombre;
+    @Column(name = "apellidos_Usuario")
     private String apellidos;
+    @Column(name = "email_Usuario")
     private String email;
+    @Column(name = "password_Usuario")
     private String password;
+    @Column(name = "cedula_Usuario")
     private String cedula;
+    @Column(name = "telefono_Usuario")
     private String telefono;
+    @Column(name = "credencial_Usuario ")
     private int credencial;
 
     public Usuario() {
@@ -25,6 +46,16 @@ public class Usuario {
 
     public Usuario(int id, String nombre, String apellidos, String email, String password, String cedula, String telefono, int credencial) {
         this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.password = password;
+        this.cedula = cedula;
+        this.telefono = telefono;
+        this.credencial = credencial;
+    }
+
+    public Usuario(String nombre, String apellidos, String email, String password, String cedula, String telefono, int credencial) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
