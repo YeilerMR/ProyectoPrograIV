@@ -49,11 +49,27 @@ public class ClienteController {
 
     @PostMapping("/guardar")
     public ResponseEntity<?> save(@RequestParam("nombre") String nombre,
-            @RequestParam("apellidos") String apellidos, @RequestParam("email") String email,
-            @RequestParam("password") String password, @RequestParam("telefono") String telefono,
-            @RequestParam("credencial") String credencial, @RequestParam("cedula") String cedula) {
+            @RequestParam("apellidos") String apellidos,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("telefono") String telefono,
+            @RequestParam("credencial") String credencial,
+            @RequestParam("cedula") String cedula) {
 
-        Cliente cliente = new Cliente();
+        // Verificar si algún otro cliente tiene los mismos datos
+        Cliente clienteExistenteCedula = clienteServices.getClientePorCedula(cedula);
+        Cliente clienteExistenteEmail = clienteServices.getClientePorEmail(email);
+        Cliente clienteExistenteTelefono = clienteServices.getClientePorTelefono(telefono);
+
+        if (clienteExistenteCedula != null) {
+            return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"La cédula ya se encuentra asociada a otro cliente\"}");
+        } else if (clienteExistenteEmail != null) {
+            return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"El email ya está asociado a otro cliente\"}");
+        } else if (clienteExistenteTelefono != null) {
+            return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"El teléfono está asociado a otro cliente\"}");
+        }
+
+        // Crear y configurar el objeto Usuario
         Usuario clienteUsuario = new Usuario();
         clienteUsuario.setNombre(nombre);
         clienteUsuario.setApellidos(apellidos);
@@ -61,24 +77,37 @@ public class ClienteController {
         clienteUsuario.setPassword(password);
         clienteUsuario.setCedula(cedula);
         clienteUsuario.setTelefono(telefono);
+
+        // Asignar la credencial adecuada
         if (credencial.equalsIgnoreCase("Cliente")) {
             clienteUsuario.setCredencial(0);
         } else {
             clienteUsuario.setCredencial(1);
         }
-        return ResponseEntity.ok().body(clienteServices.verificarPreAgregar(cliente));
+
+        // Crear y asociar el objeto Cliente
+        Cliente cliente = new Cliente();
+        cliente.setUsuario(clienteUsuario);
+
+        // Agregar el cliente
+        boolean agregadoExitosamente = clienteServices.agregar(cliente);
+        if (agregadoExitosamente) {
+            return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Cliente agregado exitosamente\"}");
+        } else {
+            return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"Error al agregar el cliente\"}");
+        }
     }
 
     @GetMapping("/buscar")
     public String buscarCliente(@RequestParam(value = "textoBuscar", required = true) String cedula, Model model) {
-        System.out.println("TEXTO" + cedula);
         Cliente cliente = clienteServices.getClientePorCedula(cedula);
-
-        System.out.println(cliente.getUsuario().getNombre());
         LinkedList<Cliente> clientes = new LinkedList<>();
 
         if (cliente != null) {
             clientes.add(cliente);
+        } else {
+            // Cliente no encontrado, devuelve una lista vacía
+            clientes = new LinkedList<>();
         }
 
         model.addAttribute("clientes", clientes);
@@ -99,15 +128,46 @@ public class ClienteController {
     }
 
     @PostMapping("/actualizar")
-    public ResponseEntity<?> actualizarCliente(@ModelAttribute("clienteItem") Cliente cliente, @RequestParam("idCliente") int idCliente) {
+    public ResponseEntity<?> actualizarCliente(@ModelAttribute("clienteItem") Cliente cliente,
+            @RequestParam("idCliente") int idCliente) {
 
-        //System.out.println("CLIENTE USUARIO CEDULA= " +cliente.getUsuario().getCedula());
-        System.out.println("CLIENTE  ID= " + idCliente);
-        System.out.println("CLIENTE  ID= " + cliente.getUsuario().getNombre());
+        // Obtener el cliente existente por ID
+        Cliente clienteExistente = clienteServices.getClientePorID(idCliente);
 
-        System.out.println((clienteServices.getClientePorCedula(cliente.getUsuario().getCedula())).getUsuario().getCedula());
+        // Verificar si el cliente existe
+        if (clienteExistente == null) {
+            return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"El cliente no existe\"}");
+        }
 
-        return ResponseEntity.ok().body(clienteServices.verificarPreModificar(cliente));
+        // Actualizar los datos del cliente existente con los datos recibidos
+        clienteExistente.getUsuario().setNombre(cliente.getUsuario().getNombre());
+        clienteExistente.getUsuario().setApellidos(cliente.getUsuario().getApellidos());
+        clienteExistente.getUsuario().setEmail(cliente.getUsuario().getEmail());
+        clienteExistente.getUsuario().setPassword(cliente.getUsuario().getPassword());
+        clienteExistente.getUsuario().setCedula(cliente.getUsuario().getCedula());
+        clienteExistente.getUsuario().setTelefono(cliente.getUsuario().getTelefono());
+
+        // Verificar si algún otro cliente tiene los mismos datos
+        Cliente clienteExistenteCedula = clienteServices.getClientePorCedula(cliente.getUsuario().getCedula());
+        Cliente clienteExistenteEmail = clienteServices.getClientePorEmail(cliente.getUsuario().getEmail());
+        Cliente clienteExistenteTelefono = clienteServices.getClientePorTelefono(cliente.getUsuario().getTelefono());
+
+        // Verificar si algún otro cliente tiene la misma cédula, email o teléfono
+        if (clienteExistenteCedula != null && clienteExistenteCedula.getIdCliente() != idCliente) {
+            return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"La cédula ya se encuentra asociada a otro cliente\"}");
+        } else if (clienteExistenteEmail != null && clienteExistenteEmail.getIdCliente() != idCliente) {
+            return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"El email ya está asociado a otro cliente\"}");
+        } else if (clienteExistenteTelefono != null && clienteExistenteTelefono.getIdCliente() != idCliente) {
+            return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"El teléfono está asociado a otro cliente\"}");
+        }
+
+        // Guardar los cambios en el cliente
+        boolean actualizadoExitosamente = clienteServices.agregar(clienteExistente);
+        if (actualizadoExitosamente) {
+            return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Cliente actualizado exitosamente\"}");
+        } else {
+            return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"Error al actualizar el cliente\"}");
+        }
     }
 
     @GetMapping("/eliminar")

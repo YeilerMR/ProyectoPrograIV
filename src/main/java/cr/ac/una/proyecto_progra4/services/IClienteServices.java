@@ -30,8 +30,4 @@ public interface IClienteServices {
     public Cliente getClientePorTelefono(String telefono);
 
     public List<Cliente> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina);
-
-    public String verificarPreAgregar(Cliente cliente);
-
-    public String verificarPreModificar(Cliente cliente);
 }

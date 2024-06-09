@@ -75,7 +75,7 @@ public class ClienteServices implements IClienteServices {
 
     @Override
     public Cliente getClientePorCedula(String cedula) {
-        return clienteRepo.findByCedula(cedula);
+        return clienteRepo.findByCedula(cedula).orElse(null);
     }
 
     @Override
@@ -85,86 +85,18 @@ public class ClienteServices implements IClienteServices {
 
     @Override
     public Cliente getClientePorEmail(String email) {
-        return clienteRepo.findByEmail(email);
+        return clienteRepo.findByEmail(email).orElse(null);
     }
 
     @Override
     public Cliente getClientePorTelefono(String telefono) {
-        return clienteRepo.findByTelefono(telefono);
+        return clienteRepo.findByTelefono(telefono).orElse(null);
     }
 
     @Override
     public List<Cliente> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina) {
         Page<Cliente> paginaCliente = clienteRepo.getClientesPages(PageRequest.of(numeroPagina, tamanoPagina));
         return paginaCliente.getContent();
-    }
-
-    //-------------------MÉTODOS FUNCIONALIDES PRE CRUD-------------------------
-    //Verificar si alguno de los datos esta repetido antes de agregar un nuevo cliente
-    @Override
-    public String verificarPreAgregar(Cliente cliente) {
-        Cliente clienteExistenteCedula = getClientePorCedula(cliente.getUsuario().getCedula());
-        Cliente clienteExistenteEmail = getClientePorEmail(cliente.getUsuario().getEmail());
-        Cliente clienteExistenteTelefono = getClientePorTelefono(cliente.getUsuario().getTelefono());
-
-        if (clienteExistenteCedula != null) {
-            return "{\"success\": false, \"message\": \"La cédula ya se encuentra asociada a otro cliente\"}";
-        } else if (clienteExistenteEmail != null) {
-            return "{\"success\": false, \"message\": \"El email ya está asociado a otro cliente\"}";
-        } else if (clienteExistenteTelefono != null) {
-            return "{\"success\": false, \"message\": \"El télefono está asociado a otro cliente\"}";
-        } else {
-            boolean agregadoExitosamente = agregar(cliente);
-            if (agregadoExitosamente) {
-                return "{\"success\": true, \"message\": \"Cliente agregado exitosamente\"}";
-            } else {
-                return "{\"success\": false, \"message\": \"Error al agregar el cliente\"}";
-            }
-        }
-    }
-
-    @Override
-    public String verificarPreModificar(Cliente cliente) {
-        // Obtener el cliente existente por ID
-        Cliente clienteExistente = getClientePorID(cliente.getIdCliente());
-
-        // Verificar si el cliente existe
-        if (clienteExistente == null) {
-            return "{\"success\": false, \"message\": \"El cliente no existe\"}";
-        }
-
-        // Verificar si los datos modificados son iguales a los datos actuales del cliente
-        if (cliente.equals(clienteExistente)) {
-            // Si los datos son iguales, no es necesario hacer más verificaciones
-            boolean actualizadoExitosamente = agregar(cliente);
-            if (actualizadoExitosamente) {
-                return "{\"success\": true, \"message\": \"Cliente actualizado exitosamente\"}";
-            } else {
-                return "{\"success\": false, \"message\": \"Error al actualizar el cliente\"}";
-            }
-        }
-
-        // Verificar si algún otro cliente tiene los mismos datos
-        Cliente clienteExistenteCedula = getClientePorCedula(cliente.getUsuario().getCedula());
-        Cliente clienteExistenteEmail = getClientePorEmail(cliente.getUsuario().getEmail());
-        Cliente clienteExistenteTelefono = getClientePorTelefono(cliente.getUsuario().getTelefono());
-
-        // Verificar si algún otro cliente tiene la misma cédula, email o teléfono
-        if (clienteExistenteCedula != null && clienteExistenteCedula.getIdCliente() != cliente.getIdCliente()) {
-            return "{\"success\": false, \"message\": \"La cédula ya se encuentra asociada a otro cliente\"}";
-        } else if (clienteExistenteEmail != null && clienteExistenteEmail.getIdCliente() != cliente.getIdCliente()) {
-            return "{\"success\": false, \"message\": \"El email ya está asociado a otro cliente\"}";
-        } else if (clienteExistenteTelefono != null && clienteExistenteTelefono.getIdCliente() != cliente.getIdCliente()) {
-            return "{\"success\": false, \"message\": \"El teléfono está asociado a otro cliente\"}";
-        } else {
-            // Si todos los datos están bien, procede con la actualización del cliente
-            boolean actualizadoExitosamente = agregar(cliente);
-            if (actualizadoExitosamente) {
-                return "{\"success\": true, \"message\": \"Cliente actualizado exitosamente\"}";
-            } else {
-                return "{\"success\": false, \"message\": \"Error al actualizar el cliente\"}";
-            }
-        }
     }
 
     @Override

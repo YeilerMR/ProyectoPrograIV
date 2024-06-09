@@ -66,9 +66,9 @@ public class EnvioController {
     public String buscarEnvio(@RequestParam(value = "textoBuscar", required = true) String codigo, Model model) {
         Envio envio = envioServices.getEnvioPorCodigo(codigo);
         LinkedList<Envio> envios = new LinkedList<>();
-        LinkedList<Cliente> clientesListaTotal = new LinkedList<>(); // =  ClienteServices_Data.getClientes();
-        LinkedList<Cliente> clientesConEnvios = new LinkedList<>();  // = ClienteServices_Data.getClientesConEnvios();
-
+        List<Cliente> clientesConEnvios = clienteServices.getClientesConEnvios();
+        List<Cliente> clientesListaTotal = clienteServices.getClientes();
+        List<Pedido> pedidosListaTotal = pedidoServices.lista_Pedido();
         if (envio != null) {
             envios.add(envio);
         }
@@ -76,6 +76,7 @@ public class EnvioController {
         model.addAttribute("envios", envios);
         model.addAttribute("clientesListaTotal", clientesListaTotal);
         model.addAttribute("clientes", clientesConEnvios);
+        model.addAttribute("pedidosListaTotal", pedidosListaTotal);
 
         return "envios/resultadoBusquedaEnvio";
     }

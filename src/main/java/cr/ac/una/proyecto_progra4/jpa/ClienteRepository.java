@@ -6,6 +6,7 @@ package cr.ac.una.proyecto_progra4.jpa;
 
 import cr.ac.una.proyecto_progra4.domain.Cliente;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,13 +27,13 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     Page<Cliente> getClientesPages(Pageable pageable);
 
     @Query("SELECT c FROM Cliente c WHERE c.usuario.cedula = :cedula")
-    Cliente findByCedula(String cedula);
+    Optional<Cliente> findByCedula(String cedula);
 
     @Query("SELECT c FROM Cliente c WHERE c.usuario.email = :email")
-    Cliente findByEmail(String email);
+    Optional<Cliente> findByEmail(String email);
 
     @Query("SELECT c FROM Cliente c WHERE c.usuario.telefono = :telefono")
-    Cliente findByTelefono(String telefono);
+    Optional<Cliente> findByTelefono(String telefono);
 
     @Query("SELECT DISTINCT e.cliente FROM Envio e")
     List<Cliente> findClientesConEnvios();

@@ -13,14 +13,25 @@
         </tr>
         <tr th:each="envio: ${envios}">
             <td th:text="${envio.codigoEnvio}"></td>
-            <td th:text="${envio.idPedido}"></td>
+
+            <td>
+                <span th:each="pedido : ${pedidosListaTotal}">
+                    <th:block th:if="${pedido.id_pedido == envio.pedido.id_pedido}">
+                        Código: <span th:text="' ' + ${pedido.codigo}"></span><br>
+                        Fecha: <span th:text="' ' + ${pedido.fecha}"></span><br>
+                        Dirección: <span th:text="' ' + ${pedido.direccion_pedido}"></span><br>
+                        <th:block th:break="${true}"></th:block>
+                    </th:block>
+                </span>
+            </td>
+
             <td>
                 <span th:each="cliente : ${clientes}">
-                    <th:block th:if="${cliente.idCliente == envio.idCliente}">
-                        Nombre: <span th:text="' ' + ${cliente.nombre + ' ' + cliente.apellidos}"></span><br>
-                        Cédula: <span th:text="' ' + ${cliente.cedula}"></span><br>
-                        Email: <span th:text="' ' + ${cliente.email}"></span><br>
-                        Télefono: <span th:text="' ' + ${cliente.telefono}"></span><br>
+                    <th:block th:if="${cliente.idCliente == envio.cliente.idCliente}">
+                        Nombre: <span th:text="' ' + ${cliente.usuario.nombre + ' ' + cliente.usuario.apellidos}"></span><br>
+                        Cédula: <span th:text="' ' + ${cliente.usuario.cedula}"></span><br>
+                        Email: <span th:text="' ' + ${cliente.usuario.email}"></span><br>
+                        Télefono: <span th:text="' ' + ${cliente.usuario.telefono}"></span><br>
                         <th:block th:break="${true}"></th:block>
                     </th:block>
                 </span>
@@ -55,20 +66,16 @@
                         <input type="text" id="codigoEnvio" name="codigoEnvio" placeholder="Código de Envío" required>
 
                         <label for="idPedido_Envio">Pedido</label>
-                        <input type="text" id="idPedido" name="idPedido" placeholder="Pedido" required>
-
-                        <!--
                         <select name="idPedido_Envio">
-                            <option th:each="pedido : ${clientesListaTotal}" th:value="${cliente.id}" 
-                                    th:text="${pedido.codigo}"></option>                                    
+                            <option th:each="pedido : ${pedidosListaTotal}" th:value="${pedido.id_pedido}" 
+                                    th:text="${pedido.codigo}"></option>               
                         </select>
-                        -->
 
                         <label for="idCliente_Envio">Cliente</label>
 
-                        <select name="idCliente">
-                            <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.id}" 
-                                    th:text="${cliente.cedula + ' ' + cliente.nombre + ' ' + cliente.apellidos}"></option>                                    
+                        <select name="idCliente_Envio">
+                            <option th:each="cliente : ${clientesListaTotal}" th:value="${cliente.idCliente}" 
+                                    th:text="${cliente.usuario.cedula + ' ' + cliente.usuario.nombre + ' ' + cliente.usuario.apellidos}"></option>                                    
                         </select>
 
                         <label for="fechaEnvio_Envio">Fecha de Envio</label>
@@ -82,7 +89,19 @@
                         <input type="text" id="observacion" name="observacion" placeholder="Observación del envio" required>
 
                         <label for="estadoEnvio_Envio">Estado</label>
-                        <input type="text" id="estadoEnvio" name="estadoEnvio" placeholder="Estado del envio" required>
+
+                        <select type="text" id="estadoEnvio" name="estadoEnvio">
+                            <option value="En proceso">En proceso</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En camino">En camino</option>
+                            <option value="Entregado">Entregado</option>
+                            <option value="Devuelto">Devuelto</option>
+                            <option value="Cancelado">Cancelado</option>
+                            <option value="Preparando envío">Preparando envío</option>
+                            <option value="En aduana">En aduana</option>
+                            <option value="Retrasado">Retrasado</option>
+                            <option value="Listo para recoger">Listo para recoger</option>
+                        </select>
                     </div>
                     <input type="submit" value="Realizar envio">
                 </form>
