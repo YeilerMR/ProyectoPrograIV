@@ -6,7 +6,7 @@ import cr.ac.una.proyecto_progra4.domain.Empleado;
 import cr.ac.una.proyecto_progra4.domain.Factura;
 import cr.ac.una.proyecto_progra4.domain.Pedido;
 import cr.ac.una.proyecto_progra4.domain.Producto;
-import static cr.ac.una.proyecto_progra4.services.EmpleadosServices.getEmpleados;
+import cr.ac.una.proyecto_progra4.services.IEmpleadoServices;
 import cr.ac.una.proyecto_progra4.services.IFacturaServices;
 import cr.ac.una.proyecto_progra4.services.IPedidoServices;
 import cr.ac.una.proyecto_progra4.services.IProductoServices;
@@ -41,7 +41,10 @@ public class controllerPedidos {
 
     @Autowired
     private IProductoServices ips;
-
+    
+    @Autowired 
+    private IEmpleadoServices ies;
+    
     @Autowired 
     private IPedidoServices Ipedido;
 
@@ -52,7 +55,7 @@ public class controllerPedidos {
         //Listas necesarias para los forms
         List<Producto> productos = ips.getProductos();
         List<Factura> facturas = ifs.getFacturas();
-        List<Empleado> empleados = getEmpleados();
+        List<Empleado> empleados = ies.getEmpleados();
 
         LinkedList<Pedido> pedidos = Ipedido.ObtenerRegistrosPaginados(page, pageSize, auxiliar);//new PedidoServices().obtenerRegistrosPaginados(page, pageSize, auxiliar);
         int ultimaPagina = (auxiliar != null) ? ((int) Math.ceil((double) auxiliar.size() / pageSize) - 1) : 0;

@@ -16,9 +16,9 @@ import java.util.LinkedList;
 /**
  *
  * @author kinco
- */
+ **/
 public class DataEmpleado {
-
+/**
     private static final String TBUSUARIOS = "usuario";
     private static final String TBEMPLEADOS = "empleado";
 
@@ -125,5 +125,5 @@ public class DataEmpleado {
         }
         return eliminado;
     }
-
+**/
 }
