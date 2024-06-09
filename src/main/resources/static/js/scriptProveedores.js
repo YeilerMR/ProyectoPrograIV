@@ -52,7 +52,7 @@ function submitFormProveedor() {
         event.preventDefault();
         Swal.fire({
             title: '¿Desea continuar con la edición de este proveedor?',
-            text: '¡Asegurate de tener los datos correctos!',
+            text: '¡Asegúrate de tener los datos correctos!',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -61,23 +61,21 @@ function submitFormProveedor() {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Realizar una petición AJAX o enviar el formulario de forma asíncrona
-                //alert("Si llega aqui.");
                 fetch(crearForm.action, {
                     method: 'POST',
+                    headers: {
+                        'X-HTTP-Method-Override': 'PUT'
+                    },
                     body: new FormData(crearForm)
                 })
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                // Si el proceso de agregar el cliente fue exitoso, mostrar mensaje de éxito
                                 mostrarToastConfirmacion(data.message);
-                                // Redirigir después de un pequeño retraso
                                 setTimeout(function () {
                                     window.location.href = "./listar";
-                                }, 1000); // 1000 milisegundos de retraso
+                                }, 1000);
                             } else {
-                                // Si el proceso de agregar el cliente falló, mostrar mensaje de error
                                 mostrarToastError(data.message);
                             }
                         })

@@ -20,7 +20,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </div>
 
         <div class="container">
-            <form th:action="@{/proveedores/editar_proveedor}" method="POST" class="editForm" id="editForm">
+            <form th:action="@{/proveedoresApi/editar_proveedor}" method="POST" class="editForm" id="editForm">
+                <input type="hidden" name="_method" value="PUT">
                 <input type="hidden" th:value="${proveedor.getIdProveedor()}" name="proveedor">
                 <div class="form-group">
                     <label for="nombre" class="text">Nombre: </label>

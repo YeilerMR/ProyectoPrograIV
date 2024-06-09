@@ -120,7 +120,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                 -----
                                 <br>
                                 <button class="btn_delete producto-eliminar">
-                                    <a class="btn_eliminar" th:href="@{/proveedores/eliminar(proveedor=${proveedor.getIdProveedor})}"><i class="bi bi-trash"></i></a>
+                                    <a class="btn_eliminar" th:href="@{/proveedoresApi/eliminar(proveedor=${proveedor.getIdProveedor})}"><i class="bi bi-trash"></i></a>
                                 </button>
                                 <br>
                                 -----
@@ -153,7 +153,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class="crear-cliente-form" id="form-crear" th:action="@{/proveedores/registrar}" method="POST">
+                            <form class="crear-cliente-form" id="form-crear" th:action="@{/proveedoresApi/registrar}" method="POST">
                                 <label for="nombre">Nombre: </label>
                                 <input type="text" name="nombre" id="nombre">
                                 <br><br>
