@@ -18,8 +18,6 @@ public interface IClienteServices {
     public List<Cliente> getClientes();
 
     public List<Cliente> getClientesConEnvios();
-    
-    public List<Cliente> getClientesConApartados();
 
     public boolean eliminar(int idUsuario);
 

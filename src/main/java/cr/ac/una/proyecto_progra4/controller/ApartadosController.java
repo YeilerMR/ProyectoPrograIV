@@ -5,15 +5,12 @@
 package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Apartado;
-import cr.ac.una.proyecto_progra4.domain.Cliente;
 
 import cr.ac.una.proyecto_progra4.domain.Producto;
 import cr.ac.una.proyecto_progra4.services.ApartadosServices;
-import cr.ac.una.proyecto_progra4.services.ClienteServices;
 import cr.ac.una.proyecto_progra4.services.ProductoServices;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,105 +35,62 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ApartadosController {
     
     @Autowired
-    private ApartadosServices apartadoServices;
-    @Autowired
-    private ClienteServices clienteServices;
-    @Autowired
     private ProductoServices productoServices;
-    
-    @PostMapping("/guardar")
-    public ResponseEntity<String> save(@RequestParam("id_Apartado") int idApartado,
-            @RequestParam("idCliente_Apartado") int idCliente,
-            @RequestParam("idProducto_Apartado") int idProducto,           
-            @RequestParam("fechaInicio_Apartado") Date fechaInicioApartado,
-            @RequestParam("fechaFinal_Apartado") Date fechaFinalApartado,
-            @RequestParam("abono_Apartado") Double abonoApartado,
-            @RequestParam("estado_Apartado") String estadoApartado) {
 
-        System.out.println("ID CLIENTE -> " + idCliente);
-
-        Apartado apartado = new Apartado();
-        apartado.setIdApartado(idApartado);
-
-        Cliente clienteApartado = new Cliente();
-        clienteApartado.setIdCliente(idCliente);
-        apartado.setCliente(clienteApartado);
         
-        Producto productoApartado = new Producto();
-        productoApartado.setId(idProducto);
-        apartado.setProducto(productoApartado);
-        
-        apartado.setFechaInicioApartado(fechaInicioApartado);
-        apartado.setFechaFinalApartado(fechaFinalApartado);
-        apartado.setAbono(abonoApartado);
-        apartado.setEstadoApartado(estadoApartado);
-        
-        return ResponseEntity.ok().body(apartadoServices.verificarPreAgregar(apartado));
+    @GetMapping("/agregar")
+    public String crearOferta() {
+        return "apartados/form_Apartados";
     }
     
-    @GetMapping("/buscar")
-    public String buscarApartado(@RequestParam(value = "textoBuscar", required = true) int codigo, Model model) {
-        Apartado apartado = apartadoServices.getApartadoPorID(codigo);
-        LinkedList<Apartado> apartados = new LinkedList<>();
-        List<Cliente> clientesConApartados = clienteServices.getClientesConApartados();
-        List<Cliente> clientesListaTotal = clienteServices.getClientes();
-        List<Apartado> apartadosListaTotal = apartadoServices.getApartados();
-        if (apartado != null) {
-            apartados.add(apartado);
-        }
-
-        model.addAttribute("apartados", apartados);
-        model.addAttribute("clientesListaTotal", clientesListaTotal);
-        model.addAttribute("clientes", clientesConApartados);
-        model.addAttribute("apartadosListaTotal", apartadosListaTotal);
-
-        return "apartados/resultadoBusquedaEnvio";
+    @PostMapping({"/guardar"})
+    public ResponseEntity<?> save( @RequestParam("idCliente") int idCliente,
+            @RequestParam("idProducto") int idProducto, @RequestParam("fechaInicioApartado") Date fechaInicioApartado,
+            @RequestParam("fechaFinalApartado") Date fechaFinalApartado, @RequestParam("abono") double abono,
+            @RequestParam("estadoApartado") String estadoApartado) {
+        System.out.println("fechaInicioApartado" + fechaInicioApartado);
+        Apartado apartado = new Apartado(0, idCliente, idProducto, fechaInicioApartado, fechaFinalApartado, abono, estadoApartado);
+        ApartadosServices.agregar(apartado);
+        return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Apartado agregado exitosamente\"}");
     }
     
     @GetMapping("/listar")
-    public String mostrarFormularioApartado(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int pageSize) {
-        List<Apartado> apartados = apartadoServices.getApartados();
-        List<Cliente> clientesConApartados = clienteServices.getClientesConApartados();
-        List<Cliente> clientesListaTotal = clienteServices.getClientes();
-        List<Apartado> apartadosPagina = apartadoServices.obtenerRegistrosPaginados(page, pageSize);
+    public String mostrarLista(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        LinkedList<Apartado> apartados = ApartadosServices.getApartados();
+        LinkedList<Apartado> ApartadosPagina = new ApartadosServices().obtenerRegistrosPaginados(page, pageSize, apartados);
+        List<Producto> productos = productoServices.getProductos();
 
         int ultimaPagina = (int) Math.ceil((double) apartados.size() / pageSize) - 1;
 
         model.addAttribute("ultimaPagina", ultimaPagina);
-        model.addAttribute("apartados", apartadosPagina);
+        model.addAttribute("apartados", ApartadosPagina);
+        model.addAttribute("productos", productos);
         model.addAttribute("page", page);
         model.addAttribute("pageSize", pageSize);
-        model.addAttribute("clientes", clientesConApartados);
-        model.addAttribute("clientesListaTotal", clientesListaTotal);
 
-        return "apartados/apartado";
+        return "apartados/form_Apartados";
     }
+    
+    @PostMapping("/eliminar/{codigo}")
+    public String eliminar(@PathVariable int codigo, RedirectAttributes redAttributes) {
+        boolean elimino = ApartadosServices.eliminar(codigo);
+        System.out.println("elimino?" + elimino);
 
-    @PostMapping("/actualizar")
-    public ResponseEntity<String> actualizarApartado(@ModelAttribute("apartado") Apartado apartado,
-            @RequestParam("idCliente_Apartado") int idCliente,
-            @RequestParam("idProducto_Apartado") int idProducto
-    ) {
-
-        // Cliente del Envio
-        Cliente clienteApartado = new Cliente();
-        clienteApartado.setIdCliente(idCliente);
-        apartado.setCliente(clienteApartado);
-        apartado.getCliente().setIdCliente(idCliente);
-
-        System.out.println("ID-> " + apartado.getIdApartado());
-        System.out.println("ID APARTADO-> " + apartado.getProducto().getId());
-        System.out.println("ID CLIENTE-> " + apartado.getCliente().getIdCliente());
-        return ResponseEntity.ok().body(apartadoServices.verificarPreModificar(apartado));
-    }
-
-    @GetMapping("/eliminar")
-    public String eliminarApartado(@RequestParam("idApartado") int idApartado) {
-        boolean eliminadoExitosamente = apartadoServices.eliminar(idApartado);
-        if (eliminadoExitosamente) {
-            return "redirect:/apartados/listar";
+        if (elimino) {
+            redAttributes.addFlashAttribute("mensajeExitoso", "Apartado eliminado correctamente");
         } else {
-            return "clientes";
+            redAttributes.addFlashAttribute("mensajeError", "El Apartado no pudo ser eliminado");
+            return "redirect:/error";
         }
+        return "redirect:/apartados/listar";
+    }
+    
+    @PostMapping("/actualizar")
+    public ResponseEntity<?> actualizar(@ModelAttribute Apartado apartado) {
+        System.out.println("Metodo Actualizar\nCodigoApartado: " + apartado.getIdApartado() );
+
+        
+        ApartadosServices.modificar(apartado);
+        return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Apartado modificado exitosamente\"}");
     }
 }

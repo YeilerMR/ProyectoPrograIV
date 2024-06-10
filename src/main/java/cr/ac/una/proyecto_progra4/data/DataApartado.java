@@ -18,7 +18,7 @@ import java.util.LinkedList;
  * @author kinco
  */
 public class DataApartado {
-    /**
+
     private static final String TBAPARTADO = "apartado";
     private static final String IDENTIFICADOR = "id_Apartado";
 
@@ -115,5 +115,5 @@ public class DataApartado {
         }
         return eliminado;
     }
-**/
+
 }

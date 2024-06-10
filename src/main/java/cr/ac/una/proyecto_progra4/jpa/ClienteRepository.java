@@ -37,7 +37,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query("SELECT DISTINCT e.cliente FROM Envio e")
     List<Cliente> findClientesConEnvios();
-    
-    @Query("SELECT DISTINCT e.cliente FROM Apartado e")
-    List<Cliente> findClientesConApartados();
 }
