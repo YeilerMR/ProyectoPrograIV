@@ -12,24 +12,24 @@
             <th>Acciones</th>
         </tr>
         <tr th:each="empleadoItem : ${empleados}">
-            <td th:text="${empleadoItem.nombre}"></td>
-            <td th:text="${empleadoItem.apellidos}"></td>
-            <td th:text="${empleadoItem.cedula}"></td>
-            <td th:text="${empleadoItem.email}"></td>
+            <td th:text="${empleadoItem.usuario.nombre}"></td>
+            <td th:text="${empleadoItem.usuario.apellidos}"></td>
+            <td th:text="${empleadoItem.usuario.cedula}"></td>
+            <td th:text="${empleadoItem.usuario.email}"></td>
 
             <td>
-                <span class="password" th:data-password="${empleadoItem.password}">******</span>
+                <span class="password" th:data-password="${empleadoItem.usuario.password}">******</span>
                 <button class="toggle-password transparent-button">
                     <i id="eye-open" class="bi bi-eye"></i>
                     <i id="eye-close"class="bi bi-eye-slash" style="display:none;"></i>
                 </button>
             </td>
-            <td th:text="${empleadoItem.telefono}"></td>
-            <td th:text="${empleadoItem.credencial == 0 ? 'Cliente' : 'Empleado'}"></td>
+            <td th:text="${empleadoItem.usuario.telefono}"></td>
+            <td th:text="${empleadoItem.usuario.credencial == 0 ? 'Cliente' : 'Empleado'}"></td>
             <td>
                 <button class="producto-eliminar" style="display: inline;">
                     <i class="bi bi-trash"></i>
-                    <a th:href="@{/empleados/eliminar(idUsuario_Empleado=${empleadoItem.id})}" style="text-decoration: none; color: inherit;"></a>
+                    <a th:href="@{/empleados/eliminar(id_Empleado=${empleadoItem.idEmpleado})}" style="text-decoration: none; color: inherit;"></a>
                 </button>
                 <br>
                 ----------
@@ -46,20 +46,21 @@
             <span class="close">&times;</span>
             <div class="container">
                 <form class="editar-empleado-form" method="post" th:action="@{/empleados/actualizar}">
-                    <input type="hidden" name="id" id="idEmpleado">
+
+                    <input type="hidden" name="idEmpleado" id="idEmpleado">
                     <div class="form-input">
                         <label for="nombre">Nombre</label>
-                        <input type="text" name="nombre" class="form-control" placeholder="Nombre del empleado" required>
+                        <input type="text" name="usuario.nombre" class="form-control" placeholder="Nombre del empleado" required>
 
                         <label for="apellidos">Apellidos</label>
-                        <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos del empleado" required>
+                        <input type="text" id="apellidos" name="usuario.apellidos" placeholder="Apellidos del empleado" required>
 
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Email del empleado" required>
+                        <input type="email" id="email" name="usuario.email" placeholder="Email del empleado" required>
 
                         <label for="password">Contraseña</label>
                         <div class="password-wrapper">
-                            <input type="password" id="password" name="password" placeholder="Contraseña del empleado" required>
+                            <input type="password" id="password" name="usuario.password" placeholder="Contraseña del empleado" required>
                             <button type="button" class="toggle-password transparent-button" aria-label="Toggle Password Visibility">
                                 <i id="eye-open" class="bi bi-eye"></i>
                                 <i id="eye-close" class="bi bi-eye-slash" style="display: none;"></i>
@@ -67,13 +68,13 @@
                         </div>
 
                         <label for="cedula">Cédula</label>
-                        <input type="text" id="cedula" name="cedula" placeholder="Cédula del empleado" required>
+                        <input type="text" id="cedula" name="usuario.cedula" placeholder="Cédula del empleado" required>
 
                         <label for="telefono">Teléfono</label>
-                        <input type="tel" id="telefono" name="telefono" placeholder="Teléfono del empleado" required>
+                        <input type="tel" id="telefono" name="usuario.telefono" placeholder="Teléfono del empleado" required>
 
                         <label for="credencial">Credencial</label>
-                        <select id="credencial" name="credencial" required>
+                        <select id="credencial" name="usuario.credencial" required>
                             <option value="0">Cliente</option>
                             <option value="1">Empleado</option>
                         </select>
@@ -84,9 +85,9 @@
         </div>
     </div>
     <div th:if="${empleados.empty}">
-        <p>No se encontro un empleado con tal cédula.</p>
+        <p>No se encontro un cliente con tal cédula.</p>
     </div>
     <button class="goBackBtn"  onclick="window.location.href = '/empleados/listar'">
-        <i class="bi bi-view-list">Ver todos los empleados</i>
+        <i class="bi bi-view-list">Ver todos los clientes</i>
     </button>
 </div>

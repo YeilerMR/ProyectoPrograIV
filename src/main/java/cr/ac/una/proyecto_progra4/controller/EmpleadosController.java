@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
- * @author Aaron
+ * @author kinco
  */
 @Controller
 @RequestMapping("/empleados")
@@ -80,9 +80,9 @@ public class EmpleadosController {
 
         // Asignar la credencial adecuada
         if (credencial.equalsIgnoreCase("Empleado")) {
-            empleadoUsuario.setCredencial(1);
-        } else {
             empleadoUsuario.setCredencial(0);
+        } else {
+            empleadoUsuario.setCredencial(1);
         }
 
         // Crear y asociar el objeto Cliente
@@ -124,11 +124,11 @@ public class EmpleadosController {
         model.addAttribute("page", page);
         model.addAttribute("pageSize", pageSize);
 
-        return "clientes/cliente";
+        return "empleados/empleado";
     }
 
     @PostMapping("/actualizar")
-    public ResponseEntity<?> actualizarCliente(@ModelAttribute("empleadpItem") Empleado empleado,
+    public ResponseEntity<?> actualizarCliente(@ModelAttribute("empleadoItem") Empleado empleado,
             @RequestParam("idEmpleado") int idEmpleado) {
 
         // Obtener el empleado existente por ID

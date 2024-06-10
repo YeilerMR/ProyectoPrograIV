@@ -26,11 +26,11 @@
                 <nav>
                     <ul class="menu">
                         <li><button id="todos" class="boton-menu boton-categoria" onclick="window.location.href = '/index'"><i class="bi bi-hand-index-thumb"></i> Inicio</button></li>
-                        <li><button id="apartados" class="boton-menu boton-categoria" onclick="window.location.href = '/apartados/listar'"><i class="bi bi-hand-index-thumb"></i> Apartados</button></li>
+                        <li><button id="apartados" class="boton-menu boton-categoria"><i class="bi bi-hand-index-thumb"></i> Apartados</button></li>
                         <li><button id="empleados" class="boton-menu boton-categoria active" onclick="window.location.href = '/empleados/listar'"><i class="bi bi-hand-index-thumb-fill"></i> Empleados</button></li>
                         <li><button id="proveedores" class="boton-menu boton-categoria" onclick="window.location.href = '/proveedores/listar'"><i class="bi bi-hand-index-thumb"></i> Proveedores</button></li>
                         <li><button id="ordenes_compra" class="boton-menu boton-categoria" onclick="window.location.href = '/ordenes_compra/listar'"><i class="bi bi-hand-index-thumb"></i> Ordenes de Compra</button></li>
-                        <li><button id="clientes" class="boton-menu boton-categoria " onclick="window.location.href = '/clientes/listar'"><i class="bi bi-hand-index-thumb"></i> Clientes</button></li>
+                        <li><button id="clientes" class="boton-menu boton-categoria" onclick="window.location.href = '/clientes/listar'"><i class="bi bi-hand-index-thumb"></i> Clientes</button></li>
                         <li><button id="envios" class="boton-menu boton-categoria" onclick="window.location.href = '/envios/listar'"><i class="bi bi-hand-index-thumb"></i> Envios</button></li>
                         <li><button id="productos" class="boton-menu boton-categoria" onclick="window.location.href = '/productos/listar'"><i class="bi bi-hand-index-thumb"></i> Productos</button></li>
                         <li><button id="ofertas" class="boton-menu boton-categoria" onclick="window.location.href = '/ofertas/listar'"><i class="bi bi-hand-index-thumb"></i> Ofertas</button></li>
@@ -66,24 +66,24 @@
                             <th>Acciones</th>
                         </tr>
                         <tr th:each="empleadoItem : ${empleados}">
-                            <td th:text="${empleadoItem.nombre}"></td>
-                            <td th:text="${empleadoItem.apellidos}"></td>
-                            <td th:text="${empleadoItem.cedula}"></td>
-                            <td th:text="${empleadoItem.email}"></td>
+                            <td th:text="${empleadoItem.usuario.nombre}"></td>
+                            <td th:text="${empleadoItem.usuario.apellidos}"></td>
+                            <td th:text="${empleadoItem.usuario.cedula}"></td>
+                            <td th:text="${empleadoItem.usuario.email}"></td>
 
                             <td>
-                                <span class="password" th:data-password="${empleadoItem.password}">******</span>
+                                <span class="password" th:data-password="${empleadoItem.usuario.password}">******</span>
                                 <button class="toggle-password transparent-button">
                                     <i id="eye-open" class="bi bi-eye"></i>
                                     <i id="eye-close"class="bi bi-eye-slash" style="display:none;"></i>
                                 </button>
                             </td>
-                            <td th:text="${empleadoItem.telefono}"></td>
-                            <td th:text="${empleadoItem.credencial == 0 ? 'Cliente' : 'Empleado'}"></td>
+                            <td th:text="${empleadoItem.usuario.telefono}"></td>
+                            <td th:text="${empleadoItem.usuario.credencial == 0 ? 'Cliente' : 'Empleado'}"></td>
                             <td>
                                 <button class="producto-eliminar" style="display: inline;">
                                     <i class="bi bi-trash"></i>
-                                    <a th:href="@{/empleados/eliminar(idUsuario_Empleado=${empleadoItem.id})}" style="text-decoration: none; color: inherit;"></a>
+                                    <a th:href="@{/empleadosApi/eliminar(idEmpleado=${empleadoItem.idEmpleado})}" style="text-decoration: none; color: inherit;"></a>
                                 </button>
                                 <br>
                                 ----------
@@ -97,12 +97,12 @@
                     <!-- PARTE DE PAGINACIÓN -->
                     <div class="divPag" th:if="${empleados != null}">
                         <!-- Enlaces de paginación -->
-                        <a th:href="@{/empleados/listar(page=0)}">Primera Página</a>
-                        <a th:href="@{/empleados/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
+                        <a th:href="@{/empleadosApi/listar(page=0)}">Primera Página</a>
+                        <a th:href="@{/empleadosApi/listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
                         <span th:text="${page + 1}"></span>
-                        <a th:href="@{/empleados/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente
+                        <a th:href="@{/empleadosApi/listar(page=${page + 1})}" th:unless="${page == ultimaPagina}">Siguiente
                             Página</a>
-                        <a th:href="@{/empleados/listar(page=${ultimaPagina})}"
+                        <a th:href="@{/empleadosApi/listar(page=${ultimaPagina})}"
                            th:unless="${empleados.size() &lt; pageSize}">Última Página</a>
                     </div>
                 </div>
@@ -110,14 +110,14 @@
                     <p>No se encontraron registros para mostrar.</p>
                 </div>
 
-                <!-- PARTE DE FORM POPUP CREAR EMPLEADO -->
-                <!-- Formulario PopUp Crear EMPLEADO-->
-                <div type="hidden" id="myModalCrearEmpleado" class="modal">
+                <!-- PARTE DE FORM POPUP CREAR CLIENTE -->
+                <!-- Formulario PopUp Crear Empleado-->
+                <div type="hidden" id="myModalCrearCliente" class="modal">
                     <!-- Modal content -->
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class='crear-empleado-form' method="post" th:action="@{/empleados/guardar}">
+                            <form class='crear-empleado-form' method="post" th:action="@{/empleadosApi/registrar}">
 
                                 <label for="nombre">Nombre</label>
                                 <input type="text" id="nombre" name="nombre" placeholder="Nombre del empleado" required>
@@ -156,25 +156,26 @@
                 </div>
 
                 <!-- Modal de edición -->
-                <div id="modalEditarEmpleado" class="modal">
+                <div id="modalEditar" class="modal">
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class="editar-empleado-form" method="post" th:action="@{/empleados/actualizar}">
-                                <input type="hidden" name="id" id="idEmpleado">
+                            <form class="editar-empleado-form" method="post" th:action="@{/empleadosApi/actualizar}">
+                                
+                                <input type="hidden" name="idEmpleado" id="idEmpleado">
                                 <div class="form-input">
                                     <label for="nombre">Nombre</label>
-                                    <input type="text" name="nombre" class="form-control" placeholder="Nombre del empleado" required>
+                                    <input type="text" name="usuario.nombre" class="form-control" placeholder="Nombre del empleado" required>
 
                                     <label for="apellidos">Apellidos</label>
-                                    <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos del empleado" required>
+                                    <input type="text" id="apellidos" name="usuario.apellidos" placeholder="Apellidos del empleado" required>
 
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" placeholder="Email del empleado" required>
+                                    <input type="email" id="email" name="usuario.email" placeholder="Email del empleado" required>
 
                                     <label for="password">Contraseña</label>
                                     <div class="password-wrapper">
-                                        <input type="password" id="password" name="password" placeholder="Contraseña del empleado" required>
+                                        <input type="password" id="password" name="usuario.password" placeholder="Contraseña del empleado" required>
                                         <button type="button" class="toggle-password transparent-button" aria-label="Toggle Password Visibility">
                                             <i id="eye-open" class="bi bi-eye"></i>
                                             <i id="eye-close" class="bi bi-eye-slash" style="display: none;"></i>
@@ -182,13 +183,13 @@
                                     </div>
 
                                     <label for="cedula">Cédula</label>
-                                    <input type="text" id="cedula" name="cedula" placeholder="Cédula del empleado" required>
+                                    <input type="text" id="cedula" name="usuario.cedula" placeholder="Cédula del empleado" required>
 
                                     <label for="telefono">Teléfono</label>
-                                    <input type="tel" id="telefono" name="telefono" placeholder="Teléfono del empleado" required>
+                                    <input type="tel" id="telefono" name="usuario.telefono" placeholder="Teléfono del empleado" required>
 
                                     <label for="credencial">Credencial</label>
-                                    <select id="credencial" name="credencial" required>
+                                    <select id="credencial" name="usuario.credencial" required>
                                         <option value="0">Cliente</option>
                                         <option value="1">Empleado</option>
                                     </select>
@@ -200,7 +201,7 @@
                 </div>
 
                 <!-- IMPORTS Y SCRIPTS -->
-                <script type="text/javascript" th:src="@{/js/scriptEmpleado.js}"></script>
+                <script type="text/javascript" th:src="@{/js/scriptClienteApi.js}"></script>
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script type="text/javascript" th:src="@{/js/alertScript.js}"></script>
             </main>

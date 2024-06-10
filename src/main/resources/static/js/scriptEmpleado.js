@@ -41,7 +41,54 @@ function validarEdicionEmpleado(selector, mensajeConfirmacion, urlRedireccion) {
         });
     });
 }
-// Función PopUp Crear Nuevo Empleado
+// Función para validar la eliminación de un objeto cliente
+function validarEliminacionEmpleado(selector, mensajeExito, mensajeError) {
+    var deleteButtons = document.querySelectorAll(selector);
+    deleteButtons.forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            var url = this.querySelector('a').getAttribute('href');
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¡No podrás revertir esto!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar la solicitud de eliminación
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Mostrar el mensaje de éxito después de la redirección
+                            mostrarToastConfirmacion(mensajeExito);
+                            setTimeout(function () {
+                                window.location.href = '/empleados/listar';
+                            }, 1000); // 1000 milisegundos de retraso
+                        } else {
+                            // Mostrar el mensaje de error
+                            mostrarToastError(data.message || mensajeError);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        mostrarToastError('Ocurrió un error inesperado');
+                    });
+                }
+            });
+        });
+    });
+}
+// Función PopUp Crear Nuevo Cliente
 function popupCrearEmpleado() {
     var modalCrear = document.getElementById("myModalCrearEmpleado");
     var btnAgregar = document.querySelector(".add_new");
@@ -63,24 +110,24 @@ function popupCrearEmpleado() {
     };
 }
 
-// Función PopUp Actualizar Empleado
+// Función PopUp Actualizar Cliente
 function popupActualizarEmpleado() {
-    var editButtons = document.querySelectorAll('.producto-editar'); // Selecciona los elementos que abrirán el modal
-    var closeButtons = document.querySelectorAll('#modalEditarEmpleado .close'); // Selecciona los botones de cierre del modal
+    var editButtons = document.querySelectorAll('.producto-editar');
+    var closeButtons = document.querySelectorAll('.modal .close');
 
-    // Función para abrir los modals
+    // Función para abrir los popups
     editButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var modal = document.getElementById('modalEditarEmpleado');
-            modal.style.display = 'block';
+            var popup = this.closest('tr').querySelector('.modal');
+            popup.style.display = 'block';
         };
     });
 
-    // Función para cerrar los modals
+    // Función para cerrar los popups
     closeButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var modal = document.getElementById('modalEditarEmpleado');
-            modal.style.display = 'none';
+            var popup = this.closest('.modal');
+            popup.style.display = 'none';
         };
     });
 }
@@ -134,7 +181,7 @@ function togglePasswordInPopup() {
     });
 }
 
-// Función para manejar la edición de empleado
+// Función para manejar la edición de cliente
 function handleEmpleadoEdit() {
     // Obtener todos los botones de editar
     const botonesEditar = document.querySelectorAll('.producto-editar');
@@ -142,7 +189,7 @@ function handleEmpleadoEdit() {
     // Agregar un evento click a cada botón de editar
     botonesEditar.forEach(boton => {
         boton.addEventListener('click', () => {
-            // Obtener los datos del empleado desde los atributos data-*
+            // Obtener los datos del cliente desde los atributos data-*
             const idEmpleado = boton.closest('tr').querySelector('.producto-eliminar a').href.split('=')[1];
             const nombre = boton.closest('tr').querySelector('td:nth-child(1)').textContent;
             const apellidos = boton.closest('tr').querySelector('td:nth-child(2)').textContent;
@@ -152,18 +199,18 @@ function handleEmpleadoEdit() {
             const telefono = boton.closest('tr').querySelector('td:nth-child(6)').textContent;
             const credencial = boton.closest('tr').querySelector('td:nth-child(7)').textContent === 'Empleado' ? 0 : 1;
 
-            // Rellenar los campos del formulario con los datos del empleado
-            document.querySelector('#modalEditarEmpleado #idEmpleado').value = idEmpleado;
-            document.querySelector('#modalEditarEmpleado input[name="nombre"]').value = nombre;
-            document.querySelector('#modalEditarEmpleado input[name="apellidos"]').value = apellidos;
-            document.querySelector('#modalEditarEmpleado input[name="cedula"]').value = cedula;
-            document.querySelector('#modalEditarEmpleado input[name="email"]').value = email;
-            document.querySelector('#modalEditarEmpleado input[name="password"]').value = password;
-            document.querySelector('#modalEditarEmpleado input[name="telefono"]').value = telefono;
-            document.querySelector('#modalEditarEmpleado select[name="credencial"]').value = credencial;
+            // Rellenar los campos del formulario con los datos del cliente
+            document.querySelector('#modalEditar #idEmpleado').value = idEmpleado;
+            document.querySelector('#modalEditar input[name="usuario.nombre"]').value = nombre;
+            document.querySelector('#modalEditar input[name="usuario.apellidos"]').value = apellidos;
+            document.querySelector('#modalEditar input[name="usuario.cedula"]').value = cedula;
+            document.querySelector('#modalEditar input[name="usuario.email"]').value = email;
+            document.querySelector('#modalEditar input[name="usuario.password"]').value = password;
+            document.querySelector('#modalEditar input[name="usuario.telefono"]').value = telefono;
+            document.querySelector('#modalEditar select[name="usuario.credencial"]').value = credencial;
 
             // Mostrar el modal de edición
-            document.querySelector('#modalEditarEmpleado').style.display = 'block';
+            document.querySelector('#modalEditar').style.display = 'block';
         });
     });
 }
@@ -209,8 +256,7 @@ function validarYBuscar() {
 }
 
 function initializeEventHandlers() {
-    
-    validarEliminacion('.producto-eliminar', 'Empleado eliminado exitosamente');
+    validarEliminacionEmpleado('.producto-eliminar', 'Empleado eliminado exitosamente', 'No se pudo eliminar');
     validarEdicionEmpleado('.editar-empleado-form', '¿Estás seguro de continuar con la edición de este empleado?', '/empleados/listar');
     validarCreacion('.crear-empleado-form', '¿Estás seguro de continuar con la creación de este empleado?', '/empleados/listar');
     popupCrearEmpleado();
