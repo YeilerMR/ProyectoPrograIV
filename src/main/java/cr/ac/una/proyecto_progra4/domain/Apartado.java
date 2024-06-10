@@ -4,35 +4,61 @@
  */
 package cr.ac.una.proyecto_progra4.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.sql.Date;
 
 /**
  *
  * @author kinco
  */
-public class Apartado {
-        private int idApartado;
-        private int idCliente;
-        private int idProducto;
-        private Date fechaInicioApartado;
-        private Date fechaFinalApartado;    
-        private double abono;
-        private String estadoApartado;
 
-    public Apartado(int idApartado, int idCliente, int idProducto, Date fechaInicioApartado, Date fechaFinalApartado, double abono, String estadoApartado) {
+@Entity
+@Table(name = "apartado")
+public class Apartado {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_Apartado")
+    private int idApartado;
+
+    @ManyToOne
+    @JoinColumn(name = "idCliente_Apartado", nullable = false)
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "idProducto_Apartado", nullable = false)
+    private Producto producto;
+
+    @Column(name = "fechaInicio_Apartado", nullable = false)
+    private Date fechaInicioApartado;
+
+    @Column(name = "fechaFinal_Apartado", nullable = false)
+    private Date fechaFinalApartado;
+
+    @Column(name = "abono_Apartado", nullable = false)
+    private double abono;
+
+    @Column(name = "estado_Apartado", nullable = false, length = 50)
+    private String estadoApartado;
+
+    public Apartado(int idApartado, Cliente cliente, Producto producto, Date fechaInicioApartado, Date fechaFinalApartado, double abono, String estadoApartado) {
         this.idApartado = idApartado;
-        this.idCliente = idCliente;
-        this.idProducto = idProducto;
+        this.cliente = cliente;
+        this.producto = producto;
         this.fechaInicioApartado = fechaInicioApartado;
         this.fechaFinalApartado = fechaFinalApartado;
         this.abono = abono;
         this.estadoApartado = estadoApartado;
     }
-     
-   
 
     public Apartado() {
-        
     }
 
     public int getIdApartado() {
@@ -43,20 +69,20 @@ public class Apartado {
         this.idApartado = idApartado;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public Date getFechaInicioApartado() {
@@ -90,6 +116,4 @@ public class Apartado {
     public void setEstadoApartado(String estadoApartado) {
         this.estadoApartado = estadoApartado;
     }
- 
-    
 }

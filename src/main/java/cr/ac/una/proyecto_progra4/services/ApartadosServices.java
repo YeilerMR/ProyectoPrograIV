@@ -6,10 +6,18 @@ package cr.ac.una.proyecto_progra4.services;
 
 import cr.ac.una.proyecto_progra4.data.DataApartado;
 import cr.ac.una.proyecto_progra4.domain.Apartado;
+import cr.ac.una.proyecto_progra4.jpa.ApartadoRepository;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,62 +25,83 @@ import org.springframework.stereotype.Service;
  * @author kinco
  */
 @Service
-public class ApartadosServices {
-    
-    public static boolean agregar(Apartado apartado) {
-        boolean resultado= true;
-        try {
-            resultado= DataApartado.insertarApartado(apartado);
-        } catch (SQLException ex) {
-            Logger.getLogger(ApartadosServices.class.getName()).log(Level.SEVERE,null,ex);
-            
-        }
-        return resultado;
-    }
-    
-    public static LinkedList<Apartado> getApartados(){
-        LinkedList<Apartado> apartados;
-        try {
-            apartados= DataApartado.getApartados();
+@Primary
+public class ApartadosServices implements IApartadoServices{
 
-        } catch (SQLException ex) {
-            apartados=null;
-            Logger.getLogger(ApartadosServices.class.getName()).log(Level.SEVERE,null,ex);
-        }
-        return apartados;
-    }
+    @Autowired
+    private ApartadoRepository apartadoRepo;
+
     
-        public LinkedList<Apartado> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina, LinkedList<Apartado> listaApartados) {
-        LinkedList<Apartado> registrosPagina = new LinkedList<>();
-
-        int inicio = numeroPagina * tamanoPagina;
-        int fin = Math.min(inicio + tamanoPagina, listaApartados.size());
-
-        for (int i = inicio; i < fin; i++) {
-            registrosPagina.add(listaApartados.get(i));
-        }
-
-        return registrosPagina;
-    }
-        
-         public static boolean eliminar(int codigo){
-        boolean resultado= true;
+    @Override
+    public boolean agregar(Apartado apartado) {
         try {
-            resultado= DataApartado.eliminar(codigo);
-        } catch (SQLException ex) {
-            Logger.getLogger(ApartadosServices.class.getName()).log(Level.SEVERE, null, ex);
+            apartadoRepo.save(apartado);
+            return true; // Si el guardado tiene éxito, devuelve true
+        } catch (Exception e) {
+            e.toString();
+            return false;
         }
-        return resultado;
     }
-    
-    public static boolean modificar(Apartado apartado){
-        boolean resultado= true;
-        try {
-            resultado= DataApartado.actualizar(apartado);
-        } catch (SQLException ex) {
-            Logger.getLogger(ApartadosServices.class.getName()).log(Level.SEVERE, null, ex);
+
+    @Override
+    public List<Apartado> getApartados() {
+        return apartadoRepo.findAll();
+    }
+
+    @Override
+    public boolean eliminar(int idApartado) {
+       try {
+            apartadoRepo.deleteById(idApartado);
+            return true; // Se eliminó correctamente
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
         }
-        return resultado;
     }
-    
+
+    @Override
+    public Apartado getApartadoPorID(int idApartado) {
+        Optional<Apartado> optionalApartado = apartadoRepo.findById(idApartado);
+        return optionalApartado.orElse(null);
+    }
+
+    @Override
+    public List<Apartado> obtenerRegistrosPaginados(int numeroPagina, int tamanoPagina) {
+        Page<Apartado> paginaEnvios = apartadoRepo.findAll(PageRequest.of(numeroPagina, tamanoPagina));
+        return paginaEnvios.getContent();
+    }
+
+    @Override
+    public String verificarPreAgregar(Apartado apartado) {
+        // Verificar si el código del envío ya existe
+        Optional<Apartado> apartadoExistente = apartadoRepo.findByCodigoApartadoIgnoreCase(apartado.getEstadoApartado());
+        if (apartadoExistente.isPresent()) {
+            return "{\"success\": false, \"message\": \"El código de apartado ya existe\"}";
+        } else {
+            try {
+                apartadoRepo.save(apartado);
+                return "{\"success\": true, \"message\": \"Apartado agregado exitosamente\"}";
+            } catch (Exception e) {
+                return "{\"success\": false, \"message\": \"Error al agregar el apartado\"}";
+            }
+        }
+    }
+
+    @Override
+    public String verificarPreModificar(Apartado apartado) {
+
+        Optional<Apartado> apartadoExistente = apartadoRepo.findByCodigoApartadoIgnoreCase(apartado.getEstadoApartado());
+        if (apartadoExistente.isPresent() && !Integer.valueOf(apartadoExistente.get().getIdApartado()).equals(apartado.getIdApartado())) {
+            return "{\"success\": false, \"message\": \"El código de apartado ya existe\"}";
+        } else {
+            try {
+                apartadoRepo.save(apartado);
+                return "{\"success\": true, \"message\": \"Apartado modificado exitosamente\"}";
+            } catch (Exception e) {
+                return "{\"success\": false, \"message\": \"Error al modificar el apartado\"}";
+            }
+        }
+    }
+
 }
