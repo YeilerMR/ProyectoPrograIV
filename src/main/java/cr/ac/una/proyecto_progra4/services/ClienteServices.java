@@ -103,5 +103,10 @@ public class ClienteServices implements IClienteServices {
     public List<Cliente> getClientesConEnvios() {
         return clienteRepo.findClientesConEnvios();
     }
+    
+     @Override
+    public List<Cliente> getClientesConApartados() {
+        return clienteRepo.findClientesConApartados();
+    }
 
 }
