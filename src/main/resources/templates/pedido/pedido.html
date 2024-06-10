@@ -63,7 +63,7 @@
                         </tr>
                         <tr th:each="temp:${listaP}">
                             <td th:text="${temp.codigo}"></td>
-                            <td th:text="${temp.empleado.nombre}+' '+${temp.empleado.apellidos}"></td>
+                            <td th:text="${temp.empleado.usuario.nombre}+' '+${temp.empleado.usuario.nombre}"></td>
                             <td th:text="${temp.estado_pedido}"></td>
                             <td th:text="${temp.fecha}"></td>
                             <td th:text="${temp.direccion_pedido}+','+${temp.canton}+','+${temp.provincia}"></td>
@@ -78,7 +78,7 @@
                                     Editar
                                 </button>
 
-                                
+
                                 <!-- MODAL DE EDITAR edicion -->
                                 <div id = "editar" class="modal">
                                     <div class="modal-content">
@@ -93,7 +93,7 @@
                                             <label>Empledo:</label>
                                             <!--input required name ="id_empleado" type="number" th:value="${temp.id_empleado}" placeholder="Ingrese la foreign key del empleado"-->
                                             <select name="id_empleado" placeholder ="Seleccione el empleado">
-                                                <option th:each="listaE:${empleados}" th:value="${listaE.idEmpleado}" th:selected="${listaE.idEmpleado == temp.id_empleado}" th:text="${listaE.nombre}"></option>
+                                                <option th:each="listaE:${empleados}" th:value="${listaE.idEmpleado}" th:selected="${listaE.idEmpleado == temp.id_empleado}" th:text="${listaE.usuario.nombre}"></option>
                                                 <!--option th:value="'efectivo'" th:selected="${temp.metodo_pago eq 'efectivo'}">Efectivo</option-->
                                             </select>
 
@@ -167,11 +167,10 @@
                                 <input type="text" id ="codigo" name="codigo" placeholder= "Ingrese el código"><br>
 
                                 <label>Empledo:</label>
-                                <input required name ="id_empleado" type="number" placeholder="Ingrese la foreign key del empleado">
-                                <!--select name="id_empleado" placeholder ="Seleccione el empleado">
-                                    <option th:each="listaE:${clientes}" th:value="${listaE.idCliente}" th:text="${listaE.nombre}"></option>
-                          
-                                </select -->
+                                <select name="id_empleado" placeholder ="Seleccione el empleado">
+                                    <option th:each="listaE:${empleados}" th:value="${listaE.idEmpleado}" th:text="${listaE.usuario.nombre}"></option>
+                                    <!--option th:value="'efectivo'" th:selected="${temp.metodo_pago eq 'efectivo'}">Efectivo</option-->
+                                </select>
 
                                 <label>Estado:</label>
                                 <input required type="text" name="estado" placeholder="Ingrese el estado"><br>
@@ -214,11 +213,11 @@
                 <script text="text/javascript" th:src="@{/js/verificaciones.js}"></script>
                 <script type="text/javascript" th:src="@{/js/Listeners.js}"></script>    
                 <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        validarEliminacion('.producto-eliminar', '¡Pedido eliminado exitosamente!');
-                        validarEdicion('.editar-cliente-form', '¿Estás seguro de continuar con la edición de este pedido?', './listar');
-                        validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este pedido?', './listar');
-                    });
+                            document.addEventListener("DOMContentLoaded", function () {
+                                validarEliminacion('.producto-eliminar', '¡Pedido eliminado exitosamente!');
+                                validarEdicion('.editar-cliente-form', '¿Estás seguro de continuar con la edición de este pedido?', './listar');
+                                validarCreacion('.crear-cliente-form', '¿Estás seguro de continuar con la creación de este pedido?', './listar');
+                            });
                 </script>    
 
             </main>
