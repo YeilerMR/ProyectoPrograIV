@@ -57,6 +57,7 @@ public class FacturaAPIController {
         model.addAttribute("factura", respuesta.getFacturas());//Lista De facturas
         model.addAttribute("page", respuesta.getPage()); // Asegúrate de pasar el número de página al modelo
         model.addAttribute("pageSize", respuesta.getPageSize()); // Asegúrate de pasar el tamaño de página al modelo
+        model.addAttribute("nuevoCodigo", respuesta.getNuevoCodigo());
         // Obtiene la fecha actual para limitar la fecha en el registro de facturas
         LocalDate localDate = LocalDate.now();
         Date fechaActual = Date.valueOf(localDate.toString());

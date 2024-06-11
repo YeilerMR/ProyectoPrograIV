@@ -11,11 +11,14 @@ public class FacturasResponse {
     private int page;
     private int pageSize;
     private int ultimaPagina;
+    private String nuevoCodigo;
+
+
     
     public FacturasResponse() {
         facturas = new ArrayList<>();
     }
-public List<Factura> getFacturas() {
+    public List<Factura> getFacturas() {
         return facturas;
     }
     public void setFacturas(List<Factura> facturas) {
@@ -38,6 +41,12 @@ public List<Factura> getFacturas() {
     }
     public void setUltimaPagina(int ultimaPagina) {
         this.ultimaPagina = ultimaPagina;
+    }
+    public String getNuevoCodigo() {
+        return nuevoCodigo;
+    }
+    public void setNuevoCodigo(String nuevoCodigo) {
+        this.nuevoCodigo = nuevoCodigo;
     }
     
 }

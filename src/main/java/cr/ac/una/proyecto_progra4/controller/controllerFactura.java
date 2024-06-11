@@ -42,7 +42,7 @@ public class controllerFactura {
         model.addAttribute("factura", facturas);
         model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
         model.addAttribute("pageSize", pageSize); // Asegúrate de pasar el tamaño de página al modelo
-        
+        model.addAttribute("nuevoCodigo", ifs.generar_Codigo());
         
         //Obtiene la fecha actual para limitar la fecha en el registro de facturas
         LocalDate localDate = LocalDate.now();
