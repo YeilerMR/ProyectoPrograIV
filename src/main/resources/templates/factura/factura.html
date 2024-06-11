@@ -72,11 +72,12 @@
                             <td th:text="${temp.observacion}"></td>
                             <td>
                                 <button class="producto-eliminar" style="display: inline;">
-                                    <a th:href="@{./eliminar(id = ${temp.id_factura})}" style="text-decoration: none;">Eliminar</a>
+                                    <i class="bi bi-trash"></i>
+                                    <a th:href="@{./eliminar(id = ${temp.id_factura})}" style="text-decoration: none;"></a>
                                 </button>
                                 <br>
                                 <button class="producto-editar" style="display: inline;">
-                                    Editar
+                                    <i class="bi bi-pen"></i>
                                 </button>
                                 <!-- MODAL DE EDITAR -->
                                 <div id = "editar" class="modal">

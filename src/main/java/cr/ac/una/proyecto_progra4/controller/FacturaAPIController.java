@@ -53,11 +53,13 @@ public class FacturaAPIController {
         );
 
         FacturasResponse respuesta = response.getBody();
+        
         model.addAttribute("ultimaPagina", respuesta.getUltimaPagina());
-        model.addAttribute("factura", respuesta.getFacturas());//Lista De facturas
-        model.addAttribute("page", respuesta.getPage()); // Asegúrate de pasar el número de página al modelo
-        model.addAttribute("pageSize", respuesta.getPageSize()); // Asegúrate de pasar el tamaño de página al modelo
-        model.addAttribute("nuevoCodigo", respuesta.getNuevoCodigo());
+        model.addAttribute("factura", respuesta.getFacturas());
+        model.addAttribute("page", respuesta.getPage());
+        model.addAttribute("pageSize", respuesta.getPageSize()); 
+        model.addAttribute("nuevoCodigo", respuesta.getNuevoCodigo());//El codigo pre-generado
+        
         // Obtiene la fecha actual para limitar la fecha en el registro de facturas
         LocalDate localDate = LocalDate.now();
         Date fechaActual = Date.valueOf(localDate.toString());
@@ -132,7 +134,6 @@ public class FacturaAPIController {
             vista = "Error";
         }
         return vista;
-        
         // return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 
