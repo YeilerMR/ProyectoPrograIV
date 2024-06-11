@@ -56,8 +56,9 @@
                 <div id="tablaApartados" th:if="${!apartados.empty}">
                     <table class="contenedor-productos">
                         <tr>
-                            <th>Cliente</th>
-                            <th>Producto</th>
+                            <th>ID del Apartado</th>
+                            <th>ID del Cliente</th>
+                            <th>ID del Producto</th>
                             <th>Fecha de Inicio</th>
                             <th>Fecha de Finalización</th>
                             <th>Abono</th>
@@ -65,8 +66,9 @@
                             <th>Acciones</th>
                         </tr>
                         <tr th:each="apartadoItem : ${apartados}">
-                            <td th:text="${apartadoItem.cliente.usuario.nombre}+' '+${apartadoItem.cliente.usuario.apellidos}"></td>
-                            <td th:text="${apartadoItem.producto.nombre}"></td>
+                            <td th:text="${apartadoItem.idApartado}"></td>
+                            <td th:text="${apartadoItem.cliente.idCliente}"></td>
+                            <td th:text="${apartadoItem.producto.id}"></td>
                             <td th:text="${apartadoItem.fechaInicioApartado}"></td>
                             <td th:text="${apartadoItem.fechaFinalApartado}"></td>
                             <td th:text="${apartadoItem.abono}"></td>
@@ -108,19 +110,11 @@
                         <div class="container">
                             <form class='crear-apartado-form' method="post" th:action="@{/apartados/guardar}">
 
-                                <label for="idCliente">Cliente</label>
-                                <select id="idCliente" name="idCliente" required>
-                                <option value="" disabled selected>Seleccione un cliente</option>
-                                    <tr th:each="cliente : ${clientes}">
-                                <option th:value="${cliente.idCliente}" th:text="${cliente.usuario.nombre + ' ' + cliente.usuario.apellidos}"></option>                  
-                                </select>
-                                
-                                <label for="idProducto">Producto</label>
-                                <select id="idProducto" name="idProducto" required>
-                                <option value="" disabled selected>Seleccione un producto</option>
-                                    <tr th:each="producto : ${productos}">
-                                    <option th:value="${producto.id}" th:text="${producto.nombre}"></option>
-                                </select>
+                                <label for="idCliente">ID del Cliente</label>
+                                <input type="text" id="idCliente" name="idCliente" placeholder="ID del cliente" required>
+
+                                <label for="idProducto">ID del Producto</label>
+                                <input type="text" id="idProducto" name="id" placeholder="ID del producto" required>
 
                                 <label for="fechaInicioApartado">Fecha de Inicio</label>
                                 <input type="date" id="fechaInicioApartado" name="fechaInicioApartado" required>
@@ -148,13 +142,9 @@
                             <form class="editar-apartado-form" method="post" th:action="@{/apartados/actualizar}">
                                 <input type="hidden" name="id" id="idApartado">
                                 <div class="form-input">
-                                    
-                                <label for="idCliente">Cliente</label>
-                                <select id="idCliente" name="idCliente" required>
-                                <option value="" disabled selected>Seleccione un cliente</option>
-                                    <tr th:each="cliente : ${clientes}">
-                                <option th:value="${cliente.idCliente}" th:text="${cliente.usuario.nombre + ' ' + cliente.usuario.apellidos}"></option>                  
-                                </select>
+                                    <label for="idCliente">ID del Cliente</label>
+                                    <input type="text" id="idCliente" name="idCliente" placeholder="ID del cliente" required>
+
                                     <label for="idProducto">ID del Producto</label>
                                     <input type="text" id="idProducto" name="id" placeholder="ID del producto" required>
 
