@@ -83,7 +83,7 @@
                             <td>
                                 <button class="producto-eliminar" style="display: inline;">
                                     <i class="bi bi-trash"></i>
-                                    <a th:href="@{/empleados/eliminar(id_Empleado=${empleadoItem.idEmpleado})}" style="text-decoration: none; color: inherit;"></a>
+                                    <a th:href="@{/empleadosApi/eliminar(id_Empleado=${empleadoItem.idEmpleado})}" style="text-decoration: none; color: inherit;"></a>
                                 </button>
                                 <br>
                                 ----------
@@ -117,7 +117,7 @@
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class='crear-empleado-form' method="post" th:action="@{/empleados/guardar}">
+                            <form class='crear-empleado-form' method="post" th:action="@{/empleadosApi/registrar}">
 
                                 <label for="nombre">Nombre</label>
                                 <input type="text" id="nombre" name="nombre" placeholder="Nombre del empleado" required>
@@ -156,11 +156,13 @@
                 </div>
 
                 <!-- Modal de edición -->
+                
                 <div id="modalEditar" class="modal">
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="container">
-                            <form class="editar-empleado-form" method="post" th:action="@{/empleados/actualizar}">
+                            <form class="editar-empleado-form" method="post" th:action="@{/empleadosApi/actualizar}">
+                                <input type="hidden" name="_method" value="PUT">
                                 
                                 <input type="hidden" name="idEmpleado" id="idEmpleado">
                                 <div class="form-input">
