@@ -56,9 +56,8 @@
                 <div id="tablaApartados" th:if="${!apartados.empty}">
                     <table class="contenedor-productos">
                         <tr>
-                            <th>ID del Apartado</th>
-                            <th>ID del Cliente</th>
-                            <th>ID del Producto</th>
+                            <th>Cliente</th>
+                            <th>Producto</th>
                             <th>Fecha de Inicio</th>
                             <th>Fecha de Finalización</th>
                             <th>Abono</th>
@@ -66,9 +65,8 @@
                             <th>Acciones</th>
                         </tr>
                         <tr th:each="apartadoItem : ${apartados}">
-                            <td th:text="${apartadoItem.idApartado}"></td>
-                            <td th:text="${apartadoItem.cliente.idCliente}"></td>
-                            <td th:text="${apartadoItem.producto.id}"></td>
+                            <td th:text="${apartadoItem.cliente.usuario.nombre}+' '+${apartadoItem.cliente.usuario.apellidos}"></td>
+                            <td th:text="${apartadoItem.producto.nombre}"></td>
                             <td th:text="${apartadoItem.fechaInicioApartado}"></td>
                             <td th:text="${apartadoItem.fechaFinalApartado}"></td>
                             <td th:text="${apartadoItem.abono}"></td>
