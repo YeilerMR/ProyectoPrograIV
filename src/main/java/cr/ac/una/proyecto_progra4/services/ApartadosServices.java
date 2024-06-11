@@ -74,7 +74,9 @@ public class ApartadosServices implements IApartadoServices{
     @Override
     public String verificarPreAgregar(Apartado apartado) {
         // Verificar si el código del envío ya existe
+
         Optional<Apartado> apartadoExistente = apartadoRepo.findByCodigoApartadoIgnoreCase(apartado.getIdApartado());
+
         if (apartadoExistente.isPresent()) {
             return "{\"success\": false, \"message\": \"El código de apartado ya existe\"}";
         } else {
@@ -102,5 +104,6 @@ public class ApartadosServices implements IApartadoServices{
             }
         }
     }
-
+    
+    
 }

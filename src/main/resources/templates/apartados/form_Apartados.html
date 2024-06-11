@@ -108,11 +108,17 @@
                         <div class="container">
                             <form class='crear-apartado-form' method="post" th:action="@{/apartados/guardar}">
 
-                                <label for="idCliente">ID del Cliente</label>
-                                <input type="text" id="idCliente" name="idCliente" placeholder="ID del cliente" required>
+                                <label for="idCliente">Cliente</label>
+                                <select id="idCliente" name="idCliente" required>
+                                    <option value="" disabled selected>Seleccione un cliente</option>
+                                    <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}" th:text="${cliente.usuario.nombre + ' ' + cliente.usuario.apellidos}"></option>
+                                </select>
 
-                                <label for="idProducto">ID del Producto</label>
-                                <input type="text" id="idProducto" name="id" placeholder="ID del producto" required>
+                                <label for="idProducto">Producto</label>
+                                <select id="idProducto" name="idProducto" required>
+                                    <option value="" disabled selected>Seleccione un producto</option>
+                                    <option th:each="producto : ${productos}" th:value="${producto.id}" th:text="${producto.nombre}"></option>
+                                </select>
 
                                 <label for="fechaInicioApartado">Fecha de Inicio</label>
                                 <input type="date" id="fechaInicioApartado" name="fechaInicioApartado" required>

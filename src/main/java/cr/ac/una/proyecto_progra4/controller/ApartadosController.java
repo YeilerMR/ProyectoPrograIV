@@ -44,7 +44,7 @@ public class ApartadosController {
     @PostMapping("/guardar")
     public ResponseEntity<String> save(
             @RequestParam("idCliente") int idCliente,
-            @RequestParam("id") int idProducto,           
+            @RequestParam("idProducto") int idProducto,           
             @RequestParam("fechaInicioApartado") Date fechaInicioApartado,
             @RequestParam("fechaFinalApartado") Date fechaFinalApartado,
             @RequestParam("abono") Double abonoApartado,
@@ -96,7 +96,9 @@ public class ApartadosController {
         List<Cliente> clientesConApartados = clienteServices.getClientesConApartados();
         List<Cliente> clientesListaTotal = clienteServices.getClientes();
         List<Apartado> apartadosPagina = apartadoServices.obtenerRegistrosPaginados(page, pageSize);
-
+        List<Producto> productosListaTotal = productoServices.getProductos();
+        
+        
         int ultimaPagina = (int) Math.ceil((double) apartados.size() / pageSize) - 1;
 
         model.addAttribute("ultimaPagina", ultimaPagina);
@@ -105,6 +107,7 @@ public class ApartadosController {
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("clientes", clientesConApartados);
         model.addAttribute("clientesListaTotal", clientesListaTotal);
+        model.addAttribute("productos", productosListaTotal);
 
         return "apartados/form_Apartados";
     }
