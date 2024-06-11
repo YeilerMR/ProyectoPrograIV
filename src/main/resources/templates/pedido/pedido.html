@@ -69,7 +69,7 @@
                             <td th:text="${temp.direccion_pedido}+','+${temp.canton}+','+${temp.provincia}"></td>
                             <td th:text="${temp.producto.nombre}"></td>
                             <td th:text="${temp.cantidad}"></td>
-                            <td th:text="${temp.facturaObjt.codigo_factura}"></td>
+                            <td th:text="${temp.factura.codigo_factura}"></td>
                             <td>   
                                 <button class="producto-eliminar" style="display: inline;">
                                     <a th:href="@{./eliminar(id = ${temp.id_pedido})}" style="text-decoration: none;">Eliminar</a>
@@ -93,7 +93,7 @@
                                             <label>Empledo:</label>
                                             <!--input required name ="id_empleado" type="number" th:value="${temp.id_empleado}" placeholder="Ingrese la foreign key del empleado"-->
                                             <select name="id_empleado" placeholder ="Seleccione el empleado">
-                                                <option th:each="listaE:${empleados}" th:value="${listaE.idEmpleado}" th:selected="${listaE.idEmpleado == temp.id_empleado}" th:text="${listaE.usuario.nombre}"></option>
+                                                <option th:each="listaE:${empleados}" th:value="${listaE.idEmpleado}" th:selected="${listaE.idEmpleado == temp.empleado.idEmpleado}" th:text="${listaE.usuario.nombre}"></option>
                                                 <!--option th:value="'efectivo'" th:selected="${temp.metodo_pago eq 'efectivo'}">Efectivo</option-->
                                             </select>
 
