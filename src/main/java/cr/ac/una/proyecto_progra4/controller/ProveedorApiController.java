@@ -41,7 +41,7 @@ public class ProveedorApiController {
 
     @GetMapping("/listar")
     public String listaProveedores(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
-        Proveedor[] proveedoresArray = restTemplate.getForObject(urlBase + "/listar", Proveedor[].class);
+        Proveedor[] proveedoresArray = restTemplate.getForObject(urlBase + "/listarProveedor", Proveedor[].class);
         List<Proveedor> proveedoresList = Arrays.asList(proveedoresArray);
 
         LinkedList<Proveedor> proveedoresPagina = new ProveedoresServices().obtenerRegistrosPaginados(page, pageSize, proveedoresList);
@@ -62,7 +62,7 @@ public class ProveedorApiController {
         HttpHeaders header = new HttpHeaders();
         header.set("Content-Type", "application/json");
         HttpEntity<Proveedor> request = new HttpEntity(proveedor, header);
-        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/registrar", HttpMethod.POST, request, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/registrarProveedor", HttpMethod.POST, request, String.class);
 
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
@@ -82,7 +82,7 @@ public class ProveedorApiController {
             HttpHeaders header = new HttpHeaders();
             header.set("Content-Type", "application/json");
             HttpEntity<Proveedor> request = new HttpEntity<>(proveedor, header);
-            ResponseEntity<String> response = restTemplate.exchange(urlBase + "/editar", HttpMethod.PUT, request, String.class);
+            ResponseEntity<String> response = restTemplate.exchange(urlBase + "/editarProveedor", HttpMethod.PUT, request, String.class);
             return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
         } else {
             return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Método no permitido");
@@ -94,7 +94,7 @@ public class ProveedorApiController {
         HttpHeaders header = new HttpHeaders();
         header.set("Content-Type", "application/json");
         HttpEntity<String> request = new HttpEntity<>(header);
-        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/eliminar?proveedor=" + proveedorID, HttpMethod.DELETE, request, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/eliminarProveedor?proveedor=" + proveedorID, HttpMethod.DELETE, request, String.class);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 

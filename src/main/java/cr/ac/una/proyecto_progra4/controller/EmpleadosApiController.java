@@ -41,7 +41,7 @@ public class EmpleadosApiController {
 
     @GetMapping("/listar")
     public String listaEmpleados(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize) {
-        Empleado[] empleadosArray = restTemplate.getForObject(urlBase + "/empleado", Empleado[].class);
+        Empleado[] empleadosArray = restTemplate.getForObject(urlBase + "/listarEmpleado", Empleado[].class);
         List<Empleado> empleadosList = Arrays.asList(empleadosArray);
 
         List<Empleado> empleadosPagina = empleadosList.stream()
@@ -56,7 +56,7 @@ public class EmpleadosApiController {
         model.addAttribute("page", page);
         model.addAttribute("pageSize", pageSize);
 
-        return "empleados/empleadoApi";
+        return "empleados/empleado";
     }
 
     @PostMapping("/registrar")
@@ -76,13 +76,13 @@ public class EmpleadosApiController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Empleado> request = new HttpEntity<>(empleado, headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(urlBase + "/guardar", request, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(urlBase + "/registrarEmpleado", request, String.class);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 
     @PostMapping("/actualizar")
     public ResponseEntity<?> actualizarEmpleado(
-            @RequestParam("idEmpleado") String idEmpleado,
+            @RequestParam("idEmpleado") int idEmpleado,
             @RequestParam("usuario.nombre") String nombre,
             @RequestParam("usuario.apellidos") String apellidos,
             @RequestParam("usuario.email") String email,
@@ -92,25 +92,24 @@ public class EmpleadosApiController {
             @RequestParam("usuario.cedula") String cedula) {
 
         Usuario usuario = new Usuario(nombre, apellidos, email, password, cedula, telefono, credencial);
-        Empleado empleado = new Empleado();
+        Empleado empleado = new Empleado();     
         empleado.setUsuario(usuario);
-
+        empleado.setIdEmpleado(idEmpleado);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Empleado> request = new HttpEntity<>(empleado, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/actualizar?idEmpleado=" + idEmpleado, HttpMethod.POST, request, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/editarEmpleado?idEmpleado=" + idEmpleado, HttpMethod.PUT, request, String.class);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 
     @DeleteMapping("/eliminar")
-    @ResponseBody
-    public ResponseEntity<?> eliminarEmpleado(@RequestParam("idEmpleado") int idEmpleado) {
+    public ResponseEntity<?> eliminarEmpleado(@RequestParam("id_Empleado") int idEmpleado) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         HttpEntity<String> request = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/eliminar?id_Empleado=" + idEmpleado, HttpMethod.DELETE, request, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/eliminarEmpleado?id_Empleado=" + idEmpleado, HttpMethod.DELETE, request, String.class);
 
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
@@ -121,7 +120,7 @@ public class EmpleadosApiController {
         headers.set("Content-Type", "application/json");
         HttpEntity<String> request = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/buscar?textoBuscar=" + cedula, HttpMethod.GET, request, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(urlBase + "/buscarEmpleado?textoBuscar=" + cedula, HttpMethod.GET, request, String.class);
 
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }

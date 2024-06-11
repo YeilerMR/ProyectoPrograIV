@@ -18,6 +18,9 @@ function validarEdicionEmpleado(selector, mensajeConfirmacion, urlRedireccion) {
                 // Realizar una petición AJAX o enviar el formulario de forma asíncrona
                 fetch(editForm.action, {
                     method: 'POST',
+                    headers: {
+                        'X-HTTP-Method-Override': 'PUT'
+                    },
                     body: new FormData(editForm)
                 })
                         .then(response => response.json())
@@ -61,7 +64,7 @@ function validarEliminacionEmpleado(selector, mensajeExito, mensajeError) {
                 if (result.isConfirmed) {
                     // Realizar la solicitud de eliminación
                     fetch(url, {
-                        method: 'GET',
+                        method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
                         }
@@ -72,7 +75,7 @@ function validarEliminacionEmpleado(selector, mensajeExito, mensajeError) {
                             // Mostrar el mensaje de éxito después de la redirección
                             mostrarToastConfirmacion(mensajeExito);
                             setTimeout(function () {
-                                window.location.href = '/empleados/listar';
+                                window.location.href = '/empleadosApi/listar';
                             }, 1000); // 1000 milisegundos de retraso
                         } else {
                             // Mostrar el mensaje de error
@@ -257,8 +260,8 @@ function validarYBuscar() {
 
 function initializeEventHandlers() {
     validarEliminacionEmpleado('.producto-eliminar', 'Empleado eliminado exitosamente', 'No se pudo eliminar');
-    validarEdicionEmpleado('.editar-empleado-form', '¿Estás seguro de continuar con la edición de este empleado?', '/empleados/listar');
-    validarCreacion('.crear-empleado-form', '¿Estás seguro de continuar con la creación de este empleado?', '/empleados/listar');
+    validarEdicionEmpleado('.editar-empleado-form', '¿Estás seguro de continuar con la edición de este empleado?', '/empleadosApi/listar');
+    validarCreacion('.crear-empleado-form', '¿Estás seguro de continuar con la creación de este empleado?', '/empleadosApi/listar');
     popupCrearEmpleado();
     popupActualizarEmpleado();
     togglePasswordInTable();
