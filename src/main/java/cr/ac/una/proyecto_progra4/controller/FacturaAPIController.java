@@ -120,13 +120,11 @@ public class FacturaAPIController {
 
     @GetMapping("/eliminar")
     public String/*ResponseEntity<?>*/ eliminarProveedor(@RequestParam("id") int id) {
-        System.out.println("Eliminando....................."+ id);
         HttpHeaders header = new HttpHeaders();
         header.set("Content-Type", "application/json");
         HttpEntity<String> request = new HttpEntity<>(header);
         ResponseEntity<String> response = restTemplate.exchange(urlBase + "/factura/eliminar?factura=" + id,HttpMethod.DELETE, request, String.class);
         String result = response.getBody();
-        System.out.println("Eliminar en front ..........."+result);
         
         String vista = "redirect:/facturaApi/listar";
         if (result.equalsIgnoreCase("nodelete")) {
