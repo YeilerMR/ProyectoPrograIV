@@ -3,14 +3,15 @@
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
+    flex-wrap: wrap; /* Allow wrapping in small screens */
 }
 
-.divPag a {
+.divPag a, .divPag span {
     color: var(--clr-main);
     background-color: var(--clr-white);
     border: 1px solid var(--clr-main);
     padding: 0.5rem 0.75rem;
-    margin: 0 0.25rem;
+    margin: 0.25rem; /* Ensure space between elements */
     border-radius: 0.25rem;
     text-decoration: none;
     transition: background-color 0.3s, color 0.3s;
@@ -22,11 +23,5 @@
 }
 
 .divPag span {
-    color: var(--clr-main);
-    background-color: var(--clr-white);
-    border: 1px solid var(--clr-main);
-    padding: 0.5rem 0.75rem;
-    margin: 0 0.25rem;
-    border-radius: 0.25rem;
     font-weight: bold;
 }
