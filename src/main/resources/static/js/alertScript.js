@@ -66,7 +66,6 @@ function validarEliminacion(selector, mensajeExito) {
                     setTimeout(function () {
                         window.location.href = url;
                     }, 1000); // 1000 milisegundos de retraso
-
                     // Mostrar el mensaje de éxito después de la redirección
                     mostrarToastConfirmacion(mensajeExito);
                 }
