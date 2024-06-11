@@ -219,3 +219,17 @@ main {
         width: 100px;
     }
 }
+
+/* Estilos responsivos para la tabla */
+@media (max-width: 768px) {
+    .contenedor-productos {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .contenedor-productos th,
+    .contenedor-productos td {
+        white-space: nowrap;
+    }
+}

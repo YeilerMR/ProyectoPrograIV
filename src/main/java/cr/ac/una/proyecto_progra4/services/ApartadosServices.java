@@ -62,8 +62,7 @@ public class ApartadosServices implements IApartadoServices{
 
     @Override
     public Apartado getApartadoPorID(int idApartado) {
-        Optional<Apartado> optionalApartado = apartadoRepo.findById(idApartado);
-        return optionalApartado.orElse(null);
+       return apartadoRepo.findById(idApartado).orElse(null);
     }
 
     @Override
@@ -75,7 +74,7 @@ public class ApartadosServices implements IApartadoServices{
     @Override
     public String verificarPreAgregar(Apartado apartado) {
         // Verificar si el código del envío ya existe
-        Optional<Apartado> apartadoExistente = apartadoRepo.findByCodigoApartadoIgnoreCase(apartado.getEstadoApartado());
+        Optional<Apartado> apartadoExistente = apartadoRepo.findByCodigoApartadoIgnoreCase(apartado.getIdApartado());
         if (apartadoExistente.isPresent()) {
             return "{\"success\": false, \"message\": \"El código de apartado ya existe\"}";
         } else {
@@ -91,7 +90,7 @@ public class ApartadosServices implements IApartadoServices{
     @Override
     public String verificarPreModificar(Apartado apartado) {
 
-        Optional<Apartado> apartadoExistente = apartadoRepo.findByCodigoApartadoIgnoreCase(apartado.getEstadoApartado());
+        Optional<Apartado> apartadoExistente = apartadoRepo.findByCodigoApartadoIgnoreCase(apartado.getIdApartado());
         if (apartadoExistente.isPresent() && !Integer.valueOf(apartadoExistente.get().getIdApartado()).equals(apartado.getIdApartado())) {
             return "{\"success\": false, \"message\": \"El código de apartado ya existe\"}";
         } else {

@@ -13,7 +13,6 @@ import cr.ac.una.proyecto_progra4.services.ClienteServices;
 import cr.ac.una.proyecto_progra4.services.ProductoServices;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 /**
@@ -45,18 +42,18 @@ public class ApartadosController {
     private ProductoServices productoServices;
     
     @PostMapping("/guardar")
-    public ResponseEntity<String> save(@RequestParam("id_Apartado") int idApartado,
-            @RequestParam("idCliente_Apartado") int idCliente,
-            @RequestParam("idProducto_Apartado") int idProducto,           
-            @RequestParam("fechaInicio_Apartado") Date fechaInicioApartado,
-            @RequestParam("fechaFinal_Apartado") Date fechaFinalApartado,
-            @RequestParam("abono_Apartado") Double abonoApartado,
-            @RequestParam("estado_Apartado") String estadoApartado) {
+    public ResponseEntity<String> save(
+            @RequestParam("idCliente") int idCliente,
+            @RequestParam("id") int idProducto,           
+            @RequestParam("fechaInicioApartado") Date fechaInicioApartado,
+            @RequestParam("fechaFinalApartado") Date fechaFinalApartado,
+            @RequestParam("abono") Double abonoApartado,
+            @RequestParam("estadoApartado") String estadoApartado) {
 
         System.out.println("ID CLIENTE -> " + idCliente);
 
         Apartado apartado = new Apartado();
-        apartado.setIdApartado(idApartado);
+        //apartado.setIdApartado(idApartado);
 
         Cliente clienteApartado = new Cliente();
         clienteApartado.setIdCliente(idCliente);
@@ -109,13 +106,13 @@ public class ApartadosController {
         model.addAttribute("clientes", clientesConApartados);
         model.addAttribute("clientesListaTotal", clientesListaTotal);
 
-        return "apartados/apartado";
+        return "apartados/form_Apartados";
     }
 
     @PostMapping("/actualizar")
     public ResponseEntity<String> actualizarApartado(@ModelAttribute("apartado") Apartado apartado,
-            @RequestParam("idCliente_Apartado") int idCliente,
-            @RequestParam("idProducto_Apartado") int idProducto
+            @RequestParam("idCliente") int idCliente,
+            @RequestParam("id") int idProducto
     ) {
 
         // Cliente del Envio
