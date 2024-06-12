@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para abrir los popups
     editButtons.forEach(function (btn) {
         btn.onclick = function () {
-            var popup = this.closest('tr').querySelector('.modal');
+            var popup = this.closest('td').querySelector('.modal');
             popup.style.display = 'block';
         };
     });

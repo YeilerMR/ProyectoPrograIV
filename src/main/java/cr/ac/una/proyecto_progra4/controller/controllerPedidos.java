@@ -64,7 +64,7 @@ public class controllerPedidos {
         print("Empleado del pedido "+pedidos.get(1).getEmpleado().getUsuario().getNombre());
 
         
-        
+//        print("=======================\n         Codigo: "+Ipedido.generar_Codigo());
 
         model.addAttribute("productos", productos);
         model.addAttribute("facturas", facturas);
@@ -78,6 +78,7 @@ public class controllerPedidos {
         model.addAttribute("listaP", pedidos);
         model.addAttribute("page", page); // Asegúrate de pasar el número de página al modelo
         model.addAttribute("pageSize", pageSize); // Asegúrate de pasar el tamaño de página al modelo
+        model.addAttribute("nuevoCodigo",Ipedido.generar_Codigo());
         return "pedido/pedido";
     }
 
@@ -173,6 +174,7 @@ public class controllerPedidos {
     }
     @GetMapping("/obtener_id")
     public String obtener_por_id(@RequestParam int id, Model model){
+        System.out.print("Detalles");
         Pedido detalle = null;
         List<Pedido> lista = Ipedido.getPedidos();
         if(lista != null){

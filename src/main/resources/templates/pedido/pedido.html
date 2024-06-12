@@ -53,29 +53,67 @@
                         <tr>
                             <th>Código pedido</th>
                             <th>Empleado</th>
-                            <th>Estado pedido</th>
+                            <!--th>Estado pedido</th-->
                             <th>Fecha</th>
-                            <th>Dirección</th>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
+                            <!--th>Dirección</th-->
+                            <!--th>Producto</th-->
+                            <!--th>Cantidad</th-->
                             <th>Factura</th>
+                            <th>Detalles</th>
                             <th>Acciones.</th>
                         </tr>
                         <tr th:each="temp:${listaP}">
                             <td th:text="${temp.codigo}"></td>
                             <td th:text="${temp.empleado.usuario.nombre}+' '+${temp.empleado.usuario.apellidos}"></td>
-                            <td th:text="${temp.estado_pedido}"></td>
+                            <!--td th:text="${temp.estado_pedido}"></td-->
                             <td th:text="${temp.fecha}"></td>
-                            <td th:text="${temp.direccion_pedido}+','+${temp.canton}+','+${temp.provincia}"></td>
-                            <td th:text="${temp.producto.nombre}"></td>
-                            <td th:text="${temp.cantidad}"></td>
+                            <!--td th:text="${temp.direccion_pedido}+','+${temp.canton}+','+${temp.provincia}"></td-->
+                            <!--td th:text="${temp.producto.nombre}"></td-->
+                            <!--td th:text="${temp.cantidad}"></td-->
                             <td th:text="${temp.factura.codigo_factura}"></td>
                             <td>   
-                                <button class="producto-eliminar" style="display: inline;">
+                                <button title="Detalles" type="button" value="detallar" class="btn_detalles">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </button>
+                                <div id="detallar" class="modal">
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <div class="container">
+                                            <h3><label>Fecha del pedido:</label></h3>
+                                            <label style="font-weight: normal;" th:text="${temp.fecha}"></label><br><br><!-- comment -->
+
+                                            <h3><label>Codigo:</label></h3>
+                                            <label style="font-weight: normal;" th:text="${temp.codigo}"></label><br><br>
+
+                                            <h3><label>Emplado:</label></h3>
+                                            <label style="font-weight: normal;" th:text="${temp.empleado.usuario.nombre}+' '+${temp.empleado.usuario.apellidos}"></label><br><br>
+
+                                            <h3><label>Estado del pedido:</label></h3>
+                                            <label style="font-weight: normal;" th:text="${temp.estado_pedido}"></label><br><br>
+
+                                            <h3><label>Direccion del pedido:</label></h3><!--  -->
+                                            <label style="font-weight: normal;" th:text="${temp.direccion_pedido}+', '+${temp.canton}+', '+${temp.provincia}"></label><br><br>
+
+                                            <h3><label>Producto:</label></h3>
+                                            <label style="font-weight: normal;" th:text="${temp.producto.nombre}"></label><br><br>
+
+                                            <h3><label>Candidad :</label></h3>
+                                            <label style="font-weight: normal;"th:text="${temp.cantidad}"></label><br><br>
+
+                                            <h3><label>Factura :</label></h3>
+                                            <label style="font-weight: normal;" th:text="${temp.factura.codigo_factura}"></label><br><br>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td>
+                                <button title="Eliminar" class="producto-eliminar" style="display: inline;">
                                     <i class="bi bi-trash"></i>
                                     <a th:href="@{./eliminar(id = ${temp.id_pedido})}" style="text-decoration: none;"></a>
                                 </button>
-                                <button class="producto-editar" style="display: inline;">
+                                <button title="Editar" class="producto-editar" style="display: inline;">
                                     <i class="bi bi-pen"></i>
                                 </button>
 
@@ -89,7 +127,8 @@
                                             <input type="hidden" th:name="id" th:value="${temp.id_pedido}" />
 
                                             <label>Código:</label>
-                                            <input required type="text" id ="codigo" name="codigo" th:value ="${temp.codigo}" placeholder= "Ingrese el código"><br>
+                                            <label th:text="'  '+${temp.codigo}"></label><br><br>
+                                            <input type="hidden" id ="codigo" name="codigo" th:value ="${temp.codigo}" ><br>
 
                                             <label>Empledo:</label>
                                             <!--input required name ="id_empleado" type="number" th:value="${temp.id_empleado}" placeholder="Ingrese la foreign key del empleado"-->
@@ -138,6 +177,18 @@
                         </tr>
                     </table>
 
+
+                    <script text="text/javascript" th:src="@{/js/validaciones.js}"></script>
+                    <!--script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            //validarEliminacionProveedor('.btn_delete', "¿Estas seguro?", './listar'),
+                            Abrir_detalles();
+                        });
+                    </script-->
+
+
+
+
                     <div class="divPag" th:if="${listaP != null}">
                         <a th:href="@{./listar(page=0)}">Primera Página</a>
                         <a th:href="@{./listar(page=${page - 1})}" th:unless="${page == 0}">Página Anterior</a>
@@ -165,7 +216,8 @@
                             <!-- FORM DE CREAR--> 
                             <form class='crear-cliente-form' method="post" th:action="@{./guardar}">
                                 <label>Código:</label>
-                                <input type="text" id ="codigo" name="codigo" placeholder= "Ingrese el código"><br>
+                                <label th:text="'  '+${nuevoCodigo}"></label><br><br>
+                                <input type="hidden" id ="codigo" name="codigo" th:value="${nuevoCodigo}"><br>
 
                                 <label>Empledo:</label>
                                 <select name="id_empleado" placeholder ="Seleccione el empleado">

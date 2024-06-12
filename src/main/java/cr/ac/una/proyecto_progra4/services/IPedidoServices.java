@@ -19,4 +19,8 @@ public interface IPedidoServices {
     public LinkedList<Pedido> ObtenerRegistrosPaginados(int numeroPagina, int tamanoPagina, List<Pedido> pedidos);
 
     public Pedido getPedidoById(int id);
+    
+    public String generar_Codigo();
+
+    public String recursivo_char(String prefix, int index);
 }
