@@ -56,6 +56,19 @@ public class ProveedorApiController {
         return "proveedor/Proveedores_admin";
     }
 
+    @GetMapping("/detalles")
+    public String verDetalles(@RequestParam("proveedor") int proveedorID, Model model) {
+        Proveedor[] proveedoresArray = restTemplate.getForObject(urlBase + "/listarProveedor", Proveedor[].class);
+        List<Proveedor> proveedoresList = Arrays.asList(proveedoresArray);
+        for (Proveedor proveedor : proveedoresList) {
+            if (proveedor.getIdProveedor() == proveedorID) {
+                model.addAttribute("proveedor", proveedor);
+                return "proveedor/detalles_proveedor";
+            }
+        }
+        return "error";
+    }
+
     @PostMapping("/registrar")
     public ResponseEntity<?> registrarProveedor(@RequestParam("nombre") String nombre, @RequestParam("telefono") String telefono, @RequestParam("descripcion") String descripcion, @RequestParam("correo") String correo, @RequestParam("direccion") String direccion, @RequestParam("categoria") String categoria, @RequestParam("informacionadicional") String informacion) {
         Proveedor proveedor = new Proveedor(0, nombre, telefono, descripcion, correo, direccion, categoria, informacion);

@@ -34,7 +34,7 @@ function detallesProveedor() {
             //alert("ID del producto: " + idProveedor);
 
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", "/proveedores/detalles?proveedor=" + idProveedor, true);
+            xmlhttp.open("GET", "/proveedoresApi/detalles?proveedor=" + idProveedor, true);
             xmlhttp.send();
 
             xmlhttp.onreadystatechange = function () {
