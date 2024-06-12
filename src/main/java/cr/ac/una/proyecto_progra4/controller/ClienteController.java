@@ -5,12 +5,12 @@
 package cr.ac.una.proyecto_progra4.controller;
 
 import cr.ac.una.proyecto_progra4.domain.Cliente;
+import cr.ac.una.proyecto_progra4.domain.Envio;
 import cr.ac.una.proyecto_progra4.domain.Usuario;
 import cr.ac.una.proyecto_progra4.services.ClienteServices;
-import java.util.HashMap;
+import cr.ac.una.proyecto_progra4.services.EnvioServices;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -32,6 +31,9 @@ public class ClienteController {
 
     @Autowired
     private ClienteServices clienteServices;
+
+    @Autowired
+    private EnvioServices envioServices;
 
     @GetMapping("/cliente")
     public String get() {
@@ -171,14 +173,20 @@ public class ClienteController {
     }
 
     @GetMapping("/eliminar")
-    @ResponseBody
-    public Map<String, Object> eliminarCliente(@RequestParam("id_Cliente") int id_Cliente) {
-        boolean eliminadoExitosamente = clienteServices.eliminar(id_Cliente);
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", eliminadoExitosamente);
-        if (!eliminadoExitosamente) {
-            response.put("message", "No se pudo eliminar porque está asociado a un envío");
+    public ResponseEntity<?> eliminarProveedor(@RequestParam("id_Cliente") int id_Cliente) {
+
+        try {
+            List<Envio> enviosClientes = envioServices.getEnviosByClienteId(id_Cliente);
+            //boolean existe = new OrdenDeCompraData().proveedorById(id);
+            if (!enviosClientes.isEmpty()/*existe*/) {
+                return ResponseEntity.ok().body("{\"success\": false, \"message\": \"No se puede eliminar el cliente porque está asociado a una o más envíos.\"}");
+            }
+            if (clienteServices.eliminar(id_Cliente)) {
+                return ResponseEntity.ok().body("{\"success\": true, \"message\": \"¡Cliente eliminado exitosamente!\"}");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.ok().body("{\"success\": false, \"message\": \"Error al eliminar el cliente: " + e.getMessage() + "\"}");
         }
-        return response;
+        return ResponseEntity.ok().body("{\"success\": false, \"message\": \"Error al eliminar el cliente\"}");
     }
 }

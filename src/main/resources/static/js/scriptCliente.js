@@ -66,23 +66,23 @@ function validarEliminacionCliente(selector, mensajeExito, mensajeError) {
                             'Content-Type': 'application/json'
                         }
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Mostrar el mensaje de éxito después de la redirección
-                            mostrarToastConfirmacion(mensajeExito);
-                            setTimeout(function () {
-                                window.location.href = '/clientes/listar';
-                            }, 1000); // 1000 milisegundos de retraso
-                        } else {
-                            // Mostrar el mensaje de error
-                            mostrarToastError(data.message || mensajeError);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        mostrarToastError('Ocurrió un error inesperado');
-                    });
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Si el proceso de agregar el cliente fue exitoso, mostrar mensaje de éxito
+                                    mostrarToastConfirmacion(data.message);
+                                    // Redirigir después de un pequeño retraso
+                                    setTimeout(function () {
+                                        window.location.href = '/clientes/listar';
+                                    }, 1000); // 1000 milisegundos de retraso
+                                } else {
+                                    // Si el proceso de agregar el cliente falló, mostrar mensaje de error
+                                    mostrarToastError(data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
                 }
             });
         });
