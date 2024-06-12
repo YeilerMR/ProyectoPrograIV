@@ -56,7 +56,7 @@ public class EmpleadosController {
             @RequestParam("credencial") String credencial,
             @RequestParam("cedula") String cedula) {
 
-        // Verificar si algún otro cliente tiene los mismos datos
+        // Verificar si algún otro empleado tiene los mismos datos
         Empleado empleadoExistenteCedula = empleadoServices.getEmpleadoPorCedula(cedula);
         Empleado empleadoExistenteEmail = empleadoServices.getEmpleadoPorEmail(email);
         Empleado empleadoExistenteTelefono = empleadoServices.getEmpleadoPorTelefono(telefono);
@@ -85,11 +85,11 @@ public class EmpleadosController {
             empleadoUsuario.setCredencial(1);
         }
 
-        // Crear y asociar el objeto Cliente
+        // Crear y asociar el objeto empleado
         Empleado empleado = new Empleado();
         empleado.setUsuario(empleadoUsuario);
 
-        // Agregar el cliente
+        // Agregar el empleado
         boolean agregadoExitosamente = empleadoServices.agregar(empleado);
         if (agregadoExitosamente) {
             return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Empleado agregado exitosamente\"}");
@@ -106,7 +106,7 @@ public class EmpleadosController {
         if (empleado != null) {
             empleados.add(empleado);
         } else {
-            // Cliente no encontrado, devuelve una lista vacía
+            // empleado no encontrado, devuelve una lista vacía
             empleados = new LinkedList<>();
         }
 
@@ -134,12 +134,12 @@ public class EmpleadosController {
         // Obtener el empleado existente por ID
         Empleado empleadoExistente = empleadoServices.getEmpleadoPorID(idEmpleado);
 
-        // Verificar si el cliente existe
+        // Verificar si el empleado existe
         if (empleadoExistente == null) {
             return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"El empleado no existe\"}");
         }
 
-        // Actualizar los datos del cliente existente con los datos recibidos
+        // Actualizar los datos del empleado existente con los datos recibidos
         empleadoExistente.getUsuario().setNombre(empleado.getUsuario().getNombre());
         empleadoExistente.getUsuario().setApellidos(empleado.getUsuario().getApellidos());
         empleadoExistente.getUsuario().setEmail(empleado.getUsuario().getEmail());
@@ -147,7 +147,7 @@ public class EmpleadosController {
         empleadoExistente.getUsuario().setCedula(empleado.getUsuario().getCedula());
         empleadoExistente.getUsuario().setTelefono(empleado.getUsuario().getTelefono());
 
-        // Verificar si algún otro cliente tiene los mismos datos
+        // Verificar si algún otro empleado tiene los mismos datos
         Empleado empleadoExistenteCedula = empleadoServices.getEmpleadoPorCedula(empleado.getUsuario().getCedula());
         Empleado empleadoExistenteEmail = empleadoServices.getEmpleadoPorEmail(empleado.getUsuario().getEmail());
         Empleado empleadoExistenteTelefono = empleadoServices.getEmpleadoPorTelefono(empleado.getUsuario().getTelefono());
@@ -161,7 +161,7 @@ public class EmpleadosController {
             return ResponseEntity.badRequest().body("{\"success\": false, \"message\": \"El teléfono está asociado a otro empleado\"}");
         }
 
-        // Guardar los cambios en el cliente
+        // Guardar los cambios en el empleado
         boolean actualizadoExitosamente = empleadoServices.agregar(empleadoExistente);
         if (actualizadoExitosamente) {
             return ResponseEntity.ok().body("{\"success\": true, \"message\": \"Empleado actualizado exitosamente\"}");

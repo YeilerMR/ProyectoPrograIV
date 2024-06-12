@@ -28,4 +28,6 @@ public interface IEnvioServices {
     public String verificarPreAgregar(Envio envio);
 
     public String verificarPreModificar(Envio envio);
+    
+    public List<Envio> getEnviosByClienteId(int idCliente);
 }

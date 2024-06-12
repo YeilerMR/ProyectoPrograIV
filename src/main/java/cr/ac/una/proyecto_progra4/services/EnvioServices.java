@@ -103,4 +103,9 @@ public class EnvioServices implements IEnvioServices {
             }
         }
     }
+
+    @Override
+    public List<Envio> getEnviosByClienteId(int idCliente) {
+        return envioRepo.findEnviosByClienteId(idCliente);
+    }
 }

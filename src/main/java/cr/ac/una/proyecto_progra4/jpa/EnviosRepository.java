@@ -24,4 +24,7 @@ public interface EnviosRepository extends JpaRepository<Envio, Integer> {
 
     @Query("SELECT e FROM Envio e WHERE LOWER(e.codigoEnvio) = LOWER(:codigo)")
     Optional<Envio> findByCodigoEnvioIgnoreCase(@Param("codigo") String codigo);
+
+    @Query("SELECT e FROM Envio e WHERE e.cliente.idCliente = :idCliente")
+    List<Envio> findEnviosByClienteId(@Param("idCliente") int idCliente);
 }

@@ -1,11 +1,56 @@
+function validarEdicionProducto(selector, mensajeConfirmacion, urlRedireccion) {
+    var editForms = document.querySelectorAll(selector);
+    editForms.forEach(function (editForm) {
+        editForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: mensajeConfirmacion,
+                text: '¡No podrás revertir esto!',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, continuar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar una petición AJAX o enviar el formulario de forma asíncrona
+                    fetch(editForm.action, {
+                        method: 'POST',
+                        body: new FormData(editForm)
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Si el proceso de modificar el cliente fue exitoso, mostrar mensaje de éxito
+                                    mostrarToastConfirmacion(data.message);
+                                    // Redirigir después de un pequeño retraso
+                                    setTimeout(function () {
+                                        window.location.href = urlRedireccion;
+                                    }, 1000); // 1000 milisegundos de retraso
+                                } else {
+                                    // Si el proceso de modificar el cliente falló, mostrar mensaje de error
+                                    mostrarToastError(data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                }
+            });
+        });
+    });
+}
+
 function popupCrearProducto() {
     console.log("La función popupCrearProducto() se está ejecutando.");
     var modalCrear = document.getElementById("modalCrearProducto");
     var btnAgregar = document.querySelector(".add_new");
     var spanCrear = document.querySelector("#modalCrearProducto .close");
 
-    btnAgregar.onclick = function (){
-        event.preventDefault(); 
+    btnAgregar.onclick = function () {
+        event.preventDefault();
         modalCrear.style.display = "block";
     };
     spanCrear.onclick = function () {
@@ -115,7 +160,46 @@ function buscarProducto() {
             });
 }
 
-
+function validarEliminacionProducto(selector, mensajeExito, mensajeError) {
+    var deleteLinks = document.querySelectorAll(selector);
+    deleteLinks.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            var url = this.getAttribute('href');
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¡No podrás revertir esto!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(url, {
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            mostrarToastConfirmacion(mensajeExito);
+                            setTimeout(function () {
+                                window.location.href = '/productosApi/listar';
+                            }, 1000);
+                        } else {
+                            mostrarToastError(data.message ? data.message : mensajeError);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        mostrarToastError('Ocurrió un error inesperado');
+                    });
+                }
+            });
+        });
+    });
+}
 
 function validarYBuscar() {
     var textoBuscar = document.getElementById("textoBuscar").value;
@@ -144,6 +228,9 @@ function closeModal() {
 function initializeEventHandlers() {
     popupCrearProducto();
     popupActualizarProducto();
+    validarCreacion('.crear-producto-form', '¿Estás seguro de continuar con la creación de este producto?', '/productosApi/listar');
+    validarEdicionProducto('.editar-producto-form', '¿Estás seguro de continuar con la edición de este producto?', '/productosApi/listar');
+    validarEliminacionProducto('.producto-eliminarLink', 'Producto eliminado exitosamente', '');
     //validarYBuscar();
     closeModal();
 }
