@@ -171,5 +171,19 @@ public class controllerPedidos {
 
         return ResponseEntity.ok().body(Ipedido.Insertar_pedido(p));//new PedidoServices().insertar_Pedido(p));
     }
+    @GetMapping("/obtener_id")
+    public String obtener_por_id(@RequestParam int id, Model model){
+        Pedido detalle = null;
+        List<Pedido> lista = Ipedido.getPedidos();
+        if(lista != null){
+            for(Pedido p : lista){
+                if(p.getId_pedido() == id){
+                    detalle = p;
+                }
+            }
+        }
+        model.addAttribute("pedido", detalle);
+        return "pedido/detalles";
+    }
 
 }

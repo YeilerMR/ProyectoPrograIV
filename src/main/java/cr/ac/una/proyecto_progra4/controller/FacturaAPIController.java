@@ -127,13 +127,6 @@ public class FacturaAPIController {
         header.set("Content-Type", "application/json");
         HttpEntity<String> request = new HttpEntity<>(header);
         ResponseEntity<String> response = restTemplate.exchange(urlBase + "/factura/eliminar?factura=" + id,HttpMethod.DELETE, request, String.class);
-        // String result = response.getBody();
-        
-        // String vista = "redirect:/facturaApi/listar";
-        // if (result.equalsIgnoreCase("nodelete")) {
-        //     vista = "Error";
-        // }
-        // return vista;
         System.out.println(response.getBody());
 
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
