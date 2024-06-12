@@ -96,11 +96,12 @@ public class controllerPedidos {
             @RequestParam("cantidad") int cantidad,
             @RequestParam("id_f") int id_factura) {
 
+        print("id"+id+"   ide_empleado:"+id_empleado+"    Id_producto :"+id_producto+"    id_factura"+id_factura);
         Empleado e = new Empleado();
         e.setIdEmpleado(id_empleado);
 
         Producto pd = new Producto();
-        pd.setId(id_factura);
+        pd.setId(id_producto);
 
         Factura f = new Factura();
         f.setId_factura(id_factura);
