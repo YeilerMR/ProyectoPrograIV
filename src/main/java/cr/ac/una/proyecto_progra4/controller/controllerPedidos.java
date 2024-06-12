@@ -154,7 +154,7 @@ public class controllerPedidos {
         e.setIdEmpleado(id_empleado);
 
         Producto pd = new Producto();
-        pd.setId(id_factura);
+        pd.setId(id_producto);
 
         Factura f = new Factura();
         f.setId_factura(id_factura);
