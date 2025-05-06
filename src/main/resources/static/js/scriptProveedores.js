@@ -20,6 +20,7 @@ function editarProveedor() {
             };
         });
     });
+    // Obtener el valor (ID del producto) del botón clicado
 }
 
 function detallesProveedor() {
@@ -29,7 +30,6 @@ function detallesProveedor() {
     var botonesEditar = document.querySelectorAll('.btn_detalles');
     botonesEditar.forEach(function (boton) {
         boton.addEventListener('click', function () {
-            // Obtener el valor (ID del producto) del botón clicado
             var idProveedor = this.value;
             //alert("ID del producto: " + idProveedor);
 
@@ -103,16 +103,8 @@ function validarFormularioCrear(event) {
         }
     }
 
-    // Si todos los campos están llenos, enviar el formulario después de 3 segundos
-    //setTimeout(function() {
-    //form.submit(); // Envía el formulario de manera programática
-
-    //}, 2000); // 3000 milisegundos = 3 segundos
-
-    return true; // Devuelve true para indicar que el formulario se enviará después del retraso
+    return true;
 }
-
-
 
 function mostrarMensaje(mensaje, container) {
     container.innerHTML = mensaje;

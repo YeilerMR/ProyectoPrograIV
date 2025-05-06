@@ -93,7 +93,7 @@ public class ProveedoresServices implements IProveedoresService {
             List<OrdenDeCompra> ordenesDeCompra = ordenDeCompraRep.findByProveedorId(id);
             //boolean existe = new OrdenDeCompraData().proveedorById(id);
             if (!ordenesDeCompra.isEmpty()/*existe*/) {
-                return "{\"success\": false, \"message\": \"No se puede eliminar el proveedor porque está asociado a una o más órdenes de compra.\"}";
+                    return "{\"success\": false, \"message\": \"No se puede eliminar el proveedor porque está asociado a una o más órdenes de compra.\"}";
             }
 
             proveedorRep.deleteById(id);
